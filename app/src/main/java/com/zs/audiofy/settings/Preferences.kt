@@ -193,20 +193,20 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
         SliderPreference(
             value = viewState.fontScale,
             text = textResource(R.string.pref_font_scale),
-            valueRange = 0.7f..2f,
-            steps = 12,   // steps=(max−min)stepSize−1/ (2.0 - 0.7) / 0.1 - 1 =  12 steps
+            valueRange = 0.75f..1.5f,
+            steps = 14,   // steps=(max−min)stepSize−1/ (2.0 - 0.7) / 0.1 - 1 =  12 steps
             icon = Icons.Outlined.FormatSize,
             preview = {
                 Label(
-                    text = if (it < 0.76f) textResource(R.string.system) else textResource(
-                        R.string.postfix_x_f,
-                        it
-                    ),
+                    text = if (it <= 0.75f)
+                        textResource(R.string.system)
+                    else
+                        textResource(R.string.postfix_x_f, it),
                     fontWeight = FontWeight.Bold
                 )
             },
             onRequestChange = { value: Float ->
-                val newValue = if (value < 0.76f) -1f else value
+                val newValue = if (value <= 0.75f) -1f else value
                 viewState.fontScale = newValue
             },
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape)

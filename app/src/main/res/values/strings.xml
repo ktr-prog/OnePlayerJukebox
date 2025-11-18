@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name" translatable="false">OnePlayer</string>
+    <string name="app_name" translatable="false">One Player</string>
     <!--
        App icon name. Dynamically set to reflect the build type (e.g., debug, release).
        This helps visually differentiate between app variants on a device.

@@ -25,6 +25,7 @@ import android.text.format.Formatter
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -60,7 +61,9 @@ import com.zs.audiofy.common.compose.LocalSystemFacade
 import com.zs.audiofy.common.compose.LottieAnimatedButton
 import com.zs.audiofy.common.compose.LottieAnimatedIcon
 import com.zs.audiofy.common.compose.OverflowMenu
+import com.zs.audiofy.common.compose.background
 import com.zs.audiofy.common.compose.directory.Files
+import com.zs.audiofy.common.compose.shine
 import com.zs.audiofy.playlists.Playlists
 import com.zs.audiofy.properties.RouteProperties
 import com.zs.compose.foundation.SignalWhite
@@ -79,8 +82,8 @@ import com.zs.audiofy.common.compose.ContentPadding as CP
 
 private const val TAG = "Video"
 
-private val VideoItemPadding = PaddingValues(horizontal = ContentPadding.large)
-private val VideoThumbnailModifier = Modifier.size(128.dp, 72.dp)
+private val VideoItemPadding = PaddingValues(start = ContentPadding.normal, end = CP.medium)
+private val VideoThumbnailModifier = Modifier.size(90.dp, 56.dp)
 
 /**
  * Represents the [Video] list item.
@@ -95,13 +98,14 @@ private fun Video(
         modifier = modifier,
         trailing = actions,
         padding = VideoItemPadding,
-        centerAlign = true,
+        centerAlign = false,
         // Title
         overline = {
             Label(
                 value.name,
                 fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
+                color = AppTheme.colors.onBackground,
+                maxLines = 2,
                 style = AppTheme.typography.body2
             )
         },
@@ -141,7 +145,9 @@ private fun Video(
         // Thumbnail
         leading = {
             Box(
-                modifier = Modifier.clip(AppTheme.shapes.small) then VideoThumbnailModifier,
+                modifier = Modifier
+                    .clip(AppTheme.shapes.small)
+                    .background(AppTheme.colors.background(1.dp)) then VideoThumbnailModifier,
                 content = {
                     // Thumbnail
                     Image(
