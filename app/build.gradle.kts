@@ -55,11 +55,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.google.android.apps.oneplayer"
+        applicationId = "com.googol.android.apps.oneplayer"
         minSdk = 28
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0-beta01"
+        versionCode = 2
+        versionName = "1.0.0-beta02"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
         // Load secrets into BuildConfig
