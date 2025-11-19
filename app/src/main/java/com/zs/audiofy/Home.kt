@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -674,8 +675,13 @@ fun Home(
             else -> true
         }
         // Apply the visibility setting to the system bars
-        if (!visible) controller.hide(WindowInsetsCompat.Type.systemBars())
-        else controller.show(WindowInsetsCompat.Type.systemBars())
+        if (visible){
+            controller.show(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+        }else {
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
         // Determine the appearance of system bars (dark or light) based on the current style settings
         controller.isAppearanceLightSystemBars = when (style.flagSystemBarAppearance) {
             WindowStyle.FLAG_SYSTEM_BARS_APPEARANCE_DARK -> false  // Use dark system bars appearance

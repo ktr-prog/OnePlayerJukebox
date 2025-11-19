@@ -1,7 +1,6 @@
-Introducing six new player widget styles!
-* <b>Tiramisu:</b> Inspired by Android 13's media controls.
-* <b>RedVioletCake:</b> A nod to Android 11's media notification style.
-* <b>DiskDynamo:</b> Watch the album art spin like a classic compact disk!
-* <b>MistyDream:</b> A sleek, glassmorphism-inspired design.
-* <b>SkewedDynamic & GradientGroves:</b> Two more unique styles.
-* <b>Improved Seeking:</b> The double-tap to seek gesture is now much more responsive.
+✓ <b>New Look & Feel:</b> Refreshed the app with new launcher icons and a redesigned splash screen for a modern look.
+✓ <b>Player Enhancements:</b>
+    * Fixed double-tap to seek gesture.
+    * Show system bars in fullscreen by swiping from the screen edge.
+    * Improved landscape player controls.
+    * The privacy policy link in settings now works.

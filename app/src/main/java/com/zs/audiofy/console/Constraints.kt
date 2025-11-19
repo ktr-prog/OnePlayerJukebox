@@ -537,7 +537,7 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
 
         // TimeBar
         val timeBar = horizontal(
-            PLAY_PAUSE, SKIP_PREVIOUS, SEEK_BAR, SKIP_TO_NEXT, ROTATION_LOCK,
+            SKIP_PREVIOUS, SEEK_BAR, SKIP_TO_NEXT, PLAY_PAUSE, ROTATION_LOCK,
             alignBy = SEEK_BAR,
             constrainBlock = {
                 linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
@@ -626,7 +626,7 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
 
         // TimeBar
         val timeBar = horizontal(
-            SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, SEEK_BAR, ROTATION_LOCK, RESIZE_MODE, LOCK,
+            LOCK,  SEEK_BAR,  SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, RESIZE_MODE, ROTATION_LOCK,
             alignBy = SEEK_BAR,
             constrainBlock = {
                 linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)

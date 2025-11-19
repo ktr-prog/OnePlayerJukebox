@@ -619,7 +619,7 @@ fun Console(viewState: ConsoleViewState) {
                     }
 
                     // Update system bar style (auto vs hidden) depending on controller visibility
-                    facade.style = facade.style + when (visibility) {
+                    facade.style += when (visibility) {
                         C.VISIBILITY_VISIBLE -> WindowStyle.FLAG_SYSTEM_BARS_VISIBILITY_AUTO
                         else -> WindowStyle.FLAG_SYSTEM_BARS_HIDDEN
                     }

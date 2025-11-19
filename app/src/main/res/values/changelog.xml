@@ -12,13 +12,27 @@
 <resources>
     <!--Changelog-->
     <string-array name="changelog" translatable="false">
+        <item>@string/changelog_100_beta01</item>
     </string-array>
     <!--Points to the changelog of current version.-->
-    <string name="release_notes" translatable="false">@string/changelog_400_beta01</string>
+    <string name="release_notes" translatable="false">@string/changelog_100_beta02</string>
 
 
+    <!--1.0.0-beta02-->
+    <string name="changelog_100_beta02" translatable="false">
+        <b>What’s New <font color='purple'>(v1.0.0-beta02)\n</font></b>
+        <font color='grey'>
+            \n✓ <b>New Look &amp; Feel:</b> Refreshed the app with new launcher icons and a redesigned splash screen for a modern identity.
+            \n
+            \n✓ <b>Player Enhancements:</b>
+            \n    - Fixed the double-tap to seek gesture to correctly skip 10 seconds per tap.
+            \n    - Easily show system bars in fullscreen by swiping from the screen edge.
+            \n    - Improved the control layout in the landscape player for a cleaner look.
+            \n    - The privacy policy link in settings now works correctly.
+        </font>
+    </string>
 
-    <string name="changelog_400_beta01" translatable="false">
+    <string name="changelog_100_beta01" translatable="false">
         <b>What’s New <font color='purple'>(v1.0.0-beta01)\n</font></b>
         <font color='grey'>
             \n✓ <b><u>Rebranded from "Audiofy" to "OnePlayer"</u></b>
