@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
@@ -529,8 +530,9 @@ private fun NavigationBar(
             background = background,
             elevation = 12.dp,
             border = colors.shine,
+            windowInsets = AppBarDefaults.bottomAppBarWindowInsets.union(WindowInsets(bottom = 16.dp)),
             shape = CircleShape,
-            modifier = modifier.padding(bottom = ContentPadding.small),
+            modifier = modifier.padding(bottom = ContentPadding.xSmall),
             // Display routes at the contre of available space
             content = { routes() }
         )

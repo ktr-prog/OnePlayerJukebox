@@ -62,30 +62,14 @@ jobs:
       - name: Configure Environment Variables
         run: |
           echo "DATE_TODAY=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-          echo "IAP_NO_ADS=$(echo ${{ secrets.IAP_NO_ADS }})" >> $GITHUB_ENV
-          echo "IAP_TAG_EDITOR_PRO=$(echo ${{ secrets.IAP_TAG_EDITOR_PRO }})" >> $GITHUB_ENV
-          echo "PLACEMENT_BANNER_1=$(echo ${{ secrets.PLACEMENT_BANNER_1 }})" >> $GITHUB_ENV
-          echo "PLACEMENT_BANNER_2=$(echo ${{ secrets.PLACEMENT_BANNER_2 }})" >> $GITHUB_ENV
-          echo "PLACEMENT_INTERSTITIAL=$(echo ${{ secrets.PLACEMENT_INTERSTITIAL }})" >> $GITHUB_ENV
           echo "PLAY_CONSOLE_APP_RSA_KEY=$(echo ${{ secrets.PLAY_CONSOLE_APP_RSA_KEY }})" >> $GITHUB_ENV
-          echo "UNITY_APP_ID=$(echo ${{ secrets.UNITY_APP_ID }})" >> $GITHUB_ENV
           echo "ADS_APP_ID=$(echo ${{ secrets.ADS_APP_ID }})" >> $GITHUB_ENV
-          echo "IAP_BUY_ME_COFFEE=$(echo ${{ secrets.IAP_BUY_ME_COFFEE }})" >> $GITHUB_ENV
-          echo "IAP_CODEX=$(echo ${{ secrets.IAP_CODEX }})" >> $GITHUB_ENV
           echo "GIT_TAG=$(grep -E "versionName\s*=?\s*['\"]" "app/build.gradle.kts" | awk -F"['\"]" '{print $2}')" >> $GITHUB_ENV
 
       - name: Verify Environment Variables
         run: |
-          echo $UNITY_APP_ID | sed 's/./&‌/g'
           echo $ADS_APP_ID | sed 's/./&‌/g'
-          echo $PLACEMENT_BANNER_1 | sed 's/./&‌/g'
-          echo $PLACEMENT_BANNER_2 | sed 's/./&‌/g'
-          echo $PLACEMENT_INTERSTITIAL | sed 's/./&‌/g'
           echo $PLAY_CONSOLE_APP_RSA_KEY | sed 's/./&‌/g'
-          echo $IAP_NO_ADS | sed 's/./&‌/g'
-          echo $IAP_BUY_ME_COFFEE | sed 's/./&‌/g'
-          echo $IAP_CODEX | sed 's/./&‌/g'
-          echo $IAP_TAG_EDITOR_PRO | sed 's/./&‌/g'
           echo $GIT_TAG | sed 's/./&‌/g'
 
       - name: Set Up Java and Gradle
@@ -143,7 +127,6 @@ jobs:
           packageName: com.googol.android.apps.oneplayer
           releaseFiles: ${{steps.signed_aab.outputs.signedReleaseFile}}
           track: internal
-          status: draft
           whatsNewDirectory: ./whatsnew
 
       - name: Create Release

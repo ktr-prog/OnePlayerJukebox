@@ -1,6 +1,4 @@
-✓ <b>New Look & Feel:</b> Refreshed the app with new launcher icons and a redesigned splash screen for a modern look.
-✓ <b>Player Enhancements:</b>
-    * Fixed double-tap to seek gesture.
-    * Show system bars in fullscreen by swiping from the screen edge.
-    * Improved landscape player controls.
-    * The privacy policy link in settings now works.
+✓ <b>Enhanced Error Handling:</b> Added detailed snackbar notifications for failed dynamic feature installations, including an option to view specific error codes.
+✓ <b>In-App Purchase Fix:</b> Corrected the identifier for the "Remove Ads" in-app purchase to ensure it functions as intended.
+✓ <b>UI Refinements:</b>
+    - Adjusted the BottomAppBar's padding to prevent it from overlapping with system navigation gestures.

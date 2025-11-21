@@ -130,7 +130,7 @@ fun Sponsor(modifier: Modifier = Modifier) {
                         else -> Button(
                             "Unlock Ad-free",
                             icon = ImageVector.vectorResource(R.drawable.ic_remove_ads),
-                            onClick = { facade.initiatePurchaseFlow(Paymaster.IAP_BUY_ME_COFFEE) },
+                            onClick = { facade.initiatePurchaseFlow(Paymaster.IAP_NO_ADS) },
                         )
                     }
                 }

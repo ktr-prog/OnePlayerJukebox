@@ -50,6 +50,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.ktx.AppUpdateResult
+import com.google.android.play.core.ktx.errorCode
+import com.google.android.play.core.ktx.moduleNames
 import com.google.android.play.core.ktx.requestAppUpdateInfo
 import com.google.android.play.core.ktx.requestProgressFlow
 import com.google.android.play.core.ktx.requestReview
@@ -217,6 +219,14 @@ class MainActivity : ComponentActivity(), SystemFacade, NavDestListener {
                         if (res == SnackbarResult.ActionPerformed)
                             restart(true)
                         // The dynamic feature module can now be accessed
+                    }
+                    Flag.FAILED, Flag.UNKNOWN -> {
+                       val res = snackbarHostState.showSnackbar(
+                           getText(R.string.msg_unknown_error),
+                           action = "Details."
+                       )
+                        if (res == SnackbarResult.ActionPerformed)
+                            showSnackbar("Oops! Something went wrong (error ${state.errorCode}) while installing ${state.moduleNames}. Try again?")
                     }
 
                     else -> {

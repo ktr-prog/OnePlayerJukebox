@@ -13,10 +13,20 @@
     <!--Changelog-->
     <string-array name="changelog" translatable="false">
         <item>@string/changelog_100_beta01</item>
+        <item>@string/changelog_100_beta02</item>
     </string-array>
     <!--Points to the changelog of current version.-->
     <string name="release_notes" translatable="false">@string/changelog_100_beta02</string>
-
+    <!--1.0.0-beta02-->
+    <string name="changelog_100_beta03" translatable="false">
+        <b>What’s New <font color='purple'>(v1.0.0-beta03)\n</font></b>
+        <font color='grey'>
+            \n✓ <b>Enhanced Error Handling:</b> Added detailed snackbar notifications for failed dynamic feature installations, including an option to view specific error codes.
+            \n✓ <b>In-App Purchase Fix:</b> Corrected the identifier for the "Remove Ads" in-app purchase to ensure it functions as intended.
+            \n✓ <b>UI Refinements:</b>
+            \n    - Adjusted the BottomAppBar\'s padding to prevent it from overlapping with system navigation gestures.
+        </font>
+    </string>
 
     <!--1.0.0-beta02-->
     <string name="changelog_100_beta02" translatable="false">
@@ -32,6 +42,7 @@
         </font>
     </string>
 
+    <!--1.0.0-beta01-->
     <string name="changelog_100_beta01" translatable="false">
         <b>What’s New <font color='purple'>(v1.0.0-beta01)\n</font></b>
         <font color='grey'>
