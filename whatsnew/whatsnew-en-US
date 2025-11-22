@@ -1,3 +1,4 @@
+✓ Fixed a crash caused by duplicate keys in the library\'s recents section.
 ✓ <b>Enhanced Error Handling:</b> Added detailed snackbar notifications for failed dynamic feature installations, including an option to view specific error codes.
 ✓ <b>In-App Purchase Fix:</b> Corrected the identifier for the "Remove Ads" in-app purchase to ensure it functions as intended.
 ✓ <b>UI Refinements:</b>

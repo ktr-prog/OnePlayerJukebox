@@ -12,14 +12,24 @@
 <resources>
     <!--Changelog-->
     <string-array name="changelog" translatable="false">
-        <item>@string/changelog_100_beta01</item>
-        <item>@string/changelog_100_beta02</item>
+        <item>@string/changelog_103_beta</item>
+        <item>@string/changelog_102_beta</item>
+        <item>@string/changelog_101_beta</item>
     </string-array>
     <!--Points to the changelog of current version.-->
-    <string name="release_notes" translatable="false">@string/changelog_100_beta02</string>
+    <string name="release_notes" translatable="false">@string/changelog_104_beta</string>
+
+    <!--1.0.3-beta-->
+    <string name="changelog_104_beta" translatable="false">
+        <b>What’s New <font color='purple'>(v1.0.4-beta)\n</font></b>
+        <font color='grey'>
+            \n✓ Fixed a crash caused by duplicate keys in the library\'s recents section.
+        </font>
+    </string>
+
     <!--1.0.0-beta02-->
-    <string name="changelog_100_beta03" translatable="false">
-        <b>What’s New <font color='purple'>(v1.0.0-beta03)\n</font></b>
+    <string name="changelog_103_beta" translatable="false">
+        <b>What’s New <font color='purple'>(v1.0.3-beta)\n</font></b>
         <font color='grey'>
             \n✓ <b>Enhanced Error Handling:</b> Added detailed snackbar notifications for failed dynamic feature installations, including an option to view specific error codes.
             \n✓ <b>In-App Purchase Fix:</b> Corrected the identifier for the "Remove Ads" in-app purchase to ensure it functions as intended.
@@ -28,9 +38,9 @@
         </font>
     </string>
 
-    <!--1.0.0-beta02-->
-    <string name="changelog_100_beta02" translatable="false">
-        <b>What’s New <font color='purple'>(v1.0.0-beta02)\n</font></b>
+    <!--1.0.2-beta-->
+    <string name="changelog_102_beta" translatable="false">
+        <b>What’s New <font color='purple'>(v1.0.2-beta)\n</font></b>
         <font color='grey'>
             \n✓ <b>New Look &amp; Feel:</b> Refreshed the app with new launcher icons and a redesigned splash screen for a modern identity.
             \n
@@ -42,9 +52,9 @@
         </font>
     </string>
 
-    <!--1.0.0-beta01-->
-    <string name="changelog_100_beta01" translatable="false">
-        <b>What’s New <font color='purple'>(v1.0.0-beta01)\n</font></b>
+    <!--1.0.0-beta-->
+    <string name="changelog_101_beta" translatable="false">
+        <b>What’s New <font color='purple'>(v1.0.1-beta)\n</font></b>
         <font color='grey'>
             \n✓ <b><u>Rebranded from "Audiofy" to "OnePlayer"</u></b>
             \n    - This includes a new application ID, updated package names, and a fresh user-facing name.
