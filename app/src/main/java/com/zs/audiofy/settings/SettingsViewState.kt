@@ -111,7 +111,7 @@ object Settings {
     const val PKG_MARKET_ID = "com.android.vending"
 
     // Default Accents
-    val LightAccentColor = Color(0xFF514700)
+    val LightAccentColor = /*Color(0xFF514700)*/ Color(0xFF636A1D)
     val DarkAccentColor = /*Color(0xFFD8A25E)*/ Color(0xFF4c662b)
 
     //

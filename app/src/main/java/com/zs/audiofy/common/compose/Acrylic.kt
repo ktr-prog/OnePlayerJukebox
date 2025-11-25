@@ -107,8 +107,8 @@ fun Colors.background(
     containerColor: Color = background(0.4.dp),
     blurRadius: Dp = if (containerColor.luminance() >= 0.5f) 38.dp else 80.dp,
     noiseFactor: Float = if (containerColor.luminance() >= 0.5f) 0.5f else 0.25f,
-    tint: Color = containerColor.copy(alpha = if (containerColor.luminance() >= 0.5) 0.63f else 0.65f),
-    luminance: Float = 0.07f,
+    tint: Color = containerColor.copy(alpha = if (containerColor.luminance() >= 0.5) 0.60f else 0.60f),
+    luminance: Float = if (containerColor.luminance() >= 0.5f) 0.07f else 0.02f,
     blendMode: BlendMode = BlendMode.SrcOver,
     progressive: Float = -1f,
 ) = if (!AppConfig.isBackgroundBlurEnabled) Background(Modifier.acrylic(background, accent))
@@ -121,7 +121,7 @@ else Background(Modifier.hazeEffect(state = surface) {
     this.tints = buildList {
         // apply luminosity just like in Microsoft Acrylic.
         if (luminance != -1f)
-            this += HazeTint(Color.White.copy(0.07f), BlendMode.Luminosity)
+            this += HazeTint(Color.White.copy(luminance), BlendMode.Luminosity)
         this += HazeTint(tint, blendMode = blendMode)
     }
     // Configure progressive blurring (if enabled).
@@ -133,7 +133,7 @@ else Background(Modifier.hazeEffect(state = surface) {
         )
         // Adjust input scale for Android versions below 12 for better visuals.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S)
-            inputScale = HazeInputScale.Fixed(0.5f)
+            inputScale = HazeInputScale.Fixed(0.25f)
         mask = PROGRESSIVE_MASK
     }
 })
