@@ -564,6 +564,14 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
             bottom.linkTo(EXTRA_INFO.top)
         }
 
+        constrain(CUES){
+            linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
+            if (only != null)
+                bottom.linkTo(parent.bottom, down + CP.medium)
+            else
+                bottom.linkTo(more.top, CP.medium)
+            horizontalBias = 0.5f
+        }
 
         if (only == null)
             return@ConstraintSet
@@ -641,6 +649,16 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
             start.linkTo(SEEK_BAR.start, 6.dp)
             bottom.linkTo(SEEK_BAR.top, -CP.small)
         }
+
+        constrain(CUES){
+            linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
+            if (only != null)
+                bottom.linkTo(parent.bottom, down + CP.medium)
+            else
+                bottom.linkTo(EXTRA_INFO.top, CP.medium)
+            horizontalBias = 0.5f
+        }
+
         if (only == null)
             return@ConstraintSet
         hideController(only)

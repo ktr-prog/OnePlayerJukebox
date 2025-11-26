@@ -62,6 +62,7 @@ object RouteConsole : Route {
     const val ID_BTN_LOCK = "_lock"
     const val ID_CAPTIONS = "_captions"
     const val ID_BANNER_AD = "_banner_ad"
+    const val ID_CUES = "_cues"
 
     const val VISIBILITY_AUTO_HIDE_DELAY = 5_000L
 
@@ -101,6 +102,7 @@ abstract class Constraints(val titleTextSize: Int) {
     protected val INFO = ConstrainedLayoutReference(RouteConsole.ID_BTN_MEDIA_INFO)
     protected val INDICATOR = ConstrainedLayoutReference(RouteConsole.ID_PLAYING_INDICATOR)
     protected val LOCK = ConstrainedLayoutReference(RouteConsole.ID_BTN_LOCK)
+    protected val CUES = ConstrainedLayoutReference(RouteConsole.ID_CUES)
 
 
     private fun ConstraintSetScope.hide(ref: ConstrainedLayoutReference) {

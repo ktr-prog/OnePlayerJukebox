@@ -21,7 +21,9 @@
 package com.zs.audiofy.console
 
 import android.app.Activity
+import android.content.Context
 import android.text.format.DateUtils
+import android.view.accessibility.CaptioningManager
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -59,6 +61,7 @@ import androidx.compose.material.icons.twotone.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -69,12 +72,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -113,6 +120,7 @@ import com.zs.compose.theme.menu.DropDownMenuItem
 import com.zs.compose.theme.sharedBounds
 import com.zs.compose.theme.sharedElement
 import com.zs.compose.theme.text.Label
+import com.zs.compose.theme.text.Text
 import com.zs.core.playback.NowPlaying
 import com.zs.core.playback.Remote
 import com.zs.core.playback.VideoProvider
@@ -131,6 +139,8 @@ private val COLOR_BACKGROUND = Color(0xFF0E0E0F)
 private fun Modifier.key(value: String) = layoutId(value).sharedElement(value)
 private val DefaultAnimSpecs = tween<Float>()
 
+
+private val SubtitleShadow = Shadow(offset = Offset(5f, 5f), blurRadius = 8.0f)
 
 // Represents different dialogs to be shown
 private const val SHOW_NONE = 0
@@ -215,6 +225,7 @@ fun Console(viewState: ConsoleViewState) {
 
         // Video
         val enabled = visibility == C.VISIBILITY_VISIBLE
+        val onColor = LocalContentColor.current
         if (isVideo) {
             var scale by remember { mutableStateOf(ContentScale.Fit) }
             Box(
@@ -232,6 +243,23 @@ fun Console(viewState: ConsoleViewState) {
                     )
                 }
             )
+
+            // Cues
+            val cues by viewState.cues.collectAsState(null)
+            /*val cManager = remember {
+                facade.getDeviceService<CaptioningManager>(Context.CAPTIONING_SERVICE)
+            }*/
+            Text(
+                cues ?: "",
+                modifier = Modifier.layoutId(C.ID_CUES),
+                color = Color.White,
+                style = AppTheme.typography.body1.copy(
+                    shadow = SubtitleShadow,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                ),
+            )
+
             // Scrim
             Spacer(
                 modifier = Modifier
@@ -260,7 +288,6 @@ fun Console(viewState: ConsoleViewState) {
         }
 
         // Collapse
-        val onColor = LocalContentColor.current
         val accent = if (isVideo) onColor else AppTheme.colors.accent
         TonalIconButton(
             icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
