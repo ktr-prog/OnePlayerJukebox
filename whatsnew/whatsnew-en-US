@@ -1,5 +1,4 @@
-✓ Fixed a crash caused by duplicate keys in the library\'s recents section.
-✓ <b>Enhanced Error Handling:</b> Added detailed snackbar notifications for failed dynamic feature installations, including an option to view specific error codes.
-✓ <b>In-App Purchase Fix:</b> Corrected the identifier for the "Remove Ads" in-app purchase to ensure it functions as intended.
-✓ <b>UI Refinements:</b>
-    - Adjusted the BottomAppBar's padding to prevent it from overlapping with system navigation gestures.
+✓ Subtitle Support: Watch videos with subtitles, selectable from a new unified menu.
+✓ Unified Track Selection: A single, streamlined menu now manages audio, video, and subtitle tracks.
+✓ Faster Remote Media: Media from URLs now loads faster by fetching metadata first.
+✓ UI Refinements: Improved the "Grid Item Size" slider and prevented duplicate track names in the selection list.

@@ -54,6 +54,8 @@ import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
 
 internal class RemoteImpl(private val context: Context) : Remote {
 
@@ -373,7 +375,7 @@ internal class RemoteImpl(private val context: Context) : Remote {
         }
 
     override val cues: Flow<String?> = events
-        .filter {events ->
+        .filter { events ->
             // Check if the received events are relevant for a subtitle update.
             // If `events` is null (initial emission from callbackFlow) or if it doesn't contain
             // `Player.EVENT_CUES`, it means the subtitle cue hasn't changed,
@@ -456,49 +458,73 @@ internal class RemoteImpl(private val context: Context) : Remote {
     override suspend fun setMediaItem(uri: Uri) {
         var retriever: MediaMetadataRetriever? = null
         try {
-            // Initialize MediaMetadataRetriever to extract metadata from the media file.
-            retriever = MediaMetadataRetriever()
-            val artwork: Uri?
-            withContext(Dispatchers.IO) {
-                // Set the data source for the retriever.
+            val item = withContext(Dispatchers.IO) {
                 when (uri.scheme) {
-                    "content" -> retriever.setDataSource(context, uri)
-                    "file" -> retriever.setDataSource(uri.path)
-                    else -> retriever.setDataSource(uri.toString(), hashMapOf())
-                }
-                // Attempt to extract and cache the embedded album artwork.
-                artwork = runCatching(TAG) {
-                    // Create a temporary file in the cache directory to store the artwork.
-                    val file = File(context.cacheDir, "tmp_artwork.png")
-                    // Delete the old cached artwork file, if it exists.
-                    // This ensures that the latest album artwork is used, even if the track previously lacked artwork.
-                    file.delete()
-                    // Retrieve the embedded picture raw data. If null, no artwork exists, so return null.
-                    val bytes = retriever.embeddedPicture ?: return@runCatching null
-                    // Write the artwork bytes to the temporary file.
-                    val fos = FileOutputStream(file)
-                    fos.write(bytes)
-                    fos.close()
-                    // Return the URI of the cached artwork file.
-                    Uri.fromFile(file)
-                }
+                    // This avoids the long delay caused by MediaMetadataRetriever when adding a MediaItem from a remote source.
+                    // Instead of downloading the whole file, it just fetches headers.
+                    "http", "https" -> {
+                        val url = URL(uri.toString())
+                        val conn = url.openConnection() as HttpURLConnection
+                        conn.requestMethod = "HEAD"
+                        conn.connect()
+                        // Try to get filename from headers, else fallback
+                        val title = conn.getHeaderField("Content-Disposition")
+                            ?.substringAfter("filename=")?.trim('"')
+                            ?: uri.lastPathSegment
+                        val mimeType =
+                            conn.contentType ?: MimeTypeMap.getMimeTypeFromUrl(uri.toString())
+                        //
+                        MediaFile(
+                            subtitle = "",
+                            uri = uri,
+                            artwork = null,
+                            mimeType = mimeType,
+                            title = title ?: "",
+                        )
+                    }
 
+                    else -> {
+                        // Set the data source for the retriever.
+                        retriever = MediaMetadataRetriever()
+                        when (uri.scheme) {
+                            "content" -> retriever.setDataSource(context, uri)
+                            "file" -> retriever.setDataSource(uri.path)
+                            else -> retriever.setDataSource(uri.toString(), hashMapOf())
+                        }
+                        // Attempt to extract and cache the embedded album artwork.
+                        val artwork = runCatching(TAG) {
+                            // Create a temporary file in the cache directory to store the artwork.
+                            val file = File(context.cacheDir, "tmp_artwork.png")
+                            // Delete the old cached artwork file, if it exists.
+                            // This ensures that the latest album artwork is used, even if the track previously lacked artwork.
+                            file.delete()
+                            // Retrieve the embedded picture raw data. If null, no artwork exists, so return null.
+                            val bytes = retriever.embeddedPicture ?: return@runCatching null
+                            // Write the artwork bytes to the temporary file.
+                            val fos = FileOutputStream(file)
+                            fos.write(bytes)
+                            fos.close()
+                            // Return the URI of the cached artwork file.
+                            Uri.fromFile(file)
+                        }
+                        // Create a MediaFile object using the extracted metadata.
+                        // If a metadata field is not found, default to an empty string.
+                        val title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+                            ?: uri.lastPathSegment
+                            ?: uri.path?.substringAfterLast('/') // fallback if lastPathSegment is null
+
+                        val mimeType = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)
+                            ?: MimeTypeMap.getMimeTypeFromUrl(uri.toString())
+                        MediaFile(
+                            subtitle = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST) ?: "",
+                            uri = uri,
+                            artwork = artwork,
+                            mimeType = mimeType,
+                            title =  title ?: "",
+                        )
+                    }
+                }
             }
-            // Create a MediaFile object using the extracted metadata.
-            // If a metadata field is not found, default to an empty string.
-            val title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-                ?: uri.lastPathSegment
-                ?: uri.path?.substringAfterLast('/') // fallback if lastPathSegment is null
-
-            val mimeType = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)
-                ?: MimeTypeMap.getMimeTypeFromUrl(uri.toString())
-            val item = MediaFile(
-                subtitle = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST) ?: "",
-                uri = uri,
-                artwork = artwork,
-                mimeType = mimeType,
-                title =  title ?: "",
-            )
             // Set the created MediaFile as the current media item in the player.
             setMediaFiles(listOf(item))
         } catch (e: Exception) {
@@ -585,27 +611,31 @@ internal class RemoteImpl(private val context: Context) : Remote {
             player.trackSelectionParameters
                 .buildUpon()
                 .apply {
-                    when{
+                    when {
                         type == C.TRACK_TYPE_TEXT && info == null -> {
                             // clear text track overrides and ignore forced text tracks
                             clearOverridesOfType(C.TRACK_TYPE_TEXT)
                             setIgnoredTextSelectionFlags(C.SELECTION_FLAG_FORCED.inv())
                         }
+
                         type == C.TRACK_TYPE_AUDIO && info == null -> {
                             // clear audio track overrides and enable audio track rendering
                             clearOverridesOfType(C.TRACK_TYPE_AUDIO)
                                 .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, false)
                         }
+
                         type == C.TRACK_TYPE_VIDEO && info == null -> {
                             // clear video track overrides and enable audio track rendering
                             clearOverridesOfType(C.TRACK_TYPE_VIDEO)
                                 .setTrackTypeDisabled(C.TRACK_TYPE_VIDEO, false)
                         }
+
                         info != null -> {
                             // select the specified audio track and enable track rendering
                             setOverrideForType(info.params)
                             setTrackTypeDisabled(info.params.type, false)
                         }
+
                         else -> error("Track $info & $type cannot be null or invalid")
                     }
                 }.build()

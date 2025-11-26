@@ -18,13 +18,18 @@
         <item>@string/changelog_101_beta</item>
     </string-array>
     <!--Points to the changelog of current version.-->
-    <string name="release_notes" translatable="false">@string/changelog_105_beta</string>
+    <string name="release_notes" translatable="false">@string/changelog_110_beta</string>
 
     <!--1.0.5-beta-->
-    <string name="changelog_105_beta" translatable="false">
-        <b>What’s New <font color='purple'>(v1.0.5-beta)\n</font></b>
+    <string name="changelog_110_beta" translatable="false">
+        <b>What’s New <font color='purple'>(v1.1.0-beta)\n</font></b>
         <font color='grey'>
-            \n✓
+            \n✓ <b>Subtitle Support:</b> You can now watch videos with subtitles! Select a subtitle track from the new unified track selection menu.
+            \n✓ <b>Unified Track Selection:</b> The audio, video, and subtitle track selection dialogs have been merged into one. Easily switch between track types and make your selection in a single, streamlined interface.
+            \n✓ <b>Faster Remote Media Loading:</b> Adding media from URLs (HTTP/HTTPS) is now significantly faster. We now fetch metadata without downloading the entire file first, reducing delays.
+            \n✓ <b>UI Refinements:</b>
+            \n    - Adjusted the range for the "Grid Item Size" slider for better control.
+            \n    - The track selection list no longer shows duplicate track names.
         </font>
     </string>
 
