@@ -295,7 +295,8 @@ private class PlayerGestureDetectorNode(
                     now - lastTapMills <= viewConfiguration.doubleTapTimeoutMillis -> {
                         if (!enabled)
                             return@detectTapGestures
-                        tapCount++      // consecutive tap
+                        tapCount++
+                        // consecutive tap
                         viewState.emit(C.VISIBILITY_INVISIBLE)
                         val times = if (x > size.width / 2) tapCount else -tapCount
                         seekBy(times)

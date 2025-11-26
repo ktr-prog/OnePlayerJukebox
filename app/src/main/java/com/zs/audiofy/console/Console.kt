@@ -73,6 +73,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shadow
@@ -141,6 +142,12 @@ private val DefaultAnimSpecs = tween<Float>()
 
 
 private val SubtitleShadow = Shadow(offset = Offset(5f, 5f), blurRadius = 8.0f)
+private val SCRIM_STYLE = Brush.verticalGradient(
+    0f to Color.Black,
+    0.15f to Color.Transparent,
+    0.8f to Color.Transparent,
+    1f to Color.Black
+)
 
 // Represents different dialogs to be shown
 private const val SHOW_NONE = 0
@@ -264,7 +271,7 @@ fun Console(viewState: ConsoleViewState) {
             Spacer(
                 modifier = Modifier
                     .layoutId(C.ID_SCRIM)
-                    .background(Color.Black.copy(0.4f))
+                    .background(SCRIM_STYLE)
             )
             // Resize Mode
             IconButton(

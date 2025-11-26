@@ -414,13 +414,13 @@ fun MediaConfigDialog(
                                     )
                                     onDismissRequest()
                                 },
+                                modifier = Modifier.animateItem()
                             )
                         }
                     )
 
                     items(
                         items = data,
-                        key = TrackInfo::name,
                         itemContent = {
                             val selected  = checkedTrack?.name == it.name
                             SelectableChip(
@@ -438,6 +438,7 @@ fun MediaConfigDialog(
                                     viewState.setCheckedTrack(checked, it)
                                     onDismissRequest()
                                 },
+                                modifier = Modifier.animateItem()
                             )
                         }
                     )
