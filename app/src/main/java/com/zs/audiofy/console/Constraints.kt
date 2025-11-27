@@ -537,7 +537,7 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
 
         // TimeBar
         val timeBar = horizontal(
-            SKIP_PREVIOUS, SEEK_BAR, SKIP_TO_NEXT, PLAY_PAUSE, ROTATION_LOCK,
+            SKIP_PREVIOUS, SEEK_BAR, SKIP_TO_NEXT, PLAY_PAUSE,
             alignBy = SEEK_BAR,
             constrainBlock = {
                 linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
@@ -554,7 +554,7 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
         }
         // more
         val more = horizontal(
-            SHUFFLE, REPEAT_MODE, RESIZE_MODE,
+            SHUFFLE, REPEAT_MODE, RESIZE_MODE, ROTATION_LOCK,
             chainStyle = ChainStyle.Packed(1f),
             constrainBlock =  {
                 linkTo(timeBar.start, COLLAPSE.end)
@@ -611,7 +611,7 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
         TITLE.withChainParams(startMargin = CP.small, endMargin = CP.xLarge)
         COLLAPSE.withChainParams(startMargin = CP.normal)
         val options = horizontal(
-            INDICATOR, TITLE, INFO, SHUFFLE, REPEAT_MODE, EQUALIZER, QUEUE, SPEED, SLEEP_TIMER, LIKED, MORE, COLLAPSE,
+            INDICATOR, TITLE, INFO, SHUFFLE, REPEAT_MODE, EQUALIZER, SPEED, SLEEP_TIMER, LIKED, MORE, COLLAPSE,
             alignBy = TITLE,
             constrainBlock = {
                 linkTo(parent.start, parent.end, CP.normal + left, CP.normal + right)
@@ -634,7 +634,7 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
 
         // TimeBar
         val timeBar = horizontal(
-            LOCK,  SEEK_BAR,  SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, RESIZE_MODE, ROTATION_LOCK,
+            LOCK,  SEEK_BAR,  SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, RESIZE_MODE, ROTATION_LOCK, QUEUE,
             alignBy = SEEK_BAR,
             constrainBlock = {
                 linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)

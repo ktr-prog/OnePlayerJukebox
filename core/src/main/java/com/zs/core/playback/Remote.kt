@@ -328,4 +328,6 @@ interface Remote {
      * @see Player.getPlaybackState
      */
     suspend fun getPlaybackState(): Int
+
+    suspend fun prepare()
 }

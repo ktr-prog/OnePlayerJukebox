@@ -61,7 +61,9 @@ class LibraryViewModel(
 
 
     override val recent: StateFlow<List<Track>?> =
-        playlists.observer("_recent").stateIn(viewModelScope, SharingStarted.Lazily, null)
+        playlists.observer("_recent")
+            .map { it.distinctBy { it.uri } }
+            .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     override val carousel =
     // Observe changes to the media store URI. When a change occurs (e.g., new audio added),

@@ -83,8 +83,7 @@ private fun ContentDrawScope.drawFadedEdge(leftEdge: Boolean) {
 @OptIn(ExperimentalFoundationApi::class)
 @Deprecated("Think more about this")
 fun Modifier.marque(iterations: Int) =
-    Modifier
-        .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+    graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
         .drawWithContent {
             drawContent()
             drawFadedEdge(leftEdge = true)
@@ -94,7 +93,7 @@ fun Modifier.marque(iterations: Int) =
             // Animate forever.
             iterations = iterations,
         )
-        .then(this)
+
 
 /**
  * A convenient [Modifier] for configuring the size and scale of a Lottie animation,

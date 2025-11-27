@@ -77,6 +77,7 @@ import com.zs.audiofy.settings.AppConfig
 import com.zs.audiofy.settings.Settings
 import com.zs.compose.theme.LocalNavAnimatedVisibilityScope
 import com.zs.core.billing.Paymaster
+import com.zs.core.playback.Remote
 import dev.chrisbanes.haze.HazeState
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -152,6 +153,10 @@ object Widget {
             // Toggle expanded state on click.
             onClick = {
                 val isFab = !expanded
+                // if user in process of expanding the widget and playback is not prepared;
+                // call prepare.
+                if (state.state == Remote.PLAYER_STATE_IDLE)
+                    scope.launch { remote.prepare() }
                 // Determine if the player is currently in FAB (mini) mode.
                 // If not expanded, it's considered a FAB player.
                 when {

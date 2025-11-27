@@ -660,4 +660,11 @@ internal class RemoteImpl(private val context: Context) : Remote {
         val browser = fBrowser.await()
         return  browser.playbackState
     }
+
+    override suspend fun prepare() {
+        val browser = fBrowser.await()
+        if (!browser.isCommandAvailable(Player.COMMAND_PREPARE))
+            return
+        return browser.prepare()
+    }
 }

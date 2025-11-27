@@ -1,4 +1,4 @@
-✓ Subtitle Support: Watch videos with subtitles, selectable from a new unified menu.
-✓ Unified Track Selection: A single, streamlined menu now manages audio, video, and subtitle tracks.
-✓ Faster Remote Media: Media from URLs now loads faster by fetching metadata first.
-✓ UI Refinements: Improved the "Grid Item Size" slider and prevented duplicate track names in the selection list.
+✓ All-New TimeBar: The progress bar has been completely redesigned with smoother animations, a buffering indicator, and full keyboard accessibility.
+✓ Faster Playback Startup: Media now prepares for playback as soon as you open the player, reducing the delay before you can press play.
+✓ Cleaner "Recently Played" List: The "Recently Played" section no longer shows duplicate tracks.
+✓ UI & Bug Fixes: Made several layout adjustments in the player for better organization and fixed minor bugs.

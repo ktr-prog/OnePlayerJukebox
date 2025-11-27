@@ -26,7 +26,13 @@
     <string name="changelog_120_beta" translatable="false">
         <b>What’s New <font color='purple'>(v1.2.0-beta)\n</font></b>
         <font color='grey'>
-            \n✓
+            \n✓ <b>All-New TimeBar:</b> The progress bar has been completely redesigned from the ground up for a smoother, more interactive experience.
+            \n    - <b>Enhanced Animations:</b> Enjoy slick animations when you interact with the time bar.
+            \n    - <b>Buffering Indicator:</b> A new loading animation shows you exactly when the media is buffering.
+            \n    - <b>Keyboard Accessible:</b> Fully navigable with keyboard controls for seeking.
+            \n✓ <b>Faster Playback Startup:</b> Media now prepares for playback as soon as you open the player, reducing the delay before you can press play.
+            \n✓ <b>Cleaner "Recently Played" List:</b> The "Recently Played" section no longer shows duplicate tracks.
+            \n✓ <b>UI &amp; Bug Fixes:</b> Made several layout adjustments in the player for better organization and fixed minor bugs.
         </font>
     </string>
 
