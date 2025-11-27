@@ -126,6 +126,7 @@ import com.zs.compose.theme.text.Text
 import com.zs.core.playback.NowPlaying
 import com.zs.core.playback.Remote
 import com.zs.core.playback.VideoProvider
+import kotlinx.coroutines.delay
 import com.zs.audiofy.common.compose.ContentPadding as CP
 import com.zs.audiofy.common.compose.lottieAnimationPainter as Lottie
 import com.zs.audiofy.common.compose.rememberAnimatedVectorPainter as AnimVectorPainter
@@ -369,10 +370,15 @@ fun Console(viewState: ConsoleViewState) {
         )
 
         // Slider
+        val bufferedProgress by produceState(-1f) {
+            while(true) {
+                value = viewState.getBufferedPct()
+                delay(1000)
+            }
+        }
         TimeBar(
-            progress = if (state.state == Remote.PLAYER_STATE_BUFFERING) -1f else chronometer.progress(
-                state.duration
-            ),
+            progress = chronometer.progress(state.duration),
+            secondary = bufferedProgress,
             onValueChange = {
                 if (isVideo) viewState.emit(C.VISIBILITY_VISIBLE_SEEK)
                 val mills = (it * state.duration).toLong()
@@ -384,8 +390,9 @@ fun Console(viewState: ConsoleViewState) {
                 viewState.seekTo(progress)
             },
             modifier = Modifier.key(C.ID_SEEK_BAR),
-            enabled = state.duration > 0 && visibility >= C.VISIBILITY_VISIBLE_SEEK,
-            accent = accent
+            enabled = state.duration > 0 && visibility >= C.VISIBILITY_VISIBLE_SEEK ,
+            buffering = state.state == Remote.PLAYER_STATE_BUFFERING,
+            color = accent
         )
 
         // Shuffle
