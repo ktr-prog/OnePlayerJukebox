@@ -37,6 +37,7 @@ import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.HoverInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.progressSemantics
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -122,51 +123,88 @@ private fun DrawScope.drawLinearIndicator(
     }
 }
 
-
+/**
+ * Draws a series of horizontally spaced dots along a line, with optional animation
+ * controlled by [progress]. Dot count is reduced automatically if available width
+ * is too small, and dots are not drawn if only one dot would fit.
+ *
+ * @param radius Radius of each dot in pixels.
+ * @param color Color of the dots.
+ * @param rangeX Horizontal range (startX..endX) for drawing dots.
+ * @param progress Animation progress (0f..1f) controlling dot positions.
+ */
 private fun DrawScope.drawLoadingDots(
-    radius: Float,
-    color: Color,
-    area: Offset,
-    progress: Float,
+    radius: Float,          // Radius of each dot
+    color: Color,           // Color of the dots
+    rangeX: Offset,         // Horizontal range (startX..endX) where dots are allowed
+    progress: Float         // Animation progress 0→1 controlling dot movement
 ) {
-    // showing dots animated from end until progress.
-    val dotCount = 4
-    val (startX, endX) = area
-    val rWidth = endX - startX
-    repeat(dotCount) { index ->
-        // Base animation 0→1
-        val dotDiameterPx = radius * 2
-        val progress = progress
+    // Initial maximum number of dots to draw
+    var dotsToDraw = 4
 
-        // 1) triangle-wave spacing phase: 0→1→0
+    // Destructure horizontal range into start and end
+    val (startX, endX) = rangeX
+
+    // Available horizontal width for the dots
+    val availableWidth = endX - startX
+
+    // Diameter of each dot in pixels
+    val dotDiameterPx = radius * 2
+
+    // Reduce dot count if there is not enough available space
+    while (true) {
+        // Stop drawing if only one or fewer dots remain
+        if (dotsToDraw <= 1) return
+
+        // Approximate spacing between dots (can be animated later)
+        val dotSpacing = dotDiameterPx
+
+        // Total width required for current number of dots including spacing
+        val requiredWidth = dotsToDraw * dotDiameterPx + (dotsToDraw - 1) * dotSpacing
+
+        // Rule: only draw if available width is more than *twice* the required width
+        // If not enough space, reduce dot count
+        if (availableWidth <= 2 * requiredWidth)
+            dotsToDraw--
+        else
+            break
+    }
+
+    // Draw each dot at progress on range.
+    repeat(dotsToDraw) { index ->
+        // 1) Compute a triangle-wave phase to animate spacing:
+        // progress goes 0→1, spacing pulse goes 0→1→0
         val spacingPhase = 1f - abs(progress - 0.5f) * 2f
 
-        // 2) spacing: d → 4d → d
-        val baseSpacingPx = lerp(
-            startValue = dotDiameterPx,         // min spacing at ends
-            endValue = 4 * dotDiameterPx,      // max spacing at center
+        // 2) Interpolate spacing based on phase:
+        // spacing varies between one dot diameter (ends) → 4×diameter (center)
+        val dynamicSpacing = lerp(
+            startValue = dotDiameterPx,         // minimum spacing at ends
+            endValue = 4 * dotDiameterPx,       // maximum spacing at center
             fraction = spacingPhase
         )
 
-        // 3) spacing per dot
-        val spacingPx = baseSpacingPx * index
+        // 3) Compute horizontal offset for this dot
+        val dotOffset = dynamicSpacing * index
 
-        // 4) convert to phase offset (pixels → 0..1)
-        val spacingPhaseOffset = spacingPx / rWidth
+        // 4) Normalize offset to 0..1 range relative to total available width
+        val dotPhaseOffset = dotOffset / availableWidth
 
-        // 5) final dot animation phase
-        val phase = (progress + spacingPhaseOffset) % 1f
+        // 5) Combine animation progress with dot offset to get final animation phase
+        val finalPhase = (progress + dotPhaseOffset) % 1f
 
-        // 6) map phase → x coordinate
-        val finalX = size.width - phase * rWidth
+        // 6) Convert phase into actual x-coordinate for drawing
+        val xPos = size.width - finalPhase * availableWidth
 
+        // 7) Draw the dot at computed position, vertically centered
         drawCircle(
             color = color,
             radius = radius,
-            center = Offset(finalX, size.height / 2)
+            center = Offset(xPos, size.height / 2)
         )
     }
 }
+
 
 /*
 Source - https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/Slider.kt;l=1?q=slider&sq=&ss=androidx%2Fplatform%2Fframeworks%2Fsupport
@@ -350,6 +388,11 @@ private fun Modifier.slidePressDragGesture(
     }
 }
 
+private val RequiredSizeModifier = Modifier.requiredSizeIn(
+minWidth = 20.dp,
+minHeight = 8.dp,
+)
+
 /**
  * Represents the Slider for Console's PlayerView.
  */
@@ -365,7 +408,7 @@ fun TimeBar(
     interactionSource: MutableInteractionSource? = null,
     color: Color = AppTheme.colors.accent
 ) {
-    //val buffering = true
+    // val buffering = true
     val interactionSource = interactionSource ?: remember(::MutableInteractionSource)
     // Animates a "focus progress" value in response to interactions.
     // 0f is unfocused, 1f is focused (pressed, hovered, etc.).
@@ -421,8 +464,6 @@ fun TimeBar(
         targetValue = 1f,
         animationSpec = INDETERMINATE_ANIM_SPEC
     )
-
-
     //
     val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     // Animate the secondary progress.
@@ -458,6 +499,10 @@ fun TimeBar(
             ),
         onDraw = {
             val (width, height) = size
+
+            // FIXME - Something is causing crash if width is less than 30.dp hence this.
+            if (width <= 30.dp.toPx())
+                return@Canvas
             val scale = lerp(1f, 1.25f, focusProgress)
             val trackHeightPx = SLIDER_HEIGHT.toPx() * scale
             drawLinearIndicator(trackHeightPx,  color.copy(ContentAlpha.indication))

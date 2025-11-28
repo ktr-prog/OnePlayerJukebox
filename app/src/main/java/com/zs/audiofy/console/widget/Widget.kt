@@ -155,8 +155,8 @@ object Widget {
                 val isFab = !expanded
                 // if user in process of expanding the widget and playback is not prepared;
                 // call prepare.
-                if (state.state == Remote.PLAYER_STATE_IDLE)
-                    scope.launch { remote.prepare() }
+//                if (state.state == Remote.PLAYER_STATE_IDLE)
+//                    scope.launch { remote.prepare() }
                 // Determine if the player is currently in FAB (mini) mode.
                 // If not expanded, it's considered a FAB player.
                 when {
