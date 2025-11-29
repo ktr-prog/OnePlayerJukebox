@@ -19,7 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.zs.audiofy.common.compose.scale
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zs.audiofy.MainActivity
 import com.zs.audiofy.R
@@ -143,7 +144,7 @@ fun Config(
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         // viewpager
         val selected by preference(Settings.GLANCE)
-        var index by remember() {
+        var index by remember {
             mutableIntStateOf(WIDGETS.indexOf(selected))
         }
 
@@ -197,55 +198,7 @@ fun Config(
             border = AppTheme.colors.shine,
             background = AppTheme.colors.background(surface),
             windowInsets = WindowInsets.None,
-            navigationIcon = {
-                IconButton(
-                    Icons.Outlined.Info,
-                    contentDescription = null,
-                    modifier = Widget.SmallIconBtn,
-                    onClick = {
-                        val info = bundle?.second?.richDesc
-                        if (info != null)
-                            activity.showSnackbar(
-                                info,
-                                icon = Icons.Outlined.Info,
-                                duration = SnackbarDuration.Indefinite
-                            )
-                    }
-                )
-            },
             title = {
-                val colors = ButtonDefaults.filledTonalButtonColors(
-                    backgroundColor = AppTheme.colors.accent.copy(ContentAlpha.indication)
-                )
-                SplitButtonLayout(
-                    leadingButton = {
-                        TrailingSplitButton(
-                            shapes = SplitButtonShape,
-                            enabled = index != 0,
-                            colors = colors,
-                            border = AppTheme.colors.shine,
-                            content = {
-                                Icon(Icons.Outlined.KeyboardDoubleArrowLeft, contentDescription = null)
-                            },
-                            onClick = { index -= 1 },
-                        )
-                    },
-                    trailingButton = {
-                        TrailingSplitButton(
-                            shapes = SplitButtonShape,
-                            enabled = index < WIDGETS.lastIndex,
-                            colors = colors,
-                            border = AppTheme.colors.shine,
-                            content = {
-                                Icon(Icons.Outlined.KeyboardDoubleArrowRight, contentDescription = null)
-                            },
-                            onClick = { index += 1 },
-                        )
-                    },
-                    modifier = Modifier.scale(0.9f)
-                )
-            },
-            actions = {
                 SplitButtonLayout(
                     modifier = Modifier.scale(0.85f),
                     leadingButton = {
@@ -258,7 +211,7 @@ fun Config(
                         val unlocked =
                             purchase.purchased || info?.isFreemium == true || bundle?.first?.purchased == true
                         Button(
-                            if (unlocked) "APPLY" else info?.formattedPrice ?: "",
+                            if (unlocked) "APPLY" else info?.formattedPrice ?: stringResource(R.string.abbr_not_available),
                             onClick = {
                                 if (!unlocked)
                                     activity.initiatePurchaseFlow(key)
@@ -289,6 +242,53 @@ fun Config(
                                     activity.showToast(R.string.msg_settings_upgrade_unlocked)
                             },
                         )
+                    }
+                )
+            },
+            actions = {
+                val colors = ButtonDefaults.filledTonalButtonColors(
+                    backgroundColor = AppTheme.colors.accent.copy(ContentAlpha.indication)
+                )
+                SplitButtonLayout(
+                    leadingButton = {
+                        TrailingSplitButton(
+                            shapes = SplitButtonShape,
+                            enabled = index != 0,
+                            colors = colors,
+                            border = AppTheme.colors.shine,
+                            content = {
+                                Icon(Icons.Outlined.KeyboardDoubleArrowLeft, contentDescription = null)
+                            },
+                            onClick = { index -= 1 },
+                        )
+                    },
+                    trailingButton = {
+                        TrailingSplitButton(
+                            shapes = SplitButtonShape,
+                            enabled = index < WIDGETS.lastIndex,
+                            colors = colors,
+                            border = AppTheme.colors.shine,
+                            content = {
+                                Icon(Icons.Outlined.KeyboardDoubleArrowRight, contentDescription = null)
+                            },
+                            onClick = { index += 1 },
+                        )
+                    },
+                    modifier = Modifier.scale(0.85f)
+                )
+
+                IconButton(
+                    Icons.Outlined.Info,
+                    contentDescription = null,
+                    modifier = Widget.SmallIconBtn,
+                    onClick = {
+                        val info = bundle?.second?.richDesc
+                        if (info != null)
+                            activity.showSnackbar(
+                                info,
+                                icon = Icons.Outlined.Info,
+                                duration = SnackbarDuration.Indefinite
+                            )
                     }
                 )
             }

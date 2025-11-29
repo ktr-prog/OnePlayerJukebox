@@ -50,7 +50,6 @@ import com.zs.audiofy.R
 import com.zs.audiofy.common.compose.emit
 import com.zs.audiofy.common.ellipsize
 import com.zs.compose.foundation.fadingEdge
-import com.zs.compose.foundation.textArrayResource
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AlertDialog
 import com.zs.compose.theme.AppTheme
@@ -74,9 +73,11 @@ import kotlin.math.roundToInt
 import com.zs.audiofy.common.compose.ContentPadding as CP
 
 private val CustomWidthProperties = DialogProperties(usePlatformDefaultWidth = false)
-private val SPEED_RANGE = 0.25f..3.0f
-private const val SPEED_INCREMENT = 0.25f
+private val SPEED_RANGE = 0.25f..8.0f
 private const val REQUEST_DISMISS = -1.0f
+
+private val PLAYBACK_SPEED_PRESETS =
+    floatArrayOf(0.9f, 0.95f, 1.0f, 1.25f, 2.0f, 3.0f)
 
 /**
  * Represents the playback speed dialog.
@@ -85,14 +86,15 @@ private const val REQUEST_DISMISS = -1.0f
 @Composable
 fun PlaybackSpeed(
     expanded: Boolean,
-    @FloatRange(0.25, 3.0) value: Float,
+    @FloatRange(0.25, 8.0) value: Float,
     onRequestChange: (value: Float) -> Unit
 ) {
     if (!expanded)
         return
     val onDismissRequest = { onRequestChange(REQUEST_DISMISS) }
-
     val (width, height) = LocalWindowSize.current
+    //
+    val step = 0.05f
     AlertDialog(
         onDismissRequest = onDismissRequest,
         properties = CustomWidthProperties,
@@ -119,12 +121,11 @@ fun PlaybackSpeed(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 style = AppTheme.typography.display3
             )
-
             val colors = AppTheme.colors
             val isLight = colors.isLight
             // Controls
             val chipColors = ChipDefaults.chipColors(
-                backgroundColor = if (isLight) colors.background(4.dp) else colors.onBackground.copy(
+                backgroundColor = if (isLight) colors.background(8.dp) else colors.onBackground.copy(
                     ContentAlpha.indication
                 ),
                 contentColor = AppTheme.colors.onBackground
@@ -137,7 +138,7 @@ fun PlaybackSpeed(
                     border = ChipDefaults.outlinedBorder,
                     onClick = {
                         val newValue =
-                            (speed - SPEED_INCREMENT).coerceAtLeast(SPEED_RANGE.start)
+                            (speed - step).coerceAtLeast(SPEED_RANGE.start)
                         onValueChange(newValue)
                         onRequestChange(newValue)
                     },
@@ -146,10 +147,12 @@ fun PlaybackSpeed(
                 // Slider
                 Slider(
                     value = speed,
-                    onValueChange = onValueChange,
+                    onValueChange = {
+                        val newValue = (it / step).roundToInt() * step
+                        onValueChange(newValue)
+                    },
                     onValueChangeFinished = { onRequestChange(speed) },
                     valueRange = SPEED_RANGE,
-                    steps = 11,
                     modifier = Modifier.weight(1f)
                 )
 
@@ -160,7 +163,7 @@ fun PlaybackSpeed(
                     border = ChipDefaults.outlinedBorder,
                     onClick = {
                         val newValue =
-                            (speed + SPEED_INCREMENT).coerceAtMost(SPEED_RANGE.endInclusive)
+                            (speed + step).coerceAtMost(SPEED_RANGE.endInclusive)
                         onValueChange(newValue)
                         onRequestChange(newValue)
                     },
@@ -176,23 +179,20 @@ fun PlaybackSpeed(
                     .fadingEdge(presetsScrollState, true, 15.dp)
                     .horizontalScroll(presetsScrollState),
                 content = {
-                    val array = textArrayResource(id = R.array.scr_playback_speed_presets)
                     val padding = Modifier.padding(horizontal = CP.small)
-                    for (index in array.indices) {
+                    for (value in PLAYBACK_SPEED_PRESETS) {
                         Chip(
                             colors = chipColors,
                             border = ChipDefaults.outlinedBorder,
-                            content = { Label(text = array[index], modifier = padding) },
+                            content = {
+                                Label(
+                                    text = textResource(
+                                        R.string.scale_factor_f,
+                                        value
+                                    ), modifier = padding
+                                )
+                            },
                             onClick = {
-                                // map index to value.
-                                val value = when (index) {
-                                    0 -> 0.8f
-                                    1 -> 1.0f
-                                    2 -> 1.2f
-                                    3 -> 1.5f
-                                    4 -> 2.0f
-                                    else -> error("")
-                                }
                                 onRequestChange(value);
                                 onValueChange(value)
                             },

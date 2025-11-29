@@ -12,6 +12,7 @@
 <resources>
     <!--Changelog-->
     <string-array name="changelog" translatable="false">
+        <item>@string/changelog_122_beta</item>
         <item>@string/changelog_121_beta</item>
         <item>@string/changelog_110_beta</item>
         <item>@string/changelog_104_beta</item>
@@ -21,19 +22,20 @@
     </string-array>
 
     <!--Points to the changelog of current version.-->
-    <string name="release_notes" translatable="false">@string/changelog_122_beta</string>
+    <string name="release_notes" translatable="false">@string/changelog_123_beta</string>
 
-    <string name="changelog_121_beta" translatable="false">
-        <b>What’s New <font color='purple'>(v1.2.1-beta)\n</font></b>
+    <!--1.2.3-beta-->
+    <string name="changelog_123_beta" translatable="false">
+        <b>What’s New <font color='purple'>(v1.2.3-beta)\n</font></b>
         <font color='grey'>
-            \n✓ <b>All-New TimeBar:</b> The progress bar has been completely redesigned from the ground up for a smoother, more interactive experience.
-            \n    - <b>Enhanced Animations:</b> Enjoy slick animations when you interact with the time bar.
-            \n    - <b>Buffering Indicator:</b> A new loading animation shows you exactly when the media is buffering.
-            \n    - <b>Keyboard Accessible:</b> Fully navigable with keyboard controls for seeking.
-            \n✓ <b>Faster Playback Startup:</b> Media now prepares for playback as soon as you open the player, reducing the delay before you can press play.
-            \n✓ <b>Cleaner "Recently Played" List:</b> The "Recently Played" section no longer shows duplicate tracks.
-            \n✓ <b>UI &amp; Bug Fixes:</b> Made several layout adjustments in the player for better organization and fixed minor bugs.
-        </font>
+            \n✓ <b>Finer Playback Speed Control:</b>
+            \n    - The playback speed range has been expanded to <b>0.25x – 8.0x</b> (previously 3.0x).
+            \n    - Enjoy more precise adjustments with a smaller step interval of <b>0.05x</b>.
+            \n✓ <b>Improved Widget Configuration:</b>
+            \n    - The layout of the bottom bar has been rearranged for better usability.
+            \n    - Added a fallback text of "N/A" for purchase buttons when the price isn\'t available.
+            \n✓ <b>Internal Refactoring:</b> Replaced a custom UI scaling modifier with the standard Jetpack Compose implementation, simplifying the codebase and improving performance.
+          </font>
     </string>
 
 
@@ -46,6 +48,19 @@
             \n    - Optimized the scaling modifier used across the app, leading to better performance and smoother animations.
             \n    - Standardized the layout, padding, and icon sizes across all home screen widgets for a more consistent and polished look.
             \n    - Updated the app name from "OnePlayer" to "One Player" (with a space) in a few places for brand consistency.
+        </font>
+    </string>
+
+    <string name="changelog_121_beta" translatable="false">
+        <b>What’s New <font color='purple'>(v1.2.1-beta)\n</font></b>
+        <font color='grey'>
+            \n✓ <b>All-New TimeBar:</b> The progress bar has been completely redesigned from the ground up for a smoother, more interactive experience.
+            \n    - <b>Enhanced Animations:</b> Enjoy slick animations when you interact with the time bar.
+            \n    - <b>Buffering Indicator:</b> A new loading animation shows you exactly when the media is buffering.
+            \n    - <b>Keyboard Accessible:</b> Fully navigable with keyboard controls for seeking.
+            \n✓ <b>Faster Playback Startup:</b> Media now prepares for playback as soon as you open the player, reducing the delay before you can press play.
+            \n✓ <b>Cleaner "Recently Played" List:</b> The "Recently Played" section no longer shows duplicate tracks.
+            \n✓ <b>UI &amp; Bug Fixes:</b> Made several layout adjustments in the player for better organization and fixed minor bugs.
         </font>
     </string>
 
