@@ -3,16 +3,20 @@ package com.zs.audiofy.console.widget
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddShoppingCart
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
+import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -56,6 +60,8 @@ import com.zs.audiofy.console.widget.styles.WavyGradientDots
 import com.zs.audiofy.settings.Settings
 import com.zs.compose.theme.AppTheme
 import com.zs.compose.theme.Button
+import com.zs.compose.theme.ButtonDefaults
+import com.zs.compose.theme.ContentAlpha
 import com.zs.compose.theme.Icon
 import com.zs.compose.theme.IconButton
 import com.zs.compose.theme.None
@@ -63,7 +69,6 @@ import com.zs.compose.theme.SplitButtonLayout
 import com.zs.compose.theme.TrailingSplitButton
 import com.zs.compose.theme.appbar.TopAppBar
 import com.zs.compose.theme.snackbar.SnackbarDuration
-import com.zs.compose.theme.text.Label
 import com.zs.core.billing.Paymaster
 import com.zs.core.billing.Product
 import com.zs.core.billing.Purchase
@@ -121,6 +126,9 @@ private fun bundleKeyOf(key: String): String {
     }
 }
 
+
+private val SplitButtonShape = RoundedCornerShape(8.dp) to CircleShape
+
 /**
  * Represents the widget preview flyout
  */
@@ -135,53 +143,46 @@ fun Config(
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         // viewpager
         val selected by preference(Settings.GLANCE)
-        val pagerController =
-            rememberPagerState(WIDGETS.indexOf(selected)) { WIDGETS.size }
-
-        // Pager
-        HorizontalPager(
-            pagerController
-        ) { index ->
-            when (WIDGETS[index]) {
-                Paymaster.IAP_PLATFORM_WIDGET_DISK_DYNAMO -> DiskDynamo(state, onRequest)
-                Paymaster.IAP_PLATFORM_WIDGET_ELONGATE_BEAT ->
-                    ElongatedBeat(state, onRequest)
-
-                Paymaster.IAP_COLOR_CROFT_GOLDEN_DUST -> GoldenDust(state, onRequest)
-                Paymaster.IAP_COLOR_CROFT_GRADIENT_GROVES -> GradientGroves(state, onRequest)
-                Paymaster.IAP_PLATFORM_WIDGET_IPHONE -> MistyTunes(state, surface, onRequest)
-                Paymaster.IAP_COLOR_CROFT_MISTY_DREAM -> MistyDream(state, onRequest)
-                Paymaster.IAP_PLATFORM_WIDGET_RED_VIOLET_CAKE ->
-                    RedVioletCake(state, onRequest)
-
-                Paymaster.IAP_COLOR_CROFT_ROTATING_GRADIENT ->
-                    RotatingColorGradient(state, onRequest)
-
-                Paymaster.IAP_PLATFORM_WIDGET_SKEWED_DYNAMIC ->
-                    SkewedDynamic(state, onRequest)
-
-                Paymaster.IAP_PLATFORM_WIDGET_SNOW_CONE -> SnowCone(state, onRequest)
-                Paymaster.IAP_PLATFORM_WIDGET_TIRAMISU -> Tiramisu(state, onRequest)
-                Paymaster.IAP_COLOR_CROFT_WAVY_GRADIENT_DOTS ->
-                    WavyGradientDots(state, onRequest)
-            }
+        var index by remember() {
+            mutableIntStateOf(WIDGETS.indexOf(selected))
         }
-        // Indicator
+
+        when (WIDGETS[index]) {
+            Paymaster.IAP_PLATFORM_WIDGET_DISK_DYNAMO -> DiskDynamo(state, onRequest)
+            Paymaster.IAP_PLATFORM_WIDGET_ELONGATE_BEAT -> ElongatedBeat(state, onRequest)
+            Paymaster.IAP_COLOR_CROFT_GOLDEN_DUST -> GoldenDust(state, onRequest)
+            Paymaster.IAP_COLOR_CROFT_GRADIENT_GROVES -> GradientGroves(state, onRequest)
+            Paymaster.IAP_PLATFORM_WIDGET_IPHONE -> MistyTunes(state, surface, onRequest)
+            Paymaster.IAP_COLOR_CROFT_MISTY_DREAM -> MistyDream(state, onRequest)
+            Paymaster.IAP_PLATFORM_WIDGET_RED_VIOLET_CAKE ->
+                RedVioletCake(state, onRequest)
+
+            Paymaster.IAP_COLOR_CROFT_ROTATING_GRADIENT ->
+                RotatingColorGradient(state, onRequest)
+
+            Paymaster.IAP_PLATFORM_WIDGET_SKEWED_DYNAMIC ->
+                SkewedDynamic(state, onRequest)
+
+            Paymaster.IAP_PLATFORM_WIDGET_SNOW_CONE -> SnowCone(state, onRequest)
+            Paymaster.IAP_PLATFORM_WIDGET_TIRAMISU -> Tiramisu(state, onRequest)
+            Paymaster.IAP_COLOR_CROFT_WAVY_GRADIENT_DOTS ->
+                WavyGradientDots(state, onRequest)
+        }
 
         // BottomBar
         val facade = LocalSystemFacade.current
-        val activity =  facade as? MainActivity ?: return@Column
+        val activity = facade as? MainActivity ?: return@Column
         val paymaster = activity.paymaster
-        val widget: Purchasable? by produceState(null, pagerController.currentPage) {
-            val key = WIDGETS[pagerController.currentPage]
+        val widget: Purchasable? by produceState(null, index) {
+            val key = WIDGETS[index]
             paymaster.purchases.combine(paymaster.details) { purchases, details ->
                 val purchsae = purchases.find { it.id == key }
                 val info = details.find { it.id == key }
                 purchsae to info
             }.collect { value = it }
         }
-        val bundle: Purchasable? by produceState(null, WIDGETS[pagerController.currentPage]) {
-            val key = bundleKeyOf(WIDGETS[pagerController.currentPage])
+        val bundle: Purchasable? by produceState(null, WIDGETS[index]) {
+            val key = bundleKeyOf(WIDGETS[index])
             paymaster.purchases.combine(paymaster.details) { purchases, details ->
                 val purchsae = purchases.find { it.id == key }
                 val info = details.find { it.id == key }
@@ -196,15 +197,6 @@ fun Config(
             border = AppTheme.colors.shine,
             background = AppTheme.colors.background(surface),
             windowInsets = WindowInsets.None,
-            title = {
-                Column {
-                    Label(widget?.second?.title ?: "", style = AppTheme.typography.label3)
-                    Label(
-                        bundle?.second?.title ?: "",
-                        style = AppTheme.typography.title3
-                    )
-                }
-            },
             navigationIcon = {
                 IconButton(
                     Icons.Outlined.Info,
@@ -221,12 +213,44 @@ fun Config(
                     }
                 )
             },
+            title = {
+                val colors = ButtonDefaults.filledTonalButtonColors(
+                    backgroundColor = AppTheme.colors.accent.copy(ContentAlpha.indication)
+                )
+                SplitButtonLayout(
+                    leadingButton = {
+                        TrailingSplitButton(
+                            shapes = SplitButtonShape,
+                            enabled = index != 0,
+                            colors = colors,
+                            border = AppTheme.colors.shine,
+                            content = {
+                                Icon(Icons.Outlined.KeyboardDoubleArrowLeft, contentDescription = null)
+                            },
+                            onClick = { index -= 1 },
+                        )
+                    },
+                    trailingButton = {
+                        TrailingSplitButton(
+                            shapes = SplitButtonShape,
+                            enabled = index < WIDGETS.lastIndex,
+                            colors = colors,
+                            border = AppTheme.colors.shine,
+                            content = {
+                                Icon(Icons.Outlined.KeyboardDoubleArrowRight, contentDescription = null)
+                            },
+                            onClick = { index += 1 },
+                        )
+                    },
+                    modifier = Modifier.scale(0.9f)
+                )
+            },
             actions = {
                 SplitButtonLayout(
                     modifier = Modifier.scale(0.85f),
                     leadingButton = {
                         val (purchase, info) = widget ?: return@SplitButtonLayout
-                        val key = WIDGETS[pagerController.currentPage]
+                        val key = WIDGETS[index]
                         // An item is considered unlocked and available for use if any of the following conditions are met:
                         // 1. It is a freemium item.
                         // 2. The user has purchased the entire bundle to which this item belongs.
@@ -239,10 +263,7 @@ fun Config(
                                 if (!unlocked)
                                     activity.initiatePurchaseFlow(key)
                                 else {
-                                    activity.setPreference(
-                                        Settings.GLANCE,
-                                        WIDGETS[pagerController.currentPage]
-                                    )
+                                    activity.setPreference(Settings.GLANCE, WIDGETS[index])
                                     activity.showToast("Widget have been successfully applied.")
                                     onRequest(Widget.REQUEST_SHOW_CONFIG)
                                 }
@@ -252,7 +273,7 @@ fun Config(
                     },
                     trailingButton = {
                         val (purchase, _) = bundle ?: return@SplitButtonLayout
-                        val key = bundleKeyOf(WIDGETS[pagerController.currentPage])
+                        val key = bundleKeyOf(WIDGETS[index])
                         TrailingSplitButton(
                             shapes = AppTheme.shapes.small to AppTheme.shapes.large,
                             content = {
