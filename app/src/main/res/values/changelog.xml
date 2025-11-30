@@ -12,6 +12,7 @@
 <resources>
     <!--Changelog-->
     <string-array name="changelog" translatable="false">
+        <item>@string/changelog_123_beta</item>
         <item>@string/changelog_122_beta</item>
         <item>@string/changelog_121_beta</item>
         <item>@string/changelog_110_beta</item>
@@ -22,7 +23,17 @@
     </string-array>
 
     <!--Points to the changelog of current version.-->
-    <string name="release_notes" translatable="false">@string/changelog_123_beta</string>
+    <string name="release_notes" translatable="false">@string/changelog_124_beta</string>
+
+    <!--1.2.4-beta-->
+    <string name="changelog_124_beta" translatable="false">
+        <b>What’s New <font color='purple'>(v1.2.4-beta)\n</font></b>
+        <font color='grey'>
+            \n✓ <b>Evenly Spaced Layouts:</b> Introduced a new `spacing` parameter to horizontal chains, simplifying the creation of evenly spaced UI elements. This has been applied to the options row in the player console.
+            \n✓ <b>Dependency Updates:</b>
+            \n    - Updated Jetpack Compose to `1.10.0-rc01`.
+        </font>
+    </string>
 
     <!--1.2.3-beta-->
     <string name="changelog_123_beta" translatable="false">

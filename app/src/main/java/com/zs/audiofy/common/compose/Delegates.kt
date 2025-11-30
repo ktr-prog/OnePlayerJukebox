@@ -507,11 +507,20 @@ fun ConstraintSetScope.horizontal(
     vararg elements: ConstrainedLayoutReference,
     chainStyle: ChainStyle = ChainStyle.Packed,
     alignBy: ConstrainedLayoutReference? = null,
+    spacing: Dp = 0.dp,
     constrainBlock: HorizontalChainScope.() -> Unit
 ): ConstrainedLayoutReference {
+    // If spacing is specified, apply it as a start margin to all elements except the first one.
+    if (spacing != 0.dp)
+        for (i in 1 until elements.size)
+            elements[i].withHorizontalChainParams(startMargin = spacing)
+
+    // Create the horizontal chain with the given elements and chain style.
     val chain = createHorizontalChain(*elements, chainStyle = chainStyle)
     constrain(chain, constrainBlock)
-    // align all with first
+
+    // Vertically align all elements in the chain with a reference element.
+    // The reference is `alignBy` if provided, otherwise it's the first element in the chain.
     val first = alignBy ?: elements.first()
     for (element in elements) {
         if (element == first) continue
@@ -520,6 +529,8 @@ fun ConstraintSetScope.horizontal(
             bottom.linkTo(first.bottom)
         }
     }
+
+    // Return the first element, which can be useful for constraining other composables relative to the chain.
     return first
 }
 

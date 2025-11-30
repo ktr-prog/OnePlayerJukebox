@@ -233,6 +233,7 @@ private fun PortraitAudio(insets: DpRect) = object : Constraints(44) {
         // Options
         val options = horizontal(
             QUEUE, SPEED, SLEEP_TIMER, LIKED, MORE,
+            spacing = CP.medium,
             constrainBlock = {
                 linkTo(TITLE.start, COLLAPSE.end)
             }

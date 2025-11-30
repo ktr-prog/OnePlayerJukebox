@@ -1,9 +1,9 @@
 [versions]
 agp = "8.13.1"
 kotlin = "2.2.21"
-compose = "1.9.5"
+compose = "1.10.0-rc01"
 media3 = "1.8.0"
-toolkit = "3.7.8-dev"
+toolkit = "3.7.9-dev"
 material_icons = "1.7.8"
 coil = "3.3.0"
 room = "2.8.4"
