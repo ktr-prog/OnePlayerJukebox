@@ -38,16 +38,6 @@ import coil3.toAndroidUri
 
 private const val TAG = "MediaMetaDataArtFetcher"
 
-/** [MediaMetadataRetriever] doesn't implement [AutoCloseable] until API 29. */
-private inline fun <T> MediaMetadataRetriever.use(block: (MediaMetadataRetriever) -> T): T {
-    try {
-        return block(this)
-    } finally {
-        // We must call 'close' on API 29+ to avoid a strict mode warning.
-        if (SDK_INT >= 29) close() else release()
-    }
-}
-
 /**
  * This class is responsible for fetching real album art from media using the [MediaMetadataRetriever].
  *

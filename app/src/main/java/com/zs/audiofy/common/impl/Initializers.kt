@@ -75,8 +75,10 @@ class AnalyticsInitializer : Initializer<Unit> {
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }
 
+
 /**Initialize Coil and its components. */
 class CoilInitializer : Initializer<Unit> {
+
     @OptIn(DelicateCoilApi::class)
     override fun create(context: Context) {
         val error = Drawable(context, R.drawable.ic_error_image_placeholder)!!.asImage()
@@ -85,9 +87,13 @@ class CoilInitializer : Initializer<Unit> {
             .error(error)
             .crossfade(450)
             .components {
-                if (!AppConfig.isLoadThumbnailFromCache)
-                    add(MediaMetaDataArtFetcher.Factory())
-                add(VideoThumbnailFetcher.Factory())
+                // Conditionally add video thumbnail support if enabled in AppConfig
+                if (AppConfig.isLoadThumbnailFromCache) {
+                    add(VideoThumbnailFetcher.Factory())
+                    return@components
+                }
+                add(MediaMetaDataArtFetcher.Factory())
+                add(VideoFrameDecoderFactory())
             }
             .build()
         // set global image loader

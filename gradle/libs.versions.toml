@@ -54,6 +54,7 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" 
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 avif-coder-coil = { module = "com.github.awxkee:avif-coder-coil", version = "2.1.4" }
+coil-video = {module = "io.coil-kt.coil3:coil-video", version = "3.3.0"}
 
 #  Firebase
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.5.0" }
@@ -87,7 +88,7 @@ glance-material3 = { group = "androidx.glance", name = "glance-material3", versi
 
 [bundles]
 icons = ["androidx-material-icons-core", "androidx-material-icons-extended"]
-coil = ["coil-compose", "coil-okhttp"]
+coil = ["coil-compose", "coil-okhttp", "coil-video"]
 compose_ui = ["androidx-ui-graphics", "androidx-ui", "toolkit-theme", "toolkit-foundation", "androidx-animation-compose"]
 compose_ui_tooling = ["androidx-ui-tooling", "androidx-ui-tooling-preview"]
 room = ["room-runtime", "room-ktx"]
