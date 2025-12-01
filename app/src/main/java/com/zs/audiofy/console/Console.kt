@@ -145,10 +145,10 @@ private val DefaultAnimSpecs = tween<Float>()
 
 private val SubtitleShadow = Shadow(offset = Offset(5f, 5f), blurRadius = 8.0f)
 private val SCRIM_STYLE = Brush.verticalGradient(
-    0f to Color.Black,
+    0f to Color.Black.copy(0.8f),
     0.15f to Color.Transparent,
     0.8f to Color.Transparent,
-    1f to Color.Black
+    1f to Color.Black.copy(0.8f)
 )
 
 // Represents different dialogs to be shown

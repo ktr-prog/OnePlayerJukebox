@@ -1,4 +1,4 @@
-✓ <b>Simplified Widget Setup:</b> Replaced the swipe gesture with intuitive arrow buttons for easier widget configuration.
-✓ <b>Redesigned Time Bar:</b> Enjoy smoother animations, a new buffering indicator, and full keyboard accessibility.
-✓ Faster Playback Startup: Media now prepares for playback as soon as you open the player, reducing the delay before you can press play.
-✓ UI & Bug Fixes: Made several layout adjustments in the player for better organization and fixed minor bugs.
+✓ Video Thumbnail Support: The player now displays thumbnails for video files, making it easier to identify your media at a glance.
+✓ Enhanced Media Notifications: Album art and video thumbnails now load more efficiently in Media3 notifications, thanks to integration with the Coil image loading library.
+✓ UI Refinements: The player console has been updated with a subtler gradient and simplified layout constraints for a cleaner look.
+✓ New Icon: Added a new stop icon for future use.

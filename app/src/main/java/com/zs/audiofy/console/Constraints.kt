@@ -524,7 +524,7 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
         constrain(title) {
             bottom.linkTo(parent.bottom, CP.normal + down)
             width = Dimension.fillToConstraints
-            horizontalChainWeight = 1f
+            //horizontalChainWeight = 1f
         }
 
         // Subtitle
@@ -533,7 +533,7 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
             linkTo(TITLE.start, TITLE.end)
             horizontalBias = 0f
             height = Dimension.preferredValue(0.dp)
-            width = Dimension.fillToConstraints.atMost(180.dp)
+            width = Dimension.fillToConstraints
         }
 
         // TimeBar
@@ -621,7 +621,6 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
         constrain(options) {
             top.linkTo(parent.top, CP.small + up)
             width = Dimension.fillToConstraints
-            horizontalChainWeight = 1f
         }
 
         // Subtitle
@@ -630,7 +629,7 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
             linkTo(TITLE.start, TITLE.end)
             horizontalBias = 0f
             height = Dimension.preferredValue(0.dp)
-            width = Dimension.fillToConstraints.atMost(180.dp)
+            width = Dimension.fillToConstraints
         }
 
         // TimeBar

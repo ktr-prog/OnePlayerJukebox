@@ -30,7 +30,10 @@
     <string name="changelog_130_beta" translatable="false">
         <b>What’s New <font color='purple'>(v1.3.0-beta)\n</font></b>
         <font color='grey'>
-            \n✓
+            \n✓ <b>Video Thumbnail Support:</b> The player now displays thumbnails for video files, making it easier to identify your media at a glance.
+            \n✓ <b>Enhanced Media Notifications:</b> Album art and video thumbnails now load more efficiently in Media3 notifications, thanks to integration with the Coil image loading library.
+            \n✓ <b>UI Refinements:</b> The player console has been updated with a subtler gradient and simplified layout constraints for a cleaner look.
+            \n✓ <b>New Icon:</b> Added a new stop icon for future use.
         </font>
     </string>
 
