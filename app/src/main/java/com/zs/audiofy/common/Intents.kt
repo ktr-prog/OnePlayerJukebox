@@ -26,21 +26,6 @@ import com.zs.core.common.Intent
 import com.zs.core.store.MediaProvider
 
 /**
- * A utility function to create an [Intent] for sending feedback via email.
- *
- * This function constructs an [Intent] with the action [Intent.ACTION_SENDTO]
- * and pre-fills the recipient email address to "helpline.prime.zs@gmail.com".
- * The subject of the email is set to the provided [subject] string.
- *
- * @param subject The subject line for the feedback email.
- * @return An [Intent] configured to send an email to the specified address with the given subject.
- */
-fun FeedbackIntent(subject: String) = Intent(Intent.ACTION_SENDTO) {
-    data = Uri.parse("mailto:helpline.prime.zs@gmail.com")
-    putExtra(Intent.EXTRA_SUBJECT, subject)
-}
-
-/**
  * Creates an Intent to share files using Google's Nearby Share (Quick Share) feature.
  *
  * This function constructs an intent that targets the specific activity in Google Play Services

@@ -42,7 +42,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ReplyAll
-import androidx.compose.material.icons.outlined.AlternateEmail
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.DataObject
 import androidx.compose.material.icons.outlined.RateReview
@@ -313,12 +312,6 @@ fun AboutUs() {
                 },
                 actions = {
                     val facade = LocalSystemFacade.current
-                    // Feedback
-                    IconButton(
-                        icon = Icons.Outlined.AlternateEmail,
-                        contentDescription = null,
-                        onClick = { /*facade.launch(Settings.FeedbackIntent)*/ },
-                    )
                     // Star on Github
                     IconButton(
                         icon = Icons.Outlined.DataObject,
