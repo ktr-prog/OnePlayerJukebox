@@ -21,29 +21,27 @@ package com.zs.audiofy.console
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.media.audiofx.AudioEffect
+import android.net.Uri
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
@@ -53,8 +51,10 @@ import coil3.compose.AsyncImage
 import com.zs.audiofy.BuildConfig
 import com.zs.audiofy.R
 import com.zs.audiofy.common.SystemFacade
+import com.zs.audiofy.common.compose.Acrylic
 import com.zs.audiofy.common.compose.lottie
 import com.zs.audiofy.common.compose.lottieAnimationPainter
+import com.zs.compose.foundation.Background
 import com.zs.compose.foundation.ImageBrush
 import com.zs.compose.foundation.thenIf
 import com.zs.compose.foundation.visualEffect
@@ -62,12 +62,11 @@ import com.zs.compose.theme.AppTheme
 import com.zs.compose.theme.ContentAlpha
 import com.zs.compose.theme.Icon
 import com.zs.compose.theme.IconButton
-import com.zs.compose.theme.LinearProgressIndicator
 import com.zs.compose.theme.LocalContentColor
-import com.zs.compose.theme.Slider
-import com.zs.compose.theme.SliderDefaults
 import com.zs.compose.theme.Surface
+import com.zs.audiofy.console.RouteConsole as RC
 
+context(_:RC)
 val WindowInsets.toDpRect: DpRect
     @Composable
     inline get() {
@@ -102,6 +101,7 @@ val WindowInsets.toDpRect: DpRect
  * @see ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
  * @see ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
  */
+context(_: RC)
 fun Activity.toggleRotationLock(): Boolean {
     // Determine the new screen orientation based on the current state.
     val rotation =
@@ -122,6 +122,7 @@ fun Activity.toggleRotationLock(): Boolean {
  *
  * @see ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
  */
+context(_: RC)
 inline val Activity.isOrientationLocked
     get() = requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 
@@ -129,6 +130,7 @@ inline val Activity.isOrientationLocked
  * Composes a artwork representation for PLayer Console view
  */
 @Composable
+context(_: RC)
 inline fun Artwork(
     model: Any?,
     modifier: Modifier = Modifier,
@@ -149,7 +151,6 @@ inline fun Artwork(
         )
     }
 }
-
 
 @Composable
 private fun OutlinedPlayButton(
@@ -211,19 +212,21 @@ private fun SimplePlayButton(
  */
 @Composable
 @NonRestartableComposable
+context(_:RC)
 fun PlayButton(
     onClick: () -> Unit,
     isPlaying: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    simple: Boolean = false,
+    style: Int = RC.PLAY_BTN_STYLE_SIMPLE
 ) {
-    when {
-        !simple -> OutlinedPlayButton(onClick, isPlaying, modifier, enabled)
+    when(style) {
+        RC.PLAY_BTN_STYLE_OUTLINED -> OutlinedPlayButton(onClick, isPlaying, modifier, enabled)
         else -> SimplePlayButton(onClick, isPlaying, modifier, enabled)
     }
 }
 
+context(_: RC)
 fun SystemFacade.launchEqualizer(id: Int) {
     if (id == AudioEffect.ERROR_BAD_VALUE)
         return showToast(R.string.msg_unknown_error)
@@ -237,4 +240,29 @@ fun SystemFacade.launchEqualizer(id: Int) {
     if (!res.isFailure)
         return
     showToast(message = R.string.msg_3rd_party_equalizer_not_found)
+}
+
+
+@Composable
+@NonRestartableComposable
+context(_: RC)
+fun Background(
+    artwork: Uri?= null,
+    style: Int = RC.BG_STYLE_AUTO,
+    modifier: Modifier = Modifier
+) {
+    Crossfade(
+        targetState = style,
+        modifier = modifier,
+        content = { value ->
+            when (value) {
+                RC.BG_STYLE_AUTO_ACRYLIC -> Acrylic(artwork, Modifier.fillMaxSize())
+                else -> Spacer(
+                    Modifier
+                        .background(Color.Black)
+                        .fillMaxSize()
+                )
+            }
+        }
+    )
 }

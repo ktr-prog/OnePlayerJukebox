@@ -53,10 +53,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.view.WindowCompat
@@ -111,7 +109,6 @@ import com.zs.audiofy.common.impl.PropertiesViewModel
 import com.zs.audiofy.common.impl.SettingsViewModel
 import com.zs.audiofy.common.impl.VideosViewModel
 import com.zs.audiofy.common.shapes.EndConcaveShape
-import com.zs.audiofy.console.Console
 import com.zs.audiofy.console.RouteConsole
 import com.zs.audiofy.console.widget.Widget
 import com.zs.audiofy.editor.Editor
@@ -128,7 +125,6 @@ import com.zs.audiofy.playlists.members.Members
 import com.zs.audiofy.playlists.members.RouteMembers
 import com.zs.audiofy.properties.Properties
 import com.zs.audiofy.properties.RouteProperties
-import com.zs.audiofy.settings.AppConfig
 import com.zs.audiofy.settings.RouteSettings
 import com.zs.audiofy.settings.Settings
 import com.zs.audiofy.videos.RouteVideos
@@ -159,7 +155,7 @@ import com.zs.core.common.isAppearanceLightSystemBars
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.foundation.layout.WindowInsetsSides as WIS
 import com.google.accompanist.permissions.rememberMultiplePermissionsState as Permissions
-import kotlin.CharSequence
+
 private const val TAG = "Home"
 
 private val SIDE_BAR_WIDTH = 100.dp
@@ -405,7 +401,7 @@ private val navGraphBuilder: NavGraphBuilder.() -> Unit = {
     // Console
     composable(RouteConsole) {
         val viewState = koinViewModel<ConsoleViewModel>()
-        Console(viewState)
+        RouteConsole(viewState)
     }
     // AudioFx
     dialog(

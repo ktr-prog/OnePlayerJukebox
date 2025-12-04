@@ -20,10 +20,13 @@
 
 package com.zs.audiofy.console
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ChainStyle
+import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintSet
+import androidx.constraintlayout.compose.ConstraintSetScope
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Visibility
 import androidx.constraintlayout.compose.atMost
@@ -33,6 +36,77 @@ import com.zs.audiofy.common.compose.horizontal
 import com.zs.audiofy.common.compose.linkTo
 import com.zs.compose.theme.WindowSize
 import com.zs.audiofy.common.compose.ContentPadding as CP
+
+
+@Stable
+abstract class Constraints(val titleTextSize: Int) {
+
+    abstract val constraints: ConstraintSet
+
+    protected val COLLAPSE = ConstrainedLayoutReference(RouteConsole.ID_BTN_COLLAPSE)
+    protected val ARTWORK = ConstrainedLayoutReference(RouteConsole.ID_ARTWORK)
+    protected val TITLE = ConstrainedLayoutReference(RouteConsole.ID_TITLE)
+    protected val SUBTITLE = ConstrainedLayoutReference(RouteConsole.ID_SUBTITLE)
+    protected val EXTRA_INFO = ConstrainedLayoutReference(RouteConsole.ID_EXTRA_INFO)
+    protected val SHUFFLE = ConstrainedLayoutReference(RouteConsole.ID_SHUFFLE)
+    protected val REPEAT_MODE = ConstrainedLayoutReference(RouteConsole.ID_BTN_REPEAT_MODE)
+    protected val SKIP_PREVIOUS = ConstrainedLayoutReference(RouteConsole.ID_BTN_SKIP_PREVIOUS)
+    protected val PLAY_PAUSE = ConstrainedLayoutReference(RouteConsole.ID_BTN_PLAY_PAUSE)
+    protected val SKIP_TO_NEXT = ConstrainedLayoutReference(RouteConsole.ID_BTN_SKIP_TO_NEXT)
+    protected val SEEK_BAR = ConstrainedLayoutReference(RouteConsole.ID_SEEK_BAR)
+    protected val VIDEO_SURFACE = ConstrainedLayoutReference(RouteConsole.ID_VIDEO_SURFACE)
+    protected val BACKGROUND = ConstrainedLayoutReference(RouteConsole.ID_BACKGROUND)
+    protected val SCRIM = ConstrainedLayoutReference(RouteConsole.ID_SCRIM)
+    protected val RESIZE_MODE = ConstrainedLayoutReference(RouteConsole.ID_BTN_RESIZE_MODE)
+    protected val ROTATION_LOCK = ConstrainedLayoutReference(RouteConsole.ID_BTN_ROTATION_LOCK)
+    protected val QUEUE = ConstrainedLayoutReference(RouteConsole.ID_BTN_QUEUE)
+    protected val SLEEP_TIMER = ConstrainedLayoutReference(RouteConsole.ID_BTN_SLEEP_TIMER)
+    protected val SPEED = ConstrainedLayoutReference(RouteConsole.ID_BTN_PLAYBACK_SPEED)
+    protected val LIKED = ConstrainedLayoutReference(RouteConsole.ID_BTN_LIKED)
+    protected val MORE = ConstrainedLayoutReference(RouteConsole.ID_BTN_MORE)
+    protected val EQUALIZER = ConstrainedLayoutReference(RouteConsole.ID_BTN_EQUALIZER)
+    protected val INFO = ConstrainedLayoutReference(RouteConsole.ID_BTN_MEDIA_INFO)
+    protected val INDICATOR = ConstrainedLayoutReference(RouteConsole.ID_PLAYING_INDICATOR)
+    protected val LOCK = ConstrainedLayoutReference(RouteConsole.ID_BTN_LOCK)
+    protected val CUES = ConstrainedLayoutReference(RouteConsole.ID_CUES)
+
+
+    private fun ConstraintSetScope.hide(ref: ConstrainedLayoutReference) {
+        constrain(ref) {
+            visibility = Visibility.Invisible
+        }
+    }
+
+    /**
+     * Makes every component invisible [except] these.
+     */
+    fun ConstraintSetScope.hideController(except: Array<String>) {
+        val hideAll = except.isEmpty()
+
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_COLLAPSE)) hide(COLLAPSE)
+        if (hideAll || !except.contains(RouteConsole.ID_SUBTITLE)) hide(SUBTITLE)
+        if (hideAll || !except.contains(RouteConsole.ID_TITLE)) hide(TITLE)
+        if (hideAll || !except.contains(RouteConsole.ID_EXTRA_INFO)) hide(EXTRA_INFO)
+        if (hideAll || !except.contains(RouteConsole.ID_SHUFFLE)) hide(SHUFFLE)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_REPEAT_MODE)) hide(REPEAT_MODE)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_SKIP_PREVIOUS)) hide(SKIP_PREVIOUS)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_PLAY_PAUSE)) hide(PLAY_PAUSE)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_SKIP_TO_NEXT)) hide(SKIP_TO_NEXT)
+        if (hideAll || !except.contains(RouteConsole.ID_SEEK_BAR)) hide(SEEK_BAR)
+        if (hideAll || !except.contains(RouteConsole.ID_SCRIM)) hide(SCRIM)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_RESIZE_MODE)) hide(RESIZE_MODE)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_ROTATION_LOCK)) hide(ROTATION_LOCK)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_QUEUE)) hide(QUEUE)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_SLEEP_TIMER)) hide(SLEEP_TIMER)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_PLAYBACK_SPEED)) hide(SPEED)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_LIKED)) hide(LIKED)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_MORE)) hide(MORE)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_EQUALIZER)) hide(EQUALIZER)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_MEDIA_INFO)) hide(INFO)
+        if (hideAll || !except.contains(RouteConsole.ID_PLAYING_INDICATOR)) hide(INDICATOR)
+        if (hideAll || !except.contains(RouteConsole.ID_BTN_LOCK)) hide(LOCK)
+    }
+}
 
 // Represents constraints in Compact audio form
 private fun CompactAudio(insets: DpRect) = object : Constraints(34) {
