@@ -9,7 +9,6 @@ import androidx.compose.material.icons.outlined.ClearAll
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
@@ -37,7 +36,7 @@ class ConsoleViewModel(
 ) : KoinViewModel(), ConsoleViewState {
 
     override val state: StateFlow<NowPlaying?> = remote.state
-    override var visibility: Int by mutableIntStateOf(RouteConsole.VISIBILITY_VISIBLE)
+    override var visibility: Int by mutableIntStateOf(RouteConsole.VISIBLE_ALWAYS)
     override val queue: Flow<List<MediaFile>?> = remote.queue
     override val cues: Flow<String?> = remote.cues
 

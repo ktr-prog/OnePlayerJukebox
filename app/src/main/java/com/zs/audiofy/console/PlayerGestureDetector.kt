@@ -269,16 +269,17 @@ private class PlayerGestureDetectorNode(
         super.onDetach()
     }
 
-    val enabled get() = viewState.visibility != C.VISIBILITY_INVISIBLE_LOCKED && viewState.visibility != C.VISIBILITY_VISIBLE_LOCK
+    val enabled get() = viewState.visibility != C.VISIBLE_NONE_LOCKED && viewState.visibility != C.VISIBLE_LOCKED_LOCK
 
     fun toggleVisibility() {
         // show hide controller
         viewState.emit(
             newVisibility = when (viewState.visibility) {
-                C.VISIBILITY_VISIBLE -> C.VISIBILITY_INVISIBLE
-                C.VISIBILITY_INVISIBLE -> C.VISIBILITY_VISIBLE
-                C.VISIBILITY_INVISIBLE_LOCKED -> C.VISIBILITY_VISIBLE_LOCK
-                else -> C.VISIBILITY_INVISIBLE_LOCKED
+                C.VISIBLE_NONE_LOCKED -> C.VISIBLE_LOCKED_LOCK
+                C.VISIBLE_LOCKED_LOCK -> C.VISIBLE_NONE_LOCKED
+                C.VISIBLE -> C.VISIBLE_NONE
+                C.VISIBLE_LOCKED_SEEK -> C.VISIBLE_LOCKED_SEEK
+                else -> C.VISIBLE
             }
         )
     }
@@ -297,7 +298,7 @@ private class PlayerGestureDetectorNode(
                             return@detectTapGestures
                         tapCount++
                         // consecutive tap
-                        viewState.emit(C.VISIBILITY_INVISIBLE)
+                        viewState.emit(C.VISIBLE_NONE)
                         val times = if (x > size.width / 2) tapCount else -tapCount
                         seekBy(times)
                     }
@@ -322,8 +323,8 @@ private class PlayerGestureDetectorNode(
                         toggleVisibility()
                         return@detectVerticalDragGestures
                     }
-                    if (viewState.visibility != C.VISIBILITY_INVISIBLE)
-                        viewState.visibility == C.VISIBILITY_INVISIBLE
+                    if (viewState.visibility != C.VISIBLE_NONE)
+                        viewState.visibility == C.VISIBLE_NONE
                     val (width, _) = size
                     // Get the position of the gesture
                     val positionX = change.position.x

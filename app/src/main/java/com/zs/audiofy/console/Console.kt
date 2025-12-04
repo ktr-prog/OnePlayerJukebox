@@ -46,7 +46,6 @@ import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
 import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.LockOpen
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material.icons.outlined.Queue
 import androidx.compose.material.icons.outlined.Remove
@@ -158,11 +157,15 @@ object RouteConsole : Route {
 
     const val VISIBILITY_AUTO_HIDE_DELAY = 5_000L
 
-    const val VISIBILITY_INVISIBLE = 0
-    const val VISIBILITY_INVISIBLE_LOCKED = 1
-    const val VISIBILITY_VISIBLE_LOCK = 2
-    const val VISIBILITY_VISIBLE_SEEK = 3
-    const val VISIBILITY_VISIBLE = 4
+    // Controller Visibility States
+    const val VISIBLE_NONE = 0         // Fully hidden
+    const val VISIBLE_NONE_LOCKED = 1  // Hidden + locked
+    const val VISIBLE_LOCKED_SEEK = 3  // Locked, seek bar only (⚠️ duplicate of VISIBLE_SEEK)
+    const val VISIBLE_LOCKED_LOCK = 4  // Locked, only lock icon shown
+    const val VISIBLE_SEEK = 4         // Auto-hides, seek bar stays
+    const val VISIBLE = 5              // Visible, auto-hides after timeout
+    const val VISIBLE_ALWAYS = 6       // Always visible (default for audio)
+
 
     // Represents different dialogs to be shown
     private const val SHOW_NONE = 0
@@ -228,8 +231,8 @@ object RouteConsole : Route {
                 return@onBack
             }
             // Consume request if locked.
-            if (viewState.visibility == VISIBILITY_INVISIBLE_LOCKED) {
-                viewState.emit(VISIBILITY_VISIBLE_LOCK)
+            if (viewState.visibility == VISIBLE_NONE_LOCKED) {
+                viewState.emit(VISIBLE_LOCKED_LOCK)
                 return@onBack
             }
 
@@ -262,7 +265,7 @@ object RouteConsole : Route {
             )
 
             // Video
-            val enabled = visibility == VISIBILITY_VISIBLE
+            val enabled = visibility >= VISIBLE
             val onColor = LocalContentColor.current
             if (isVideo) {
                 var scale by remember { mutableStateOf(ContentScale.Fit) }
@@ -315,13 +318,12 @@ object RouteConsole : Route {
                     enabled = enabled
                 )
                 // Lock
-                val isLocked = visibility == VISIBILITY_INVISIBLE_LOCKED
                 IconButton(
-                    icon = if (isLocked) Icons.Outlined.LockOpen else Icons.Outlined.Lock,
+                    icon = Icons.Outlined.Lock,
                     contentDescription = null,
-                    onClick = { viewState.emit(if (visibility == VISIBILITY_VISIBLE_LOCK) VISIBILITY_VISIBLE else VISIBILITY_VISIBLE_LOCK) },
+                    onClick = { viewState.emit(if (visibility == VISIBLE_LOCKED_LOCK) VISIBLE else VISIBLE_LOCKED_LOCK) },
                     modifier = Modifier.layoutId(ID_BTN_LOCK),
-                    enabled = visibility >= VISIBILITY_VISIBLE_LOCK
+                    enabled = visibility >= VISIBLE_LOCKED_LOCK
                 )
             }
 
@@ -409,17 +411,17 @@ object RouteConsole : Route {
                 progress = chronometer.progress(state.duration),
                 secondary = bufferedProgress,
                 onValueChange = {
-                    if (isVideo) viewState.emit(VISIBILITY_VISIBLE_SEEK)
+                    if (isVideo) viewState.emit(VISIBLE_SEEK)
                     val mills = (it * state.duration).toLong()
                     chronometer.raw = mills
                 },
                 onValueChangeFinished = {
-                    if (isVideo) viewState.emit(VISIBILITY_INVISIBLE)
+                    if (isVideo) viewState.emit(VISIBLE_NONE)
                     val progress = chronometer.elapsed / state.duration.toFloat()
                     viewState.seekTo(progress)
                 },
                 modifier = Modifier.key(ID_SEEK_BAR),
-                enabled = state.duration > 0 && visibility >= VISIBILITY_VISIBLE_SEEK ,
+                enabled = state.duration > 0 && visibility >= VISIBLE_SEEK ,
                 buffering = state.state == Remote.PLAYER_STATE_BUFFERING,
                 color = accent
             )
@@ -674,33 +676,29 @@ object RouteConsole : Route {
                     val clazz = WindowSize(maxWidth, maxHeight)
                     // Compute constraints
                     val isVideo = state.isVideo
-                    val constraints = remember(clazz, insets, isVideo, visibility) {
+                    val constraints = remember(clazz, insets, isVideo, visibility, state.state) {
                         // Determine if controls are locked (cannot be shown/hidden by user)
-                        val isLocked = visibility == VISIBILITY_INVISIBLE_LOCKED
+                        val isLocked = visibility == VISIBLE_NONE_LOCKED
 
                         // Update controller visibility based on media state and lock status
                         when {
-                            !isVideo -> viewState.emit(VISIBILITY_VISIBLE)
-                            isVideo && !state.playing && !isLocked -> viewState.emit(VISIBILITY_VISIBLE)
-                            visibility == VISIBILITY_VISIBLE_LOCK -> viewState.emit(
-                                VISIBILITY_INVISIBLE_LOCKED,
-                                true
-                            )
-
-                            !isLocked -> viewState.emit(VISIBILITY_INVISIBLE, true)
+                            !isVideo -> viewState.emit(VISIBLE_ALWAYS,false)
+                            isVideo && !state.playing && !isLocked -> viewState.emit(VISIBLE_ALWAYS)
+                            visibility == VISIBLE_LOCKED_LOCK -> viewState.emit(VISIBLE_NONE_LOCKED)
+                            !isLocked -> viewState.emit(VISIBLE_NONE, true)
                         }
 
                         // Update system bar style (auto vs hidden) depending on controller visibility
                         facade.style += when (visibility) {
-                            VISIBILITY_VISIBLE -> WindowStyle.FLAG_SYSTEM_BARS_VISIBILITY_AUTO
+                            VISIBLE, VISIBLE_ALWAYS -> WindowStyle.FLAG_SYSTEM_BARS_VISIBILITY_AUTO
                             else -> WindowStyle.FLAG_SYSTEM_BARS_HIDDEN
                         }
                         // Determine which controls to hide
                         val excluded = when (visibility) {
-                            VISIBILITY_VISIBLE -> if (!isVideo) null else null // No exclusions when visible
-                            VISIBILITY_INVISIBLE, VISIBILITY_INVISIBLE_LOCKED -> emptyArray() // Hide everything
-                            VISIBILITY_VISIBLE_LOCK -> arrayOf(ID_BTN_LOCK) // Show only lock button
-                            VISIBILITY_VISIBLE_SEEK -> arrayOf(
+                            VISIBLE_ALWAYS, VISIBLE -> if (!isVideo) null else null // No exclusions when visible
+                            VISIBLE_NONE, VISIBLE_NONE_LOCKED -> emptyArray() // Hide everything
+                            VISIBLE_LOCKED_LOCK -> arrayOf(ID_BTN_LOCK) // Show only lock button
+                            VISIBLE_SEEK, VISIBLE_LOCKED_SEEK -> arrayOf(
                                 ID_SEEK_BAR,
                                 ID_EXTRA_INFO
                             ) // Show seek + info
