@@ -68,7 +68,7 @@ class ConsoleViewModel(
         }
     }
 
-    override fun seek(mills: Long) {
+    override fun seekBy(mills: Long) {
         runCatching {
             remote.seekBy(mills)
         }

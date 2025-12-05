@@ -273,7 +273,7 @@ object RouteConsole : Route {
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .key(ID_VIDEO_SURFACE)
-                        .detectPlayerGestures(viewState, {}),
+                        .handlePlayerGestures(viewState),
                     content = {
                         VideoSurface(
                             provider = viewState.getVideoProvider(),

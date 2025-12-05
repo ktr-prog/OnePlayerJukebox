@@ -114,7 +114,7 @@ interface ConsoleViewState: QueueViewState {
     fun skipToPrev()
     fun togglePlay()
     fun seekTo(pct: Float)
-    fun seek(mills: Long)
+    fun seekBy(mills: Long)
 
     fun sleepAt(mills: Long)
 

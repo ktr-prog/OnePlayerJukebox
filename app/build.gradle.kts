@@ -59,7 +59,7 @@ android {
         minSdk = 28
         targetSdk = 36
         versionCode = 14
-        versionName = "1.3.3-beta"
+        versionName = "1.4.0-beta"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
         // Load secrets into BuildConfig
@@ -75,7 +75,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt")
             )
         }
 

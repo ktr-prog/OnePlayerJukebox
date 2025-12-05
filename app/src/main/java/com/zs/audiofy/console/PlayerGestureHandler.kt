@@ -62,7 +62,7 @@ import kotlin.math.roundToInt
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode as CLCMN
 import com.zs.audiofy.console.RouteConsole as C
 
-private const val TAG = "PlayerGestureDetector"
+private const val TAG = "PlayerGestureHandler"
 
 /**
  *  The current screen brightness of this activity's window.
@@ -144,51 +144,45 @@ private var AudioManager.volume: Float
     }
 
 
-fun Modifier.detectPlayerGestures(
+fun Modifier.handlePlayerGestures(
     viewState: ConsoleViewState,
-    onRequestSeek: (pct: Float) -> Unit
-): Modifier = this then PlayerGestureDetectorElement(viewState, onRequestSeek)
+): Modifier = this then PlayerGestureHandlerElement(viewState)
 
-private class PlayerGestureDetectorElement(
-    val viewState: ConsoleViewState,
-    val onRequestSeek: (Float) -> Unit
-) : ModifierNodeElement<PlayerGestureDetectorNode>() {
+private class PlayerGestureHandlerElement(
+    val viewState: ConsoleViewState
+) : ModifierNodeElement<PlayerGestureHandlerNode>() {
 
-    override fun create(): PlayerGestureDetectorNode =
-        PlayerGestureDetectorNode(viewState, onRequestSeek)
+    override fun create(): PlayerGestureHandlerNode =
+        PlayerGestureHandlerNode(viewState)
 
-    override fun update(node: PlayerGestureDetectorNode) {
+    override fun update(node: PlayerGestureHandlerNode) {
 
     }
+
+
 
     override fun InspectorInfo.inspectableProperties() {
         name = "playerGestureDectector"
         properties["state"] = viewState
-        properties["onSeekRequest"] = onRequestSeek
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as PlayerGestureDetectorElement
+        other as PlayerGestureHandlerElement
 
         if (viewState != other.viewState) return false
-        if (onRequestSeek != other.onRequestSeek) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = viewState.hashCode()
-        result = 31 * result + onRequestSeek.hashCode()
-        return result
+        return viewState.hashCode()
     }
 }
 
-private class PlayerGestureDetectorNode(
-    val viewState: ConsoleViewState,
-    val onRequestSeek: (Float) -> Unit,
+private class PlayerGestureHandlerNode(val viewState: ConsoleViewState,
 ) : DelegatingNode(), PointerInputModifierNode, DrawModifierNode, CLCMN {
     override val shouldAutoInvalidate: Boolean
         get() = false
@@ -213,7 +207,7 @@ private class PlayerGestureDetectorNode(
         seekByJob = coroutineScope.launch {
             message = "${count * 10L}s"
             delay(200)
-            viewState.seek(count *10 * 1_000L)
+            viewState.seekBy(count *10 * 1_000L)
         }
     }
 
