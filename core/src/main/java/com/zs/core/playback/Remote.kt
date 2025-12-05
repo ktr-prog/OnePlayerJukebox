@@ -96,13 +96,16 @@ interface Remote {
         internal val SCRUBBING_MODE = SessionCommand("_scrubbing_mode", Bundle.EMPTY)
         internal const val EXTRA_SCRUBBING_MODE_ENABLED = "_extra_scrubbing_mode_enabled"
         internal val TOGGLE_LIKE = SessionCommand("_toggle_like", Bundle.EMPTY)
+        internal val CONTENT_DURATION  = SessionCommand("_media_duration", Bundle.EMPTY)
+        internal const val EXTRA_KEY_CONTENT_DURATION = "_extra_media_duration"
 
         internal val commands get() = arrayOf(
             AUDIO_SESSION_ID,
             SCHEDULE_SLEEP_TIME,
             EQUALIZER_CONFIG,
             SCRUBBING_MODE,
-            TOGGLE_LIKE
+            TOGGLE_LIKE,
+            CONTENT_DURATION
         )
 
         // The roots for accessing global playlists
@@ -330,4 +333,6 @@ interface Remote {
     suspend fun getPlaybackState(): Int
 
     suspend fun prepare()
+
+    suspend fun duration(): Long
 }

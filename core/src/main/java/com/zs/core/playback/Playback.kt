@@ -51,7 +51,6 @@ import androidx.media3.session.MediaSession.ControllerInfo
 import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionError
 import androidx.media3.session.SessionResult
-import androidx.media3.session.SimpleBitmapLoader
 import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
@@ -88,6 +87,8 @@ private const val PREF_KEY_EQUALIZER_ENABLED = "_equalizer_enabled"
 private const val PREF_KEY_EQUALIZER_PROPERTIES = "_equalizer_properties"
 private const val PREF_KEY_CLOSE_WHEN_REMOVED = "_stop_playback_when_removed"
 private const val PREF_KEY_ORDERS = "_orders"
+private const val PREF_CONTENT_DURATION = "_content_duration"
+
 
 //
 private const val SAVE_POSITION_DELAY_MILLS = 5_000L
@@ -398,6 +399,14 @@ class Playback : MediaLibraryService(), Callback, Player.Listener {
 
     var stateJob: Job? = null
     override fun onEvents(player: Player, events: Player.Events) {
+        // On app restart, the player's content duration might not be immediately available.
+        // This ensures that we save the correct duration as soon as the playback state
+        // is no longer idle, preventing UI issues like an indefinite progress bar.
+        if (events.contains(Player.EVENT_PLAYBACK_STATE_CHANGED)
+            && player.playbackState != Player.STATE_IDLE
+            && runBlocking { preferences[PREF_KEY_INDEX, C.INDEX_UNSET] } == player.currentMediaItemIndex)
+            scope.launch { preferences[PREF_CONTENT_DURATION] = player.contentDuration }
+
         // Check if the received events contain any of the predefined state update events.
         // If not, there's no need to proceed with emitting a state update.
         if (!events.containsAny(*Remote.STATE_UPDATE_EVENTS))
@@ -616,6 +625,19 @@ class Playback : MediaLibraryService(), Callback, Player.Listener {
                 (player as ExoPlayer).isScrubbingModeEnabled = enabled
                 Log.d(TAG, "onCustomCommand: $enabled")
                 Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+            }
+            // getDuration
+            Remote.CONTENT_DURATION -> {
+                val duration =  if (player.playbackState != Remote.PLAYER_STATE_IDLE)
+                    player.contentDuration
+                else {
+                    runBlocking { preferences[PREF_CONTENT_DURATION, C.TIME_UNSET] }
+                }
+                Log.d(TAG, "onCustomCommand: $duration")
+                Futures.immediateFuture(
+                    SessionResult(SessionResult.RESULT_SUCCESS) {
+                        putLong(Remote.EXTRA_KEY_CONTENT_DURATION, duration)
+                    })
             }
             // Like/Unlike
             Remote.TOGGLE_LIKE -> scope.future {

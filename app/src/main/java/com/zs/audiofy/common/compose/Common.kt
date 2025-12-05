@@ -244,7 +244,7 @@ val NowPlaying.chronometer: Chronometer
             // Negative values in `Chronometer` signify system-reported progress.
             // Use 0 if position is unknown or state is idle; otherwise, store as a negative value.
             chronometer.raw =
-                if (position == Remote.TIME_UNSET || state == Remote.PLAYER_STATE_IDLE) 0 else -current
+                if (position == Remote.TIME_UNSET) 0 else -current
             // Exit early if:
             // 1. The position is unknown,
             // 2. Playback has completed,
@@ -263,7 +263,7 @@ val NowPlaying.chronometer: Chronometer
                 if (chronometer.raw > 0) break
                 // reset duration if still playing
                 if (duration != Remote.TIME_UNSET && current >= duration)
-                    current = current - duration
+                    current -= duration
                 // Advance the `current` position by 1 second, adjusted for playback `speed`.
                 current += (1000L * speed).roundToLong()
                 // Update the chronometer's raw value with the new system-reported progress.

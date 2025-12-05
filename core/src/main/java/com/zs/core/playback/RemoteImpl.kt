@@ -318,7 +318,7 @@ internal class RemoteImpl(private val context: Context) : Remote {
             artwork = current.artworkUri,
             speed = provider.playbackParameters.speed,
             shuffle = provider.shuffleModeEnabled,
-            duration = provider.contentDuration,
+            duration = if (provider.playbackState == Remote.PLAYER_STATE_IDLE) duration() else provider.contentDuration,
             position = provider.contentPosition,
             // Check if the current media item is in the "favourites" playlist.
             favourite = playlists.contains(
@@ -666,5 +666,12 @@ internal class RemoteImpl(private val context: Context) : Remote {
         if (!browser.isCommandAvailable(Player.COMMAND_PREPARE))
             return
         return browser.prepare()
+    }
+
+    override suspend fun duration(): Long {
+        val browser = fBrowser.await()
+        if (browser.playbackState == Remote.PLAYER_STATE_IDLE)
+          return  browser[Remote.CONTENT_DURATION].extras.getLong(Remote.EXTRA_KEY_CONTENT_DURATION)
+        return browser.contentDuration
     }
 }
