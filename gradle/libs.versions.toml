@@ -16,7 +16,6 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 android-library = { id = "com.android.library", version.ref = "agp" }
 google-service = { id = "com.google.gms.google-services", version = "4.4.4" }
 crashanlytics = { id = "com.google.firebase.crashlytics", version = "3.0.6" }
-firebase_encoders = { id = "com.google.firebase:firebase-encoders-json", version = "18.0.0" }
 android-dynamic-feature = { id = "com.android.dynamic-feature", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version = "2.3.2" }
 
@@ -58,6 +57,7 @@ avif-coder-coil = { module = "com.github.awxkee:avif-coder-coil", version = "2.1
 coil-video = {module = "io.coil-kt.coil3:coil-video", version = "3.3.0"}
 
 #  Firebase
+firebase_encoders = { module = "com.google.firebase:firebase-encoders-json", version = "18.0.1" }
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.5.0" }
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx", version = "19.4.4" }
 
@@ -94,4 +94,4 @@ compose_ui = ["androidx-ui-graphics", "androidx-ui", "toolkit-theme", "toolkit-f
 compose_ui_tooling = ["androidx-ui-tooling", "androidx-ui-tooling-preview"]
 room = ["room-runtime", "room-ktx"]
 media3 = ["androidx-media3-exoplayer", "androidx-media3-session"]
-analytics = ["firebase-crashlytics-ktx", "firebase-analytics-ktx"]
+analytics = ["firebase-crashlytics-ktx", "firebase-analytics-ktx", "firebase_encoders"]
