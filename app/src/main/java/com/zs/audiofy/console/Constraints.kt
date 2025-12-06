@@ -611,16 +611,29 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
         }
 
         // TimeBar
-        val timeBar = horizontal(
-            SKIP_PREVIOUS, SEEK_BAR, SKIP_TO_NEXT, PLAY_PAUSE,
-            alignBy = SEEK_BAR,
-            constrainBlock = {
-                linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
+        val timeBar = when {
+            only != null && only.contains(RouteConsole.ID_SEEK_BAR) -> {
+                constrain(SEEK_BAR) {
+                    linkTo(parent.start, parent.end, left + CP.large, right + CP.large)
+                    bottom.linkTo(parent.bottom, down + CP.large)
+                    width = Dimension.fillToConstraints
+                }
+                SEEK_BAR
             }
-        )
-        constrain(timeBar) {
-            bottom.linkTo(title.top, CP.normal)
-            width = Dimension.fillToConstraints
+            else -> {
+                horizontal(
+                    SKIP_PREVIOUS, SEEK_BAR, SKIP_TO_NEXT, PLAY_PAUSE,
+                    alignBy = SEEK_BAR,
+                    constrainBlock = {
+                        linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
+                    }
+                )
+                constrain(SEEK_BAR) {
+                    bottom.linkTo(title.top, CP.normal)
+                    width = Dimension.fillToConstraints
+                }
+                SEEK_BAR
+            }
         }
         // Extra-Info
         constrain(EXTRA_INFO) {
@@ -707,16 +720,30 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
         }
 
         // TimeBar
-        val timeBar = horizontal(
-            LOCK,  SEEK_BAR,  SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, RESIZE_MODE, ROTATION_LOCK, QUEUE,
-            alignBy = SEEK_BAR,
-            constrainBlock = {
-                linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
+        val timeBar = when {
+            only != null && only.contains(RouteConsole.ID_SEEK_BAR) -> {
+                constrain(SEEK_BAR) {
+                    linkTo(parent.start, parent.end, left + CP.xLarge, right + CP.xLarge)
+                    bottom.linkTo(parent.bottom, down + CP.large)
+                    width = Dimension.fillToConstraints
+                }
+                SEEK_BAR
             }
-        )
-        constrain(timeBar) {
-            bottom.linkTo(parent.bottom, CP.xSmall + down)
-            width = Dimension.fillToConstraints
+            else -> {
+                // TimeBar
+                horizontal(
+                    LOCK,  SEEK_BAR,  SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, RESIZE_MODE, ROTATION_LOCK, QUEUE,
+                    alignBy = SEEK_BAR,
+                    constrainBlock = {
+                        linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
+                    }
+                )
+                constrain(SEEK_BAR) {
+                    bottom.linkTo(parent.bottom, CP.xSmall + down)
+                    width = Dimension.fillToConstraints
+                }
+                SEEK_BAR
+            }
         }
         // Extra-Info
         constrain(EXTRA_INFO) {
