@@ -21,7 +21,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Audiofy"
+rootProject.name = "OnePlayer"
 include(":app")
 include(":core")
 include(":feature:telemetry")
