@@ -34,19 +34,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.zs.audiofy.BuildConfig
 import com.zs.audiofy.R
@@ -54,7 +58,6 @@ import com.zs.audiofy.common.SystemFacade
 import com.zs.audiofy.common.compose.Acrylic
 import com.zs.audiofy.common.compose.lottie
 import com.zs.audiofy.common.compose.lottieAnimationPainter
-import com.zs.compose.foundation.Background
 import com.zs.compose.foundation.ImageBrush
 import com.zs.compose.foundation.thenIf
 import com.zs.compose.foundation.visualEffect
@@ -64,6 +67,8 @@ import com.zs.compose.theme.Icon
 import com.zs.compose.theme.IconButton
 import com.zs.compose.theme.LocalContentColor
 import com.zs.compose.theme.Surface
+import com.zs.compose.theme.text.Label
+import com.zs.compose.theme.text.Text
 import com.zs.audiofy.console.RouteConsole as RC
 
 context(_:RC)
@@ -131,25 +136,23 @@ inline val Activity.isOrientationLocked
  */
 @Composable
 context(_: RC)
-inline fun Artwork(
-    model: Any?,
+fun Artwork(
+    uri: Uri?,
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
     border: Dp = 1.dp,
     shadow: Dp = 0.dp,
 ) {
-    key(model) {
-        AsyncImage(
-            model = model,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = modifier
-                .shadow(shadow, shape, clip = shape != RectangleShape)
-                .thenIf(border > 0.dp) { border(border, Color.White, shape) }
-                .visualEffect(ImageBrush.NoiseBrush, 0.5f, true)
-                .background(AppTheme.colors.background(1.dp)),
-        )
-    }
+    AsyncImage(
+        model = uri,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = modifier
+            .shadow(shadow, shape, clip = shape != RectangleShape)
+            .thenIf(border > 0.dp) { border(border, Color.White, shape) }
+            .visualEffect(ImageBrush.NoiseBrush, 0.5f, true)
+            .background(AppTheme.colors.background(1.dp)),
+    )
 }
 
 @Composable
@@ -264,5 +267,42 @@ fun Background(
                 )
             }
         }
+    )
+}
+
+@Composable
+context(_: RC)
+fun ExtraInfo(
+    provider: () -> CharSequence,
+    color: Color = LocalContentColor.current,
+    modifier: Modifier = Modifier
+) {
+    Label(
+        style = AppTheme.typography.label3,
+        color = color,
+        modifier = modifier,
+        text = provider()
+    )
+}
+
+
+private val CUE_TEXT_SHADOW = Shadow(offset = Offset(5f, 5f), blurRadius = 8.0f)
+@Composable
+context(_: RC)
+fun Cue(
+    provider: () -> CharSequence,
+    color: Color = LocalContentColor.current,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = provider(),
+        color = color,
+        modifier = modifier,
+        style = AppTheme.typography.body1.copy(
+            shadow = CUE_TEXT_SHADOW,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp
+        ),
+        textAlign = TextAlign.Center
     )
 }

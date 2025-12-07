@@ -615,7 +615,8 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
             only != null && only.contains(RouteConsole.ID_SEEK_BAR) -> {
                 constrain(SEEK_BAR) {
                     linkTo(parent.start, parent.end, left + CP.large, right + CP.large)
-                    bottom.linkTo(parent.bottom, down + CP.xLarge)
+                    bottom.linkTo(title.top, CP.xLarge)
+                    //bottom.linkTo(parent.bottom, down + CP.xLarge)
                     width = Dimension.fillToConstraints
                 }
                 SEEK_BAR
@@ -723,8 +724,8 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
         val timeBar = when {
             only != null && only.contains(RouteConsole.ID_SEEK_BAR) -> {
                 constrain(SEEK_BAR) {
-                    linkTo(parent.start, parent.end, left + CP.xLarge, right + CP.xLarge)
-                    bottom.linkTo(parent.bottom, down + CP.large)
+                    linkTo(parent.start, parent.end, left + 45.dp, right + 45.dp)
+                    bottom.linkTo(parent.bottom, down + CP.xLarge)
                     width = Dimension.fillToConstraints
                 }
                 SEEK_BAR

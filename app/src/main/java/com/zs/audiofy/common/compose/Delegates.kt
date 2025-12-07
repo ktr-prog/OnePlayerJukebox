@@ -183,6 +183,36 @@ inline fun LottieAnimatedIcon(
 }
 
 @Composable
+fun LottieAnimatedIcon(
+    @RawRes id: Int,
+    isPlaying: Boolean,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    scale: Float = 1f,
+    //progressRange: ClosedFloatingPointRange<Float> = 0f..1f,
+    tint: Color = Color.Unspecified,
+    repeatMode: RepeatMode = RepeatMode.Restart,
+    iterations: Int = Int.MAX_VALUE,
+    // animationSpec: AnimationSpec<Float>? = null,
+) {
+    Icon(
+        painter = lottieAnimationPainter(
+            id = id,
+            isPlaying = isPlaying,
+           // progressRange = progressRange,
+           // animationSpec = animationSpec,
+            repeatMode = repeatMode,
+            iterations = iterations
+        ),
+        tint = tint,
+        contentDescription = contentDescription,
+        modifier = modifier
+            .size(24.dp)
+            .scale(scale),
+    )
+}
+
+@Composable
 inline fun LottieAnimatedButton(
     @RawRes id: Int,
     noinline onClick: () -> Unit,

@@ -86,6 +86,7 @@ import com.zs.audiofy.common.WindowStyle
 import com.zs.audiofy.common.compose.LocalNavController
 import com.zs.audiofy.common.compose.LocalSystemFacade
 import com.zs.audiofy.common.compose.LottieAnimatedButton
+import com.zs.audiofy.common.compose.LottieAnimatedIcon
 import com.zs.audiofy.common.compose.VideoSurface
 import com.zs.audiofy.common.compose.chronometer
 import com.zs.audiofy.common.compose.collectAsState
@@ -187,12 +188,13 @@ object RouteConsole : Route {
     private val DefaultAnimSpecs = tween<Float>()
 
     // Represents the shadow around the tef Cue.
-    private val CUE_TEXT_SHADOW = Shadow(offset = Offset(5f, 5f), blurRadius = 8.0f)
     private val SCRIM_STYLE = Brush.verticalGradient(
-        0f to Color.Black.copy(0.8f),
-        0.15f to Color.Transparent,
-        0.8f to Color.Transparent,
-        1f to Color.Black.copy(0.8f)
+        0f to Color.Black,                     // Top: solid black
+        0.1f to Color.Black.copy(alpha = 0.5f),// Slightly lower: semi-transparent black
+        0.2f to Color.Transparent,             // Transition to fully transparent
+        0.8f to Color.Transparent,             // Stays transparent until near the bottom
+        0.9f to Color.Black.copy(alpha = 0.5f),// Near bottom: semi-transparent black again
+        1f to Color.Black                      // Bottom: solid black
     )
 
     // Represents the shapes of content/details in different configurations.
@@ -290,15 +292,10 @@ object RouteConsole : Route {
                 /*val cManager = remember {
                     facade.getDeviceService<CaptioningManager>(Context.CAPTIONING_SERVICE)
                 }*/
-                Text(
-                    cues ?: "",
+                Cue(
+                    provider = { cues ?: "" },
                     modifier = Modifier.layoutId(ID_CUES),
                     color = Color.White,
-                    style = AppTheme.typography.body1.copy(
-                        shadow = CUE_TEXT_SHADOW,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    ),
                 )
 
                 // Scrim
@@ -340,12 +337,12 @@ object RouteConsole : Route {
             )
 
             // Playing bars.
-            Icon(
-                painter = Lottie(R.raw.playback_indicator, isPlaying = state.playing),
+            LottieAnimatedIcon(
+                R.raw.playback_indicator,
+                isPlaying = state.playing,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(end = CP.xSmall)
-                    .lottie()
                     .key(ID_PLAYING_INDICATOR),
                 tint = accent
             )
@@ -375,29 +372,25 @@ object RouteConsole : Route {
 
             // Extra-info
             val chronometer = state.chronometer
-            Label(
-                style = AppTheme.typography.label3,
+            ExtraInfo(
                 color = onColor.copy(ContentAlpha.medium),
                 modifier = Modifier.key(ID_EXTRA_INFO),
-                text = buildString {
-                    val elapsed = chronometer.elapsed
-                    val fPos =
-                        if (elapsed == Long.MIN_VALUE) "N/A" else DateUtils.formatElapsedTime(
-                            elapsed / 1000
-                        )
-                    val duration = state.duration
-                    val fDuration =
-                        if (duration == Remote.TIME_UNSET) "N/A" else DateUtils.formatElapsedTime(
-                            duration / 1000
-                        )
-                    append(
-                        "$fPos / $fDuration (${
-                            stringResource(
-                                R.string.postfix_x_f,
-                                state.speed
+                provider = {
+                    buildString {
+                        val elapsed = chronometer.elapsed
+                        val fPos =
+                            if (elapsed == Long.MIN_VALUE) "N/A" else DateUtils.formatElapsedTime(
+                                elapsed / 1000
                             )
-                        })"
-                    )
+                        val duration = state.duration
+                        val fDuration =
+                            if (duration == Remote.TIME_UNSET) "N/A" else DateUtils.formatElapsedTime(
+                                duration / 1000
+                            )
+                        append(
+                            "$fPos / $fDuration (${state.speed}x)"
+                        )
+                    }
                 }
             )
 
@@ -422,7 +415,7 @@ object RouteConsole : Route {
                     viewState.seekTo(progress)
                 },
                 modifier = Modifier.key(ID_SEEK_BAR),
-                enabled = state.duration > 0 && visibility >= VISIBLE_SEEK,
+                enabled = state.duration > 0 && visibility >= VISIBLE_SEEK && state.state != Remote.PLAYER_STATE_IDLE,
                 buffering = state.state == Remote.PLAYER_STATE_BUFFERING,
                 color = accent
             )
@@ -632,7 +625,7 @@ object RouteConsole : Route {
 
             if (!state.isVideo)
                 Artwork(
-                    model = state.artwork,
+                    uri = state.artwork,
                     modifier = Modifier.key(ID_ARTWORK),
                     border = 0.5.dp,
                     shape = ArtworkShape,
