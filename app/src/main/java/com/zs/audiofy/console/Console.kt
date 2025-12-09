@@ -22,6 +22,7 @@ package com.zs.audiofy.console
 
 import android.app.Activity
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateContentSize
@@ -124,6 +125,7 @@ import kotlinx.coroutines.delay
 import com.zs.audiofy.common.compose.ContentPadding as CP
 import com.zs.audiofy.common.compose.lottieAnimationPainter as Lottie
 import com.zs.audiofy.common.compose.rememberAnimatedVectorPainter as AnimVectorPainter
+import com.zs.audiofy.common.icons.MoreHort
 
 object RouteConsole : Route {
     // Component IDs
@@ -572,7 +574,7 @@ object RouteConsole : Route {
                 modifier = Modifier.layoutId(ID_BTN_MORE),
                 content = {
                     //
-                    Icon(imageVector = Icons.Outlined.MoreHoriz, contentDescription = null)
+                    Icon(imageVector = Icons.Outlined.MoreHort, contentDescription = null)
 
                     // Menu
                     if (showViewOf == SHOW_MEDIA_CONFIG)
