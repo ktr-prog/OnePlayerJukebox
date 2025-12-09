@@ -301,7 +301,7 @@ fun Cue(
         style = AppTheme.typography.body1.copy(
             shadow = CUE_TEXT_SHADOW,
             fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
+            fontSize = 16.sp
         ),
         textAlign = TextAlign.Center
     )

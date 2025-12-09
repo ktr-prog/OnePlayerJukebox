@@ -41,16 +41,19 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
@@ -382,15 +385,35 @@ internal class RemoteImpl(private val context: Context) : Remote {
             // If `events` is null (initial emission from callbackFlow) or if it doesn't contain
             // `Player.EVENT_CUES`, it means the subtitle cue hasn't changed,
             // so we don't need to re-fetch and emit it.
-            Log.d(TAG, "subtitle: ")
             events?.contains(Player.EVENT_CUES) == true
-        }.map {
-            // Await the MediaBrowser instance to ensure it's connected and ready.
+        }.transformLatest { value ->
+            // Suspend until the MediaBrowser instance is connected and ready.
+            // This ensures we always work with a valid provider before accessing cues.
             val provider = fBrowser.await()
-            provider.currentCues.cues.joinToString("\n") { cue ->
+
+            // Collect all current subtitle cues into a single string.
+            // Each cue's text is converted to a string (or empty if null),
+            // and joined together with newline separators.
+            val cues = provider.currentCues.cues.joinToString("\n") { cue ->
                 cue.text?.toString() ?: ""
             }
+
+            // FixMe: Temporary workaround.
+            // Without this, cues may "disappear" in Compose because subtitle support
+            // is not yet fully available in Media3. Once Media3 adds proper subtitle
+            // support for Compose, revisit and simplify this logic.
+            if (cues.isEmpty()) {
+                // If no cues are present, wait 3 seconds before emitting an empty string.
+                // Using transformLatest means this delay will be cancelled if a new upstream
+                // value arrives before the delay finishes, preventing stale empty emissions.
+                delay(3_000)
+                emit("")
+            } else {
+                // If cues are present, emit them immediately.
+                emit(cues)
+            }
         }
+
 
     override suspend fun setPlaybackSpeed(value: Float): Boolean {
         val browser = fBrowser.await() // Await the MediaBrowser instance.

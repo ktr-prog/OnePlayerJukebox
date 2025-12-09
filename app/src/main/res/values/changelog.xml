@@ -33,7 +33,18 @@
     <string name="changelog_141_beta" translatable="false">
         <b>What’s New <font color='purple'>(v1.4.1-beta)\n</font></b>
         <font color='grey'>
-            \n✓
+            \n✓ <b>Animated Splash Screen:</b> Introducing a new animated splash screen for Android 12+ for a more dynamic startup experience.
+            \n✓ <b>Smarter Video Playback:</b>
+            \n    - The screen now stays on only when video is playing and turns off when paused to save battery.
+            \n    - Subtitle display logic has been improved to prevent cues from disappearing abruptly.
+            \n    - The layout of the seek bar in a locked video player has been refined for better alignment.
+            \n✓ <b>UI &amp; Icon Updates:</b>
+            \n    - Updated several icons, including a new horizontal "more" icon in the player console.
+            \n    - The seek bar is now disabled when the player is idle.
+            \n    - Reduced the default font size for subtitles for better visual balance.
+            \n✓ <b>Code Refinements:</b>
+            \n    - Restructured player gesture handling for improved readability and maintainability.
+            \n    - Introduced new UI components like `FloatRange` and `LottieAnimatedIcon` to streamline the codebase.
         </font>
     </string>
 

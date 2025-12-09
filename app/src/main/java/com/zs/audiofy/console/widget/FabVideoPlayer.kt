@@ -73,7 +73,7 @@ fun FabVideoPlayer(
             // Video (includes foreground 35%)
             VideoSurface(
                 videoProvider,
-                keepScreenOn = true,
+                keepScreenOn = state.playing,
                 modifier = Modifier
                     .sharedBounds(RouteConsole.ID_VIDEO_SURFACE)
                     .resize(ContentScale.Crop, state.videoSize)

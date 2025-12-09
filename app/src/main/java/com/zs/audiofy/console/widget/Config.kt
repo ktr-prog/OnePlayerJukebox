@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zs.audiofy.MainActivity
@@ -141,7 +142,7 @@ fun Config(
     onRequest: (code: Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier.pointerInput(Unit, {})) {
         // viewpager
         val selected by preference(Settings.GLANCE)
         var index by remember {
