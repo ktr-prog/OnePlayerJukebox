@@ -109,6 +109,11 @@ object AppConfig {
     /** If true, waits for the splash screen animation to finish before proceeding.  */
     @JvmField var isSplashAnimWaitEnabled = false
 
+    /**
+     * Enables or disables the smooth transition animation when launching the
+     * [Console][com.zs.audiofy.console.Console] from the in-app widget.
+     */
+    @JvmField var isWidgetToConsoleTransitionEnabled = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     // Delimiters
     private const val KEYS_DELIMITER = '\u001E'
@@ -128,6 +133,7 @@ object AppConfig {
     private const val KEY_SHOW_INAPP_WIDGET_DEDICATED_OPEN_CONSOLE_BTN = "param11"
     private const val KEY_INAPP_WIDGET_LONG_PRESS_OPEN_CONFIG = "param12"
     private const val KEY_IS_SPLASH_ANIM_WAIT_ENABLED = "param13"
+    private const val KEY_IS_WIDGET_TO_CONSOLE_TRANSITION_ENABLED = "param14"
 
 
     /**
@@ -190,6 +196,7 @@ object AppConfig {
         records[KEY_SHOW_INAPP_WIDGET_DEDICATED_OPEN_CONSOLE_BTN] = showInAppWidgetOpenConsoleButton
         records[KEY_INAPP_WIDGET_LONG_PRESS_OPEN_CONFIG] = inAppWidgetLongPressOpenConfig
         records[KEY_IS_SPLASH_ANIM_WAIT_ENABLED] = isSplashAnimWaitEnabled
+        records[KEY_IS_WIDGET_TO_CONSOLE_TRANSITION_ENABLED] = isWidgetToConsoleTransitionEnabled
         Log.i(TAG, "stringify: $records")
         return records.toString()
     }
@@ -235,6 +242,7 @@ object AppConfig {
                 KEY_INAPP_WIDGET_LONG_PRESS_OPEN_CONFIG -> inAppWidgetLongPressOpenConfig = value.toBoolean()
                 KEY_SHOW_INAPP_WIDGET_DEDICATED_OPEN_CONSOLE_BTN -> showInAppWidgetOpenConsoleButton = value.toBoolean()
                 KEY_IS_SPLASH_ANIM_WAIT_ENABLED -> isSplashAnimWaitEnabled = value.toBoolean()
+                KEY_IS_WIDGET_TO_CONSOLE_TRANSITION_ENABLED -> isWidgetToConsoleTransitionEnabled = value.toBoolean()
             }
         }
     }

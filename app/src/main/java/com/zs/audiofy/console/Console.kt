@@ -22,7 +22,6 @@ package com.zs.audiofy.console
 
 import android.app.Activity
 import android.text.format.DateUtils
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateContentSize
@@ -47,7 +46,6 @@ import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
 import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material.icons.outlined.Queue
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material.icons.outlined.ScreenLockRotation
@@ -69,11 +67,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.stringResource
@@ -91,7 +87,6 @@ import com.zs.audiofy.common.compose.LottieAnimatedIcon
 import com.zs.audiofy.common.compose.VideoSurface
 import com.zs.audiofy.common.compose.chronometer
 import com.zs.audiofy.common.compose.collectAsState
-import com.zs.audiofy.common.compose.lottie
 import com.zs.audiofy.common.compose.marque
 import com.zs.audiofy.common.compose.resize
 import com.zs.audiofy.common.compose.shine
@@ -118,14 +113,13 @@ import com.zs.compose.theme.menu.DropDownMenuItem
 import com.zs.compose.theme.sharedBounds
 import com.zs.compose.theme.sharedElement
 import com.zs.compose.theme.text.Label
-import com.zs.compose.theme.text.Text
 import com.zs.core.playback.NowPlaying
 import com.zs.core.playback.Remote
 import kotlinx.coroutines.delay
 import com.zs.audiofy.common.compose.ContentPadding as CP
-import com.zs.audiofy.common.compose.lottieAnimationPainter as Lottie
 import com.zs.audiofy.common.compose.rememberAnimatedVectorPainter as AnimVectorPainter
 import com.zs.audiofy.common.icons.MoreHort
+import com.zs.compose.foundation.thenIf
 
 object RouteConsole : Route {
     // Component IDs
@@ -186,7 +180,9 @@ object RouteConsole : Route {
     private val COLOR_BACKGROUND = Color(0xFF0E0E0F)
 
     /** A short-hand   */
-    private fun Modifier.key(value: String) = layoutId(value).sharedElement(value)
+    private fun Modifier.key(value: String) = layoutId(value).thenIf(AppConfig.isWidgetToConsoleTransitionEnabled){
+        sharedElement(value)
+    }
     private val DefaultAnimSpecs = tween<Float>()
 
     // Represents the shadow around the tef Cue.

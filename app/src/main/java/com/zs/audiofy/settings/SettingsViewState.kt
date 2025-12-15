@@ -229,6 +229,7 @@ interface SettingsViewState {
     var isSurfaceViewVideoRenderingPreferred: Boolean
     var isFileGroupingEnabled: Boolean
     var isSplashAnimWaitEnabled: Boolean
+    var isWidgetToConsoleTransitionEnabled: Boolean
 
     /**
      * Commits [AppConfig] to memory.

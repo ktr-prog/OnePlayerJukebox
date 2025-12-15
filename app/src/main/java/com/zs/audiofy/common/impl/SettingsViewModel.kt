@@ -48,6 +48,7 @@ class SettingsViewModel : KoinViewModel(), SettingsViewState {
     override var isSurfaceViewVideoRenderingPreferred: Boolean by mutableStateOf(AppConfig.isSurfaceViewVideoRenderingPreferred)
     override var isFileGroupingEnabled: Boolean by mutableStateOf(AppConfig.isFileGroupingEnabled)
     override var isSplashAnimWaitEnabled: Boolean by mutableStateOf(AppConfig.isSplashAnimWaitEnabled)
+    override var isWidgetToConsoleTransitionEnabled: Boolean by mutableStateOf(AppConfig.isWidgetToConsoleTransitionEnabled)
 
     override val save: Boolean by derivedStateOf {
         trashCanEnabled != AppConfig.isTrashCanEnabled ||
@@ -60,7 +61,8 @@ class SettingsViewModel : KoinViewModel(), SettingsViewState {
                 fabLongPressLaunchConsole != AppConfig.fabLongPressLaunchConsole ||
                 isSurfaceViewVideoRenderingPreferred != AppConfig.isSurfaceViewVideoRenderingPreferred ||
                 isFileGroupingEnabled != AppConfig.isFileGroupingEnabled ||
-                isSplashAnimWaitEnabled != AppConfig.isSplashAnimWaitEnabled
+                isSplashAnimWaitEnabled != AppConfig.isSplashAnimWaitEnabled ||
+                isWidgetToConsoleTransitionEnabled != AppConfig.isWidgetToConsoleTransitionEnabled
     }
 
     override fun commit(facade: SystemFacade) {
@@ -68,7 +70,9 @@ class SettingsViewModel : KoinViewModel(), SettingsViewState {
             // [CORE_SETTING_CHANGE] Update AppConfig with new settings values
             // This directly modifies the global AppConfig object, which is used throughout the application
             // to determine runtime behavior based on user preferences.
-            val global = AppConfig.isLoadThumbnailFromCache != preferCachedThumbnails
+            val global = AppConfig.isLoadThumbnailFromCache != preferCachedThumbnails ||
+                    AppConfig.isWidgetToConsoleTransitionEnabled != isWidgetToConsoleTransitionEnabled
+
             AppConfig.isLoadThumbnailFromCache = preferCachedThumbnails
             AppConfig.isBackgroundBlurEnabled = enabledBackgroundBlur
             AppConfig.isTrashCanEnabled = trashCanEnabled
@@ -80,6 +84,7 @@ class SettingsViewModel : KoinViewModel(), SettingsViewState {
             AppConfig.isSurfaceViewVideoRenderingPreferred = isSurfaceViewVideoRenderingPreferred
             AppConfig.isFileGroupingEnabled = isFileGroupingEnabled
             AppConfig.isSplashAnimWaitEnabled = isSplashAnimWaitEnabled
+            AppConfig.isWidgetToConsoleTransitionEnabled = isWidgetToConsoleTransitionEnabled
 
             // [PERSISTENCE] Serialize and save the updated AppConfig to preferences
             // The `stringify()` method likely converts the AppConfig object into a JSON or similar string format

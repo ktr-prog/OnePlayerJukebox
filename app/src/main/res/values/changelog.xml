@@ -36,6 +36,7 @@
         <font color='grey'>
             \n✓ Removed background rom system navigation for more better immersive experience.
             \n✓ Added a toggle that allows to wait for splash animation to finish before continuinng in the app.
+            \n✓ Added a toggle that allows shared element transitions between in-App widget and NowPlaying Screen.
         </font>
     </string>
 

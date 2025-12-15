@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Segment
 import androidx.compose.material.icons.filled.Animation
+import androidx.compose.material.icons.filled.AutoAwesomeMotion
 import androidx.compose.material.icons.filled.BlurOn
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.LightMode
@@ -160,6 +161,20 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape)
         )
     }
+
+    // Widget <=> Console Transition
+    item(contentType = CONTENT_TYPE_PREF) {
+        SwitchPreference(
+            checked = viewState.isWidgetToConsoleTransitionEnabled,
+            text = textResource(R.string.pref_is_widget_to_console_transition_enabled),
+            onCheckedChange = { should: Boolean ->
+                viewState.isWidgetToConsoleTransitionEnabled = should
+            },
+            icon = Icons.Default.AutoAwesomeMotion,
+            modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape)
+        )
+    }
+
     // Acrylic effect
     item(contentType = CONTENT_TYPE_PREF) {
         SwitchPreference(
