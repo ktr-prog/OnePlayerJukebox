@@ -59,7 +59,7 @@ android {
         minSdk = 28
         targetSdk = 36
         versionCode = 16
-        versionName = "1.4.2-beta"
+        versionName = "1.5.0-beta"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
         // Load secrets into BuildConfig

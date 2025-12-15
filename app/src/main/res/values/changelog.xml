@@ -33,20 +33,20 @@
     <!--1.4.2-beta-->
     <string name="changelog_142_beta" translatable="false">
         <b>What’s New <font color='purple'>(v1.4.2-beta)\n</font></b>
-        <font color='grey'>
-            \n✓ Removed background rom system navigation for more better immersive experience.
-            \n✓ Added a toggle that allows to wait for splash animation to finish before continuinng in the app.
-            \n✓ Added a toggle that allows shared element transitions between in-App widget and NowPlaying Screen.
-            \n✓ <b>Gestures:</b>
-                 - Added background around gesture visual feedback.
-                 - Added safe area check that avoids gestures if it is beyounf safe area of 30dp.
-                 - Fixed issue with double tap seek accepting value 2 in first multi tap instead of 1
-                 _ Fixed issue with brightness starting from at least 10% when automatic.
-                 - Added Logic to intercept harwared enter keys. this is useful in types like TVs etc.
-                 - Fixed an annoying issue causing constatnly show toast when user holds click for long press.
-                 - Fixed an issue causing inApp Widget to show when user taps show equalizer in Console.
-            \n Timebar - Fixed issue with not wrokign enable/disbale logic.
-        </font>
+       <font color='grey'>
+        \n✓ Improved immersive experience by removing background from system navigation.
+        \n✓ Added a toggle to wait for the splash animation to finish before continuing into the app.
+        \n✓ Added a toggle to enable shared element transitions between the in-app widget and the Now Playing screen.
+        \n✓ <b>Gestures:</b>
+             - Added background styling around gesture visual feedback.
+             - Implemented safe area checks to prevent gestures outside a 30dp boundary.
+             - Fixed issue where double-tap seek incorrectly registered a value of 2 on the first multi-tap instead of 1.
+             - Fixed brightness control to start from at least 10% when automatic mode is enabled.
+             - Added logic to intercept hardware Enter keys (useful for TVs and similar devices).
+             - Fixed issue causing repeated toast messages when holding click for long press.
+             - Fixed issue where the in-app widget appeared when tapping “Show Equalizer” in Console.
+        \n✓ <b>TimeBar:</b> Fixed issue with enable/disable logic not working correctly.
+    </font>
     </string>
 
     <!--1.4.1-beta-->

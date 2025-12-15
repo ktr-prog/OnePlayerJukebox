@@ -1,12 +1,4 @@
-✓ Animated splash screen for Android 12+.
-✓ Smarter video playback:
-    - Screen stays on only when video is playing.
-    - Improved subtitle display logic.
-    - Refined seek bar layout in locked player.
-✓ UI & Icon Updates:
-    - New horizontal "more" icon and others updated.
-    - Seek bar disabled when player is idle.
-    - Reduced default subtitle font size.
-✓ Code Refinements:
-    - Restructured player gesture handling.
-    - Introduced new UI components for a cleaner codebase.
+✓ Improved immersive mode by removing system nav background.
+✓ New toggles: wait for splash animation, enable shared element transitions.
+✓ Gesture fixes: safer area checks, better feedback, double‑tap seek corrected, brightness min 10%, hardware Enter key support, long‑press toast bug fixed.
+✓ Console & Timebar: equalizer widget bug fixed, enable/disable logic corrected.
