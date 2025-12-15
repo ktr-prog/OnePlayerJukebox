@@ -29,10 +29,13 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerInputScope
@@ -50,11 +53,12 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zs.audiofy.common.SystemFacade
 import com.zs.audiofy.common.compose.LocalSystemFacade
+import com.zs.compose.theme.ContentAlpha
 import com.zs.compose.theme.text.LocalTextStyle
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -197,6 +201,7 @@ private class PlayerGestureHandlerNode(
     //    5. Handle left/right gestures according to the current layout direction (LTR/RTL).
     val detector = PointerNode {
         this@PlayerGestureHandlerNode.size = size
+        //
         coroutineScope.launch {
             detectTapGesture()
         }
@@ -205,6 +210,19 @@ private class PlayerGestureHandlerNode(
         coroutineScope.launch {
             detectDragGesture()
         }
+    }
+
+    /**
+     * Returns true if [offset] lies within the safe zone of this [PointerInputScope].
+     *
+     * The safe zone excludes a 30.dp margin from each edge.
+     */
+    fun PointerInputScope.isGestureInSafeZone(offset: Offset): Boolean{
+        val safeInset = 30.dp.toPx()
+        return  !(offset.x < safeInset ||
+                offset.x > size.width - safeInset ||
+                offset.y < safeInset ||
+                offset.y > size.height - safeInset)
     }
 
     // some lateint properties
@@ -230,8 +248,7 @@ private class PlayerGestureHandlerNode(
         pointerEvent: PointerEvent,
         pass: PointerEventPass,
         bounds: IntSize
-    ) =
-        detector.onPointerEvent(pointerEvent, pass, bounds)
+    ) = detector.onPointerEvent(pointerEvent, pass, bounds)
 
 
     // A simple fun that autohides the message after 3 seconds.
@@ -277,11 +294,7 @@ private class PlayerGestureHandlerNode(
         val fontFamilyResolver = currentValueOf(LocalFontFamilyResolver)
         val density = currentValueOf(LocalDensity)
         val layoutDirection = currentValueOf(LocalLayoutDirection)
-        style = currentValueOf(LocalTextStyle).copy(
-            shadow = textShadow,
-            fontSize = 24.sp,
-            color = Color.White
-        )
+        style = currentValueOf(LocalTextStyle).copy(shadow = textShadow, color = Color.White)
         textMeasurer = TextMeasurer(fontFamilyResolver, density, layoutDirection, 8)
         facade = currentValueOf(LocalSystemFacade)
         manager = (facade as Activity).getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -290,11 +303,55 @@ private class PlayerGestureHandlerNode(
     val textShadow = Shadow(offset = Offset(5f, 5f), blurRadius = 8.0f)
     override fun ContentDrawScope.draw() {
         drawContent()
-        Log.d(TAG, "draw: invalidating")
         val msg = message ?: return
-        // Canvas size comes from DrawScope
-        val centerX = (size.width - (msg.size.width)) / 2f
-        drawText(msg, topLeft = Offset(centerX, 70.dp.toPx()))
+
+        // Measure text size
+        val textWidth = msg.size.width
+        val textHeight = msg.size.height
+
+        // Position text horizontally centered
+        val centerX = (size.width - textWidth) / 2f
+        val topY = 40.dp.toPx()
+
+        // Padding
+        val vPadding = 4.dp.toPx()
+        val hPadding = 12.dp.toPx()
+
+        // Rect bounds
+        val rectLeft = centerX - hPadding
+        val rectTop = topY - vPadding
+        val rectRight = centerX + textWidth + hPadding
+        val rectBottom = topY + textHeight + vPadding
+
+        val rectSize = Size(rectRight - rectLeft, rectBottom - rectTop)
+        val rectTopLeft = Offset(rectLeft, rectTop)
+
+        // Corner radius = half of rect height → pill shape
+        val cornerRadius = CornerRadius(rectSize.height / 2f, rectSize.height / 2f)
+
+        // Background rounded rect (20% alpha white)
+        drawRoundRect(
+            color = Color.White.copy(alpha = ContentAlpha.indication),
+            topLeft = rectTopLeft,
+            size = rectSize,
+            cornerRadius = cornerRadius
+        )
+
+        // Border (stroke) around rect
+        drawRoundRect(
+            color = Color.White,
+            topLeft = rectTopLeft,
+            size = rectSize,
+            cornerRadius = cornerRadius,
+            style = Stroke(width = Dp.Hairline.toPx())
+        )
+
+        // Text in pure white
+        drawText(
+            msg,
+            topLeft = Offset(centerX, topY),
+            color = Color.White
+        )
     }
 
     override fun onDetach() {
@@ -331,29 +388,32 @@ private class PlayerGestureHandlerNode(
             // Double the playback speed
             viewState.playbackSpeed = 2 * speed
             // Display ">> 2x" message without auto-hiding
-            emit(">> 2x", false)
+            emit("⏭ 2x", false)
         } else { // When the long press is released
             // Restore the original playback speed
             viewState.playbackSpeed = speed
-            emit(">> 1x", true)
+            emit("⏭ 1x", true)
         }
     }
 
     suspend fun PointerInputScope.detectTapGesture() {
-        var delayJob: Job? = null              // Job used to delay execution for multi-tap detection.
-        var lastTapMills = 0L                  // Timestamp of the last tap (used to detect double/triple taps).
+        var delayJob: Job? =
+            null              // Job used to delay execution for multi-tap detection.
+        var lastTapMills =
+            0L                  // Timestamp of the last tap (used to detect double/triple taps).
         var tapCount = 0                       // Counter for consecutive taps.
         awaitEachGesture {
+            // Wait for the first pointer down event (finger touches screen) and consume it
+            // so it isn’t propagated further down the gesture chain.
+            val down = awaitFirstDown().also { it.consume() }
+            // don't proceed if not in safe zone
+            if (!isGestureInSafeZone(down.position))
+                return@awaitEachGesture
             // If the screen is locked, any tap should only toggle the lock icon visibility.
             if (isLocked) {
                 toggleVisibility()
                 return@awaitEachGesture
             }
-
-            // Wait for the first pointer down event (finger touches screen) and consume it
-            // so it isn’t propagated further down the gesture chain.
-            val down = awaitFirstDown().also { it.consume() }
-
             // Launch a coroutine to detect a long press.
             // If the user holds down longer than the system-defined timeout,
             // trigger the onLongPress action.
@@ -392,7 +452,7 @@ private class PlayerGestureHandlerNode(
                 // Single tap: This is the first tap or a tap that occurred after the double-tap timeout.
                 else -> {
                     // Reset tap count for a new sequence.
-                    tapCount = 1
+                    tapCount = 0
                     // Cancel any previously scheduled single tap job.
                     delayJob?.cancel()
                     // Schedule a single tap action to run after the double-tap timeout.
@@ -416,6 +476,9 @@ private class PlayerGestureHandlerNode(
         var mode = 0               // Gesture mode: 0 = undecided, 1 = seek, 2 = volume, 3 = brightness
         detectDragGestures(
             onDragStart = {
+                // don't proceed if not in safe zone
+                if (!isGestureInSafeZone(it))
+                    return@detectDragGestures
                 // If the screen is locked, a drag should only toggle lock icon visibility.
                 if (isLocked) {
                     toggleVisibility()
@@ -446,6 +509,9 @@ private class PlayerGestureHandlerNode(
                 // Consume the pointer change so it isn’t passed further down the chain.
                 change.consume()
                 val position = change.position
+                // don't proceed if not in safe zone
+                if (!isGestureInSafeZone(position))
+                    return@detectDragGestures
                 val (width, height) = size
 
                 // On the first drag event, determine gesture mode:
@@ -453,8 +519,10 @@ private class PlayerGestureHandlerNode(
                 // - Vertical drag on left half → VOLUME
                 // - Vertical drag on right half → BRIGHTNESS
                 if (mode == 0) {
-                    val vertical = abs(dy) > abs(dx)       // Check if drag is more vertical than horizontal
-                    val left = position.x < width / 2      // Check if drag started on left half of the screen
+                    val vertical =
+                        abs(dy) > abs(dx)       // Check if drag is more vertical than horizontal
+                    val left =
+                        position.x < width / 2      // Check if drag started on left half of the screen
                     mode = when {
                         !vertical -> 1                     // Horizontal drag → SEEK mode
                         left -> 2                          // Vertical drag on left side → VOLUME mode
@@ -464,14 +532,16 @@ private class PlayerGestureHandlerNode(
                 // Handle gesture based on detected mode
                 when (mode) {
                     1 -> { // SEEK mode
-                        val pct = dx / width               // Convert horizontal drag distance into percentage of screen width
+                        val pct =
+                            dx / width               // Convert horizontal drag distance into percentage of screen width
                         seek += (pct * 60_000).roundToLong() // Scale percentage to milliseconds (60s per full width drag)
                         Log.d(TAG, "onHorizontalDrag: $pct")
                         seekBy(seek)                       // Apply seek offset to playback
                     }
 
                     2 -> { // VOLUME mode
-                        val pct = dy / height * -1f        // Convert vertical drag distance into percentage of screen height
+                        val pct =
+                            dy / height * -1f        // Convert vertical drag distance into percentage of screen height
                         // Negative sign ensures upward drag increases volume
                         volume = (volume + pct).coerceIn(0f, 1f) // Clamp volume between 0% and 100%
                         manager.volume = volume            // Apply new volume level to system
@@ -480,7 +550,8 @@ private class PlayerGestureHandlerNode(
                     }
 
                     3 -> { // BRIGHTNESS mode
-                        val pct = dy / height * -1f        // Convert vertical drag distance into percentage of screen height
+                        val pct =
+                            dy / height * -1f        // Convert vertical drag distance into percentage of screen height
                         // Negative sign ensures upward drag increases brightness
                         val newBrightness = brightness + pct
                         // If brightness goes below 0, set to -1 (automatic mode), else clamp between 0% and 100%
