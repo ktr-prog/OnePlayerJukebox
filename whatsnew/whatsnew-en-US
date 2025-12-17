@@ -1,4 +1,4 @@
-✓ Improved immersive mode by removing system nav background.
-✓ New toggles: wait for splash animation, enable shared element transitions.
-✓ Gesture fixes: safer area checks, better feedback, double‑tap seek corrected, brightness min 10%, hardware Enter key support, long‑press toast bug fixed.
-✓ Console & Timebar: equalizer widget bug fixed, enable/disable logic corrected.
+✓ Resolved issue causing incomplete splash animation.
+✓ Added monochromatic icon for themed app icon support.
+✓ Introduced TV channel and banner icons.
+✓ Implemented a robust Analytics module in core (migrated from telemetry).

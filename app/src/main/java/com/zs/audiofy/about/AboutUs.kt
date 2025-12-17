@@ -75,6 +75,7 @@ import com.zs.audiofy.common.compose.source
 import com.zs.audiofy.settings.DancingScriptFontFamily
 import com.zs.audiofy.settings.Settings
 import com.zs.compose.foundation.plus
+import com.zs.compose.foundation.shapes.SquircleShape
 import com.zs.compose.foundation.textArrayResource
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AppTheme
@@ -151,7 +152,7 @@ private fun App(
             model = value.second,
             contentDescription = null,
             modifier = Modifier
-                .shadow(4.dp, RoundedCornerShape(24), true)
+                .shadow(4.dp, SquircleShape(0.7f), true)
                 .size(60.dp),
             onError = {
                 Log.d("about_us", "App: ${it.result.throwable.message}")
@@ -217,8 +218,8 @@ private fun Sponsor(modifier: Modifier = Modifier) {
         // app icon
         leading = {
             Surface(
-                color = AppTheme.colors.background(4.dp),
-                shape = AppTheme.shapes.large,
+                color = Color.Black,
+                shape = SquircleShape(0.7f),
                 modifier = Modifier.size(64.dp),
                 content = {
                     Icon(

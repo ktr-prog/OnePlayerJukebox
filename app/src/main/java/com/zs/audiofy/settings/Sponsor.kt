@@ -44,6 +44,7 @@ import com.zs.audiofy.common.IAP_BUY_ME_COFFEE
 import com.zs.audiofy.common.IAP_NO_ADS
 import com.zs.audiofy.common.compose.LocalSystemFacade
 import com.zs.audiofy.common.compose.purchase
+import com.zs.compose.foundation.shapes.SquircleShape
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AppTheme
 import com.zs.compose.theme.BaseListItem
@@ -87,8 +88,8 @@ fun Sponsor(modifier: Modifier = Modifier) {
         // app icon
         leading = {
             Surface(
-                color = AppTheme.colors.background(4.dp),
-                shape = AppTheme.shapes.large,
+                color = Color.Black,
+                shape = SquircleShape(0.7f),
                 modifier = Modifier.size(64.dp),
                 content = {
                     Icon(
