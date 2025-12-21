@@ -67,8 +67,8 @@ android {
         applicationId = "com.googol.android.apps.oneplayer"
         minSdk = 28
         targetSdk = 36
-        versionCode = 18
-        versionName = "1.5.2-beta"
+        versionCode = 19
+        versionName = "1.5.3-beta"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
         // Load secrets into BuildConfig
