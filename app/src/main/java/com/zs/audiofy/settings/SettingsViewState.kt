@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.zs.audiofy.R
-import com.zs.audiofy.common.ColorizationStrategy
+import com.zs.audiofy.common.AccentColorPolicy
 import com.zs.audiofy.common.IAP_ARTWORK_SHAPE_ROUNDED_RECT
 import com.zs.audiofy.common.IAP_PLATFORM_WIDGET_IPHONE
 import com.zs.audiofy.common.NightMode
@@ -151,7 +151,7 @@ object Settings {
     val NIGHT_MODE =
         stringPreferenceKey(
             "${PREFIX}_night_mode",
-            NightMode.YES,
+            NightMode.ENABLED,
             object : StringSaver<NightMode> {
                 override fun save(value: NightMode): String = value.name
                 override fun restore(value: String): NightMode = NightMode.valueOf(value)
@@ -176,13 +176,13 @@ object Settings {
     //val CLOSE_WHEN_TASK_REMOVED = Playback.PREF_KEY_CLOSE_WHEN_REMOVED
     val COLORIZATION_STRATEGY = intPreferenceKey(
         "${PREFIX}_colorization_strategy",
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ColorizationStrategy.Wallpaper else ColorizationStrategy.Default,
-        object : IntSaver<ColorizationStrategy> {
-            override fun restore(value: Int): ColorizationStrategy {
-                return ColorizationStrategy.entries[value]
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) AccentColorPolicy.WALLPAPER else AccentColorPolicy.DEFAULT,
+        object : IntSaver<AccentColorPolicy> {
+            override fun restore(value: Int): AccentColorPolicy {
+                return AccentColorPolicy.entries[value]
             }
 
-            override fun save(value: ColorizationStrategy): Int {
+            override fun save(value: AccentColorPolicy): Int {
                 return value.ordinal
             }
         }

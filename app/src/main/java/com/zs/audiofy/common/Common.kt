@@ -52,6 +52,17 @@ typealias Filter = Pair<Boolean, Action>
 typealias Mapped<T> = Map<CharSequence, List<T>>
 
 /**
+ * Represents the available options for applying dark theme behavior within the application.
+ */
+enum class NightMode { ENABLED, DISABLED, FOLLOW_SYSTEM }
+
+/**
+ * Defines the strategies for extracting a source color accent
+ * to construct the application theme.
+ */
+enum class AccentColorPolicy { CUSTOM, DEFAULT, WALLPAPER, ARTWORK }
+
+/**
  * Extracts the domain portion from a [NavDestination]'s route.
  *
  * The domain is considered to be the part of the route before the first '/'.
@@ -164,5 +175,3 @@ val Action.Companion.EDIT get() = ACTION_EDIT
 val Action.Companion.PLAY_NEXT get() = ACTION_PLAY_NEXT
 val ACTION_ADD_TO_PLAYLIST = Action(R.string.add_to_playlist, Icons.Outlined.PlaylistAdd)
 val Action.Companion.PLAYLIST_ADD get() = ACTION_ADD_TO_PLAYLIST
-
-

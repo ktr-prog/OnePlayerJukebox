@@ -18,7 +18,6 @@
 
 package com.zs.audiofy.settings
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyListScope
@@ -33,7 +32,6 @@ import androidx.compose.material.icons.outlined.Camera
 import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.FormatSize
 import androidx.compose.material.icons.outlined.Recycling
-import androidx.compose.material.icons.outlined.Segment
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.TouchApp
 import androidx.compose.material.icons.outlined.Tune
@@ -43,7 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.zs.audiofy.R
-import com.zs.audiofy.common.ColorizationStrategy
+import com.zs.audiofy.common.AccentColorPolicy
 import com.zs.audiofy.common.NightMode
 import com.zs.audiofy.common.compose.preference
 import com.zs.compose.foundation.textArrayResource
@@ -204,11 +202,11 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
     item(contentType = CONTENT_TYPE_PREF) {
         val colorizationStrategy by preference(Settings.COLORIZATION_STRATEGY)
         SwitchPreference(
-            checked = colorizationStrategy == ColorizationStrategy.Wallpaper,
+            checked = colorizationStrategy == AccentColorPolicy.WALLPAPER,
             text = textResource(R.string.pref_colorization_strategy),
             onCheckedChange = { should: Boolean ->
                 val strategy =
-                    if (should) ColorizationStrategy.Wallpaper else ColorizationStrategy.Default
+                    if (should) AccentColorPolicy.WALLPAPER else AccentColorPolicy.DEFAULT
                 viewState.set(Settings.COLORIZATION_STRATEGY, strategy)
             },
             icon = Icons.Default.ColorLens,

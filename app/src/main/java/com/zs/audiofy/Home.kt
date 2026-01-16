@@ -79,7 +79,7 @@ import com.zs.audiofy.audios.directory.Genres
 import com.zs.audiofy.audios.directory.RouteAlbums
 import com.zs.audiofy.audios.directory.RouteArtists
 import com.zs.audiofy.audios.directory.RouteGenres
-import com.zs.audiofy.common.ColorizationStrategy
+import com.zs.audiofy.common.AccentColorPolicy
 import com.zs.audiofy.common.NightMode
 import com.zs.audiofy.common.Route
 import com.zs.audiofy.common.SystemFacade
@@ -625,8 +625,8 @@ fun Home(
     val isDark = run {
         val mode by activity.observeAsState(key = Settings.NIGHT_MODE)
         when (mode) {
-            NightMode.YES -> true
-            NightMode.NO -> false
+            NightMode.ENABLED -> true
+            NightMode.DISABLED -> false
             NightMode.FOLLOW_SYSTEM -> isSystemInDarkTheme()
         }
     }
@@ -638,7 +638,7 @@ fun Home(
         isLight = !isDark,
         fontFamily = Settings.DefaultFontFamily,
         accent = when {
-            strategy == ColorizationStrategy.Wallpaper && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+            strategy == AccentColorPolicy.WALLPAPER && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
                 dynamicAccentColor(activity, isDark)
 
             isDark -> Settings.DarkAccentColor
