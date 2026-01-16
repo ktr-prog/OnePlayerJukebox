@@ -39,8 +39,12 @@
     <string name="changelog_155_beta" translatable="false">
     <b>What’s New <font color='purple'>(v1.5.5-beta)\n</font></b>
     <font color='grey'>
-        \n✓
+        \n✓ Modernized UI handling:
+        \n   • Adopted WindowCompat.enableEdgeToEdge(window) for improved system bar &amp; cutout support.
+        \n✓ Deprecated API cleanup:
+        \n   • Replaced setDecorFitsSystemWindows(window, false) with enableEdgeToEdge(window).
     </font></string>
+
 
     <!--1.5.4-beta-->
     <string name="changelog_154_beta" translatable="false">
