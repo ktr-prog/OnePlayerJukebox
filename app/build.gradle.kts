@@ -1,26 +1,31 @@
+// Import Gradle DSL helpers for Android and Kotlin configuration
 import com.android.build.api.dsl.ApplicationDefaultConfig
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
+// -----------------------------
+// Plugins Section
+// -----------------------------
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.google.service)
-    alias(libs.plugins.crashanlytics)
+    alias(libs.plugins.android.application) // Android Application plugin → marks this module as the main app entry point
+    alias(libs.plugins.kotlin.android) // Kotlin Android plugin → enables Kotlin support for Android development
+    alias(libs.plugins.kotlin.compose) // Kotlin Compose plugin → adds Jetpack Compose compiler integration
+    alias(libs.plugins.google.services) // Google Services plugin → integrates Firebase/Google services (e.g., Analytics, Auth)
+    alias(libs.plugins.crashanlytics)// Crashlytics plugin → enables Firebase Crashlytics for crash reporting
 }
 
+// -----------------------------
+// Kotlin Compiler Options
+// -----------------------------
+// Configure Kotlin compiler with JVM target and advanced language features
 kotlin {
     compilerOptions {
-        // Target JVM bytecode version (was "11" string, now typed enum)
+        // Target JVM bytecode version (modern Java 17 features)
         jvmTarget = JvmTarget.JVM_17
-
-        // Set Kotlin language and API versions to 2.3
-        languageVersion = KotlinVersion.KOTLIN_2_3
-        apiVersion = KotlinVersion.KOTLIN_2_3
 
         // Add experimental/advanced compiler flags
         freeCompilerArgs.addAll(
+            //   "-XXLanguage:+ExplicitBackingFields", //  Explicit backing fields
+            "-XXLanguage:+NestedTypeAliases",
             "-Xopt-in=kotlin.RequiresOptIn", // Opt-in to @RequiresOptIn APIs
             "-Xwhen-guards",                 // Enable experimental when-guards
             "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi", // Compose foundation experimental
@@ -32,110 +37,118 @@ kotlin {
     }
 }
 
-// The secrets that needs to be added to BuildConfig at runtime.
+// -----------------------------
+// Secrets Management
+// -----------------------------
+// Secrets injected into BuildConfig at runtime (from GitHub Actions env variables)
 private val secrets = arrayOf("ADS_APP_ID", "PLAY_CONSOLE_APP_RSA_KEY")
 
 /**
- * Adds a string BuildConfig field to the project.
+ * Helper function to add a string BuildConfig field.
  */
 private fun ApplicationDefaultConfig.buildConfigField(name: String, value: String) =
     buildConfigField("String", name, "\"" + value + "\"")
 
+// -----------------------------
+// Android Configuration
+// -----------------------------
 android {
-    buildFeatures { compose = true; buildConfig = true }
-    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
-    namespace = "com.zs.audiofy"
-    compileSdk = 36
+    buildFeatures { compose = true; buildConfig = true } // Enable Compose and BuildConfig generation
+    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }  // Exclude redundant license files from packaging
+    namespace = "com.zs.audiofy" // Unique namespace for the app
+    compileSdk = 36 // Compile against Android SDK level 36 → latest APIs available
 
-    // Config. the compose compiler
+    // -----------------------------
+    // Compose Compiler Configuration
+    // -----------------------------
     composeCompiler {
-        // enableStrongSkippingMode = false
+        // Stability configuration for Compose compiler
         // TODO - I guess disable these in release builds.reportsDestination =
         //     layout.buildDirectory.dir("compose_compiler")
-        // metricsDestination = layout.buildDirectory.dir("compose_compiler")
-         stabilityConfigurationFiles = listOf(
-             rootProject.layout.projectDirectory.file("stability_config.conf")
-         )
-    }
-    //
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    defaultConfig {
-        applicationId = "com.googol.android.apps.oneplayer"
-        minSdk = 28
-        targetSdk = 36
-        versionCode = 22
-        versionName = "1.5.6-beta"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables { useSupportLibrary = true }
-        // Load secrets into BuildConfig
-        // These are passed through env of github.
-        for (secret in secrets) {
-            buildConfigField(secret, System.getenv(secret) ?: "")
-        }
-    }
-
-    buildTypes {
-        // Configuration for the release build type.
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            // signingConfig = signingConfigs.getByName("debug") // 👈 use debug keys here
-        }
-
-        // Configuration for the debug build type.
-        // Appends ".debug" to the application ID. This allows installing debug and release versions on the same device.
-        // Defines a string resource specifically for the debug build.
-        debug {
-            applicationIdSuffix = ".debug"
-            resValue("string", "launcher_label", "Debug")
-            versionNameSuffix = "-debug"
-        }
-    }
-    dynamicFeatures += setOf(":feature:telemetry", ":feature:codex")
-    composeCompiler {
-        // enableStrongSkippingMode = false
-        // TODO - I guess disable these in release builds.
-        // reportsDestination = layout.buildDirectory.dir("compose_compiler")
         // metricsDestination = layout.buildDirectory.dir("compose_compiler")
         stabilityConfigurationFiles = listOf(
             rootProject.layout.projectDirectory.file("stability_config.conf")
         )
     }
-}
-// Declare app dependencies
-dependencies {
-    implementation(libs.androidx.koin)
-    implementation(libs.toolkit.preferences)
-    implementation(libs.androidx.startup.runtime)
-    implementation(libs.androidx.core.splashscreen)
-    implementation(libs.accompanist.permissions)
-    implementation(libs.androidx.ui.text.google.fonts)
-    implementation(libs.chrisbanes.haze)
-    implementation(libs.navigation.compose)
-    implementation(libs.lottie.compose)
-    implementation(libs.toolkit.theme)
-    implementation(libs.toolkit.foundation)
-    implementation(libs.androidx.constraint.layout.compose)
-    // Play
-    implementation(libs.play.app.update.ktx)
-    implementation(libs.play.app.review.ktx)
-    implementation(libs.play.feature.delivery.ktx)
-    // This is here temporarily needs to be moved to other pkg.
-    implementation(libs.mp3agic)
 
-    // bundles
-    implementation(libs.bundles.icons)
-    implementation(libs.bundles.compose.ui)
-    debugImplementation(libs.bundles.compose.ui.tooling)
-    api(project(":core"))
-    implementation(project(":feature:widget"))
-    implementation(libs.androidx.graphics.shapes)
+    // -----------------------------
+    // Java Compatibility Options
+    // -----------------------------
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    // -----------------------------
+    // Default Config
+    // -----------------------------
+    defaultConfig {
+        applicationId = "com.googol.android.apps.oneplayer" // Unique app ID
+        minSdk = 28                                         // Minimum supported Android version
+        targetSdk = 36                                      // Target SDK
+        versionCode = 22                                    // Internal version code
+        versionName = "1.5.6-beta"                          // User-facing version name
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables { useSupportLibrary = true }
+
+        // Inject secrets into BuildConfig (from environment variables)
+        for (secret in secrets) {
+            buildConfigField(secret, System.getenv(secret) ?: "")
+        }
+    }
+
+    // -----------------------------
+    // Build Types
+    // -----------------------------
+    buildTypes {
+        // Release build configuration
+        release {
+            isMinifyEnabled = true       // Enable code shrinking/obfuscation
+            isShrinkResources = true     // Remove unused resources
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            // signingConfig = signingConfigs.getByName("debug") // 👈 temporary debug signing
+        }
+
+        // Debug build configuration
+        debug {
+            applicationIdSuffix = ".debug"   // Allows installing debug + release side by side
+            resValue("string", "launcher_label", "Debug") // Custom launcher label
+            versionNameSuffix = "-debug"     // Append suffix to version name
+        }
+    }
+    dynamicFeatures += setOf(":feature:codex")
+}
+
+// -----------------------------
+// Dependencies
+// -----------------------------
+// Core libraries and Compose ecosystem
+dependencies {
+    implementation(libs.androidx.koin)                // Dependency injection with Koin
+    implementation(libs.bundles.compose)              // Jetpack Compose bundle
+    implementation(libs.androidx.startup)             // App startup initialization
+    implementation(libs.androidx.splashscreen)        // Splash screen API
+    implementation(libs.accompanist.permissions)      // Permissions handling in Compose
+    implementation(libs.google.fonts)                 // Google Fonts integration
+    implementation(libs.chrisbanes.haze)              // Visual effects library
+    implementation(libs.nav2.compose)                 // Navigation for Compose
+    implementation(libs.lottie.compose)               // Lottie animations in Compose
+    implementation(libs.toolkit.theme)                // Custom theme toolkit
+    implementation(libs.toolkit.foundation)           // Foundation toolkit
+    implementation(libs.toolkit.preferences)          // Preferences toolkit
+    implementation(libs.coil.compose)                 // Image loading in Compose
+    implementation(libs.coil.video)                   // Video thumbnails with Coil
+    implementation(libs.androidx.constraint.layout)   // ConstraintLayout support
+    implementation(libs.bundles.play.services)  // Google Play Services bundle
+    implementation(libs.mp3agic)  // Temporary MP3 library (to be moved later)
+    implementation(libs.material.icons.core)  // Material icon bundles
+    implementation(libs.material.icons.extended)
+    implementation(libs.androidx.graphics.shapes) // Graphics utilities
+
+    // Project modules
+    api(project(":core"))                             // Expose core module APIs
+    implementation(project(":feature:widget"))        // Widget feature module
 }

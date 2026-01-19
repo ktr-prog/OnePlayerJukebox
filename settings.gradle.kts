@@ -24,6 +24,5 @@ dependencyResolutionManagement {
 rootProject.name = "OnePlayer"
 include(":app")
 include(":core")
-include(":feature:telemetry")
 include(":feature:codex")
 include(":feature:widget")

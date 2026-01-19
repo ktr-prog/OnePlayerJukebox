@@ -627,7 +627,7 @@ fun Home(
         when (mode) {
             NightMode.ENABLED -> true
             NightMode.DISABLED -> false
-            NightMode.FOLLOW_SYSTEM -> isSystemInDarkTheme()
+            else -> isSystemInDarkTheme()
         }
     }
 

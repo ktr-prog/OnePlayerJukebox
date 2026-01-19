@@ -1,39 +1,48 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
+// -----------------------------------------------------------------------------
+// PLUGINS
+// -----------------------------------------------------------------------------
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.android.library) // Android library plugin
+    alias(libs.plugins.kotlin.android) // Kotlin Android plugin
+    alias(libs.plugins.kotlin.compose) // Jetpack Compose plugin
 }
 
+// -----------------------------------------------------------------------------
+// KOTLIN COMPILER OPTIONS
+// -----------------------------------------------------------------------------
+// Configure Kotlin compiler settings for this module
 kotlin {
     compilerOptions {
-        // Target JVM bytecode version (was "11" string, now typed enum)
         jvmTarget = JvmTarget.JVM_17
-
-        // Set Kotlin language and API versions to 2.3
-        languageVersion = org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_3
-        apiVersion = KotlinVersion.KOTLIN_2_3
     }
 }
 
+// -----------------------------------------------------------------------------
+// ANDROID CONFIGURATION
+// -----------------------------------------------------------------------------
+// Core Android build settings for this library module
 android {
+    // Unique namespace for generated R class and manifest
     namespace = "com.zs.feature.widget"
-    compileSdk = 36
-    buildFeatures { compose = true }
-    //
+    compileSdk = 36 // Compile against the latest Android SDK version
+    buildFeatures { compose = true } // Enable Jetpack Compose support
+
+    // Java compatibility settings (ensures consistent bytecode level)
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    //
+
+    // Default configuration for all build variants
     defaultConfig {
-        minSdk = 28
+        minSdk = 28  // Minimum supported Android version
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
-    //
+
+    // Build type definitions
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -45,8 +54,12 @@ android {
     }
 }
 
+// -----------------------------------------------------------------------------
+// DEPENDENCIES
+// -----------------------------------------------------------------------------
+// External libraries and internal modules required by this feature
 dependencies {
-    implementation(libs.glance.appwidget)
-    implementation(libs.glance.material3)
-    implementation(project(":core"))
+    implementation(libs.glance.appwidget) // Jetpack Glance library for building app widgets
+    implementation(libs.glance.material3) // Material 3 components for Glance widgets
+    implementation(project(":core")) // Internal core module dependency
 }
