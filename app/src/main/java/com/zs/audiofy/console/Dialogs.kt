@@ -27,11 +27,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Audiotrack
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -50,6 +45,7 @@ import com.zs.audiofy.R
 import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.emit
 import com.zs.audiofy.common.ellipsize
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.fadingEdge
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AlertDialog
@@ -108,7 +104,7 @@ fun PlaybackSpeed(
         },
         navigationIcon = {
             IconButton(
-                icon = Icons.Outlined.Close,
+                icon = vectorResource(Res.drawable.ic_close_filled),
                 contentDescription = null,
                 onClick = onDismissRequest
             )
@@ -134,7 +130,7 @@ fun PlaybackSpeed(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 // Decrease
                 Chip(
-                    content = { Icon(Icons.Outlined.Remove, contentDescription = null) },
+                    content = { Icon(vectorResource(Res.drawable.ic_remove), contentDescription = null) },
                     colors = chipColors,
                     border = ChipDefaults.outlinedBorder,
                     onClick = {
@@ -159,7 +155,7 @@ fun PlaybackSpeed(
 
                 // Increase
                 Chip(
-                    content = { Icon(Icons.Outlined.Add, contentDescription = null) },
+                    content = { Icon(vectorResource(Res.drawable.ic_add), contentDescription = null) },
                     colors = chipColors,
                     border = ChipDefaults.outlinedBorder,
                     onClick = {
@@ -226,7 +222,7 @@ fun SleepTimer(
         gravity = if (width > height) Gravity.CENTER else Gravity.BOTTOM,
         navigationIcon = {
             IconButton(
-                icon = Icons.Outlined.Close,
+                icon = vectorResource(Res.drawable.ic_close_filled),
                 contentDescription = null,
                 onClick = onDismissRequest
             )
@@ -271,7 +267,7 @@ fun SleepTimer(
                 )
                 // Decrease
                 Chip(
-                    content = { Icon(Icons.Outlined.Remove, contentDescription = null) },
+                    content = { Icon(vectorResource(Res.drawable.ic_remove), contentDescription = null) },
                     colors = chipColors,
                     border = ChipDefaults.outlinedBorder,
                     onClick = {
@@ -290,7 +286,7 @@ fun SleepTimer(
 
                 // Increase
                 Chip(
-                    content = { Icon(Icons.Outlined.Add, contentDescription = null) },
+                    content = { Icon(vectorResource(Res.drawable.ic_add), contentDescription = null) },
                     colors = chipColors,
                     border = ChipDefaults.outlinedBorder,
                     onClick = {
@@ -323,7 +319,7 @@ fun MediaConfigDialog(
         gravity = if (width > height) Gravity.CENTER else Gravity.BOTTOM,
         navigationIcon = {
             IconButton(
-                icon = Icons.Outlined.Close,
+                icon = vectorResource(Res.drawable.ic_close_filled),
                 contentDescription = null,
                 onClick = onDismissRequest
             )
@@ -403,7 +399,7 @@ fun MediaConfigDialog(
                                 border = if (selected) ChipDefaults.outlinedBorder else ButtonDefaults.outlinedBorder,
                                 leadingIcon = {
                                     Icon(
-                                        Icons.Outlined.Audiotrack,
+                                        vectorResource(Res.drawable.ic_audio_file),
                                         contentDescription = null
                                     )
                                 },
@@ -430,7 +426,7 @@ fun MediaConfigDialog(
                                 border = if (selected) ChipDefaults.outlinedBorder else ButtonDefaults.outlinedBorder,
                                 leadingIcon = {
                                     Icon(
-                                        Icons.Outlined.Audiotrack,
+                                        vectorResource(Res.drawable.ic_audio_file),
                                         contentDescription = null
                                     )
                                 },

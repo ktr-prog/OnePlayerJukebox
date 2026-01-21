@@ -40,12 +40,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ReplyAll
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.DataObject
-import androidx.compose.material.icons.outlined.RateReview
-import androidx.compose.material.icons.outlined.Textsms
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,7 +56,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.zs.audiofy.BuildConfig
-import com.zs.audiofy.R
 import com.zs.audiofy.common.IAP_BUY_ME_COFFEE
 import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.Route
@@ -73,6 +66,7 @@ import com.zs.audiofy.common.compose.background
 import com.zs.audiofy.common.compose.fadingEdge2
 import com.zs.audiofy.common.compose.rememberAcrylicSurface
 import com.zs.audiofy.common.compose.source
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.settings.DancingScriptFontFamily
 import com.zs.audiofy.settings.Settings
 import com.zs.compose.foundation.plus
@@ -243,7 +237,7 @@ private fun Sponsor(modifier: Modifier = Modifier) {
                     // RateUs
                     FilledTonalButton(
                         textResource(Res.string.rate_us),
-                        icon = Icons.Outlined.RateReview,
+                        icon = vectorResource(Res.drawable.ic_rate_review_outline),
                         onClick = facade::launchAppStore,
                         colors = ButtonDefaults.filledTonalButtonColors(
                             backgroundColor = AppTheme.colors.background(
@@ -255,7 +249,7 @@ private fun Sponsor(modifier: Modifier = Modifier) {
                     // Coffee
                     Button(
                         "Buy me a coffee",
-                        icon = Icons.Outlined.DataObject,
+                        icon = vectorResource(Res.drawable.ic_data_object_filled),
                         onClick = { facade.initiatePurchaseFlow(Paymaster.IAP_BUY_ME_COFFEE) },
                     )
                 }
@@ -307,7 +301,7 @@ fun AboutUs() {
                 navigationIcon = {
                     val navController = LocalNavController.current
                     IconButton(
-                        icon = Icons.AutoMirrored.Outlined.ReplyAll,
+                        icon = vectorResource(Res.drawable.ic_reply_all_outline),
                         contentDescription = null,
                         onClick = navController::navigateUp
                     )
@@ -316,19 +310,19 @@ fun AboutUs() {
                     val facade = LocalSystemFacade.current
                     // Star on Github
                     IconButton(
-                        icon = Icons.Outlined.DataObject,
+                        icon = vectorResource(Res.drawable.ic_data_object_filled),
                         contentDescription = null,
                         onClick = { facade.launch(Settings.GithubIntent) },
                     )
                     // Report Bugs on Github.
                     IconButton(
-                        icon = Icons.Outlined.BugReport,
+                        icon = vectorResource(Res.drawable.ic_bug_report_outline),
                         contentDescription = null,
                         onClick = { facade.launch(Settings.GitHubIssuesPage) },
                     )
                     // Join our telegram channel
                     IconButton(
-                        icon = Icons.Outlined.Textsms,
+                        icon = vectorResource(Res.drawable.ic_sms_outline),
                         contentDescription = null,
                         onClick = { facade.launch(Settings.TelegramIntent) },
                     )

@@ -23,6 +23,25 @@
 
 package com.zs.audiofy.common
 
+import android.os.Build
+import androidx.annotation.ChecksSdkIntAtLeast
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.graphics.RectangleShape
+
+/**
+ * Common access point for app-level constants and resources.
+ *
+ * Mirrors the naming convention of Android's [R] class but provides a more
+ * flexible, centralized extension. Inspired by Kotlin Multiplatform patterns,
+ * this reduces direct dependency on the generated [R] class, which is often
+ * cumbersome to access during typing.
+ * @see string
+ * @see drawable
+ * @see manifest
+ * @see shape
+ * @see action
+ * @see dimen
+ */
 object Res {
 
     // Typealiases for direct access to Android resources (R.string, R.drawable, etc.)
@@ -32,4 +51,25 @@ object Res {
     typealias array = com.zs.audiofy.R.array
     typealias plurals = com.zs.audiofy.R.plurals
 
+    /**
+     * Common access to Compose shapes.
+     */
+    object shape {
+        val circle = CircleShape
+        val rectangle = RectangleShape
+    }
+
+    /**
+     * App-related constants and intents.
+     *
+     * Provides URIs, package names, default colors, and permission lists
+     * required for app configuration and external navigation.
+     */
+    object app {
+        /**
+         * Utility to check if the current SDK version is at least [api].
+         */
+        @ChecksSdkIntAtLeast(parameter = 0)
+        fun isAtLeast(api: Int) = Build.VERSION.SDK_INT >= api
+    }
 }

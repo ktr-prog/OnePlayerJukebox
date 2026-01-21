@@ -34,11 +34,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.Textsms
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -57,6 +52,7 @@ import com.zs.audiofy.common.compose.background
 import com.zs.audiofy.common.compose.fadingEdge2
 import com.zs.audiofy.common.compose.rememberAcrylicSurface
 import com.zs.audiofy.common.compose.source
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.plus
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AppTheme
@@ -131,7 +127,7 @@ object RouteSettings : Route {
                     insets = WindowInsets.systemBars.only(WIS.Top),
                     navigationIcon = {
                         Icon(
-                            Icons.Default.Settings,
+                            vectorResource(Res.drawable.ic_settings_outline),
                             null,
                             modifier = Modifier.minimumInteractiveComponentSize()
                         )
@@ -140,13 +136,13 @@ object RouteSettings : Route {
                         // Join our telegram channel
                         val facade = LocalSystemFacade.current
                         IconButton(
-                            icon = Icons.Outlined.Textsms,
+                            icon = vectorResource(Res.drawable.ic_sms_outline),
                             contentDescription = null,
                             onClick = { facade.launch(Settings.TelegramIntent) },
                         )
                         // Report Bugs on Github.
                         IconButton(
-                            icon = Icons.Outlined.BugReport,
+                            icon = vectorResource(Res.drawable.ic_bug_report_outline),
                             contentDescription = null,
                             onClick = { facade.launch(Settings.GitHubIssuesPage) },
                         )
@@ -187,7 +183,7 @@ object RouteSettings : Route {
                     onClick = { viewState.commit(facade) },
                     modifier = Modifier.windowInsetsPadding(inAppNavBarInsets.union(WindowInsets.navigationBars)),
                     content = {
-                        Icon(Icons.Outlined.Save, contentDescription = null)
+                        Icon(vectorResource(Res.drawable.ic_save), contentDescription = null)
                     }
                 )
             },

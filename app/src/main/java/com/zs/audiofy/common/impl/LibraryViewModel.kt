@@ -22,8 +22,6 @@ package com.zs.audiofy.common.impl
 
 import android.net.Uri
 import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Error
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
@@ -150,7 +148,7 @@ class LibraryViewModel(
                 // This case should ideally not happen if the UI is displaying valid recent items.
                 showSnackbar(
                     "Oops! Unknown error",
-                    icon = Icons.Outlined.Error,
+                    icon = vectorResource(Res.drawable.ic_error),
                     accent = Color.Rose
                 )
                 return@runCatching
@@ -173,7 +171,7 @@ class LibraryViewModel(
                 // This case should ideally not happen if the UI is displaying valid newly added items.
                 showSnackbar(
                     "Oops! Unknown error",
-                    icon = Icons.Outlined.Error,
+                    icon = vectorResource(Res.drawable.ic_error),
                     accent = Color.Rose
                 )
                 return@runCatching

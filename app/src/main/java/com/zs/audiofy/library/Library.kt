@@ -33,16 +33,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.outlined.Link
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.collectAsState
@@ -65,7 +60,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.zs.audiofy.R
 import com.zs.audiofy.about.RouteAboutUs
 import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.ContentPadding
@@ -75,6 +69,7 @@ import com.zs.audiofy.common.compose.background
 import com.zs.audiofy.common.compose.fadingEdge2
 import com.zs.audiofy.common.compose.rememberAcrylicSurface
 import com.zs.audiofy.common.compose.source
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.settings.RouteSettings
 import com.zs.compose.foundation.Background
 import com.zs.compose.foundation.ImageBrush
@@ -124,7 +119,7 @@ private fun LibraryTopAppBar(
             // Settings
             val navController = LocalNavController.current
             IconButton(
-                icon = Icons.Outlined.Settings,
+                icon = vectorResource(Res.drawable.ic_settings_outline),
                 onClick = { navController.navigate(RouteSettings()) },
                 contentDescription = null,
                 modifier = Modifier,
@@ -141,7 +136,7 @@ private fun LibraryTopAppBar(
         navigationIcon = {
             val facade = LocalSystemFacade.current
             IconButton(
-                Icons.Default.Info,
+                vectorResource(Res.drawable.ic_info_filled),
                 onClick = { navController.navigate(RouteAboutUs()) },
                 contentDescription = null
             )
@@ -208,7 +203,7 @@ private fun LibraryTopAppBar(
                 contentAlignment = Alignment.BottomEnd,
                 content = {
                     ExtendedFloatingActionButton(
-                        icon = { Icon(Icons.Outlined.Link, contentDescription = null) },
+                        icon = { Icon(vectorResource(Res.drawable.ic_add_link_outline), contentDescription = null) },
                         text = { Label("Link") },
                         onClick = { expanded = !expanded },
                         modifier = Modifier.graphicsLayer {

@@ -28,10 +28,6 @@ import android.view.View
 import android.view.ViewTreeObserver.OnPreDrawListener
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.InstallMobile
-import androidx.compose.material.icons.outlined.Downloading
-import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.NonRestartableComposable
@@ -46,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -223,11 +220,12 @@ class MainActivity : ComponentActivity(), SystemFacade, NavDestListener {
                             restart(true)
                         // The dynamic feature module can now be accessed
                     }
+
                     Flag.FAILED, Flag.UNKNOWN -> {
-                       val res = snackbarHostState.showSnackbar(
-                           getText(Res.string.msg_unknown_error),
-                           action = "Details."
-                       )
+                        val res = snackbarHostState.showSnackbar(
+                            getText(Res.string.msg_unknown_error),
+                            action = "Details."
+                        )
                         if (res == SnackbarResult.ActionPerformed)
                             showSnackbar("Oops! Something went wrong (error ${state.errorCode}) while installing ${state.moduleNames}. Try again?")
                     }
@@ -242,37 +240,44 @@ class MainActivity : ComponentActivity(), SystemFacade, NavDestListener {
             .launchIn(lifecycleScope)
         manager
     }
-    // Observe purchases and prompt the user to install any purchased dynamic features
-    private val inAppPurchasesFlow get() = paymaster.purchases.onEach {purchases ->
-        for (purchase in purchases) {
-            // Skip if the purchase is not purchased
-            if (!purchase.purchased) continue
-            // Update the isAdFreeVersion flag
-            if (purchase.id == Paymaster.IAP_NO_ADS) {
-                //isAdFreeVersion = purchase.purchased
-                continue
-            }
-            val details = paymaster.details.value.find { it.id == purchase.id }
-            // Skip if product details are unavailable or the product is not a dynamic feature
-            if (details == null || !details.isDynamicFeature) continue
-            // Skip if the dynamic feature is already installed
-            if (isFeatureInstalled(details.dynamicModuleName)) continue
-            // Prompt the user to install the dynamic feature
-            val response = snackbarHostState.showSnackbar(
-                resources.getText2(
-                    id = Res.string.msg_install_dynamic_module_ss,
-                    details.title
-                ),
-                duration = SnackbarDuration.Indefinite,
-                action = resources.getText2(Res.string.install),
-                icon = Icons.Default.InstallMobile,
-            )
-            if (response == SnackbarResult.ActionPerformed)
-                initiateFeatureInstall(details.dynamicFeatureRequest)
-        }
-    }
 
-    override fun isFeatureInstalled(id: String): Boolean = inAppFeatureManager.installedModules.contains(id)
+    // Observe purchases and prompt the user to install any purchased dynamic features
+    private val inAppPurchasesFlow
+        get() = paymaster.purchases.onEach { purchases ->
+            for (purchase in purchases) {
+                // Skip if the purchase is not purchased
+                if (!purchase.purchased) continue
+                // Update the isAdFreeVersion flag
+                if (purchase.id == Paymaster.IAP_NO_ADS) {
+                    //isAdFreeVersion = purchase.purchased
+                    continue
+                }
+                val details = paymaster.details.value.find { it.id == purchase.id }
+                // Skip if product details are unavailable or the product is not a dynamic feature
+                if (details == null || !details.isDynamicFeature) continue
+                // Skip if the dynamic feature is already installed
+                if (isFeatureInstalled(details.dynamicModuleName)) continue
+                // Prompt the user to install the dynamic feature
+                val response = snackbarHostState.showSnackbar(
+                    resources.getText2(
+                        id = Res.string.msg_install_dynamic_module_ss,
+                        details.title
+                    ),
+                    duration = SnackbarDuration.Indefinite,
+                    action = resources.getText2(Res.string.install),
+                    icon = ImageVector.vectorResource(
+                        theme,
+                        resources,
+                        Res.drawable.ic_apk_install
+                    ),
+                )
+                if (response == SnackbarResult.ActionPerformed)
+                    initiateFeatureInstall(details.dynamicFeatureRequest)
+            }
+        }
+
+    override fun isFeatureInstalled(id: String): Boolean =
+        inAppFeatureManager.installedModules.contains(id)
 
     override fun initiateFeatureInstall(request: SplitInstallRequest) {
         inAppFeatureManager.startInstall(request)
@@ -423,7 +428,11 @@ class MainActivity : ComponentActivity(), SystemFacade, NavDestListener {
                         message = resources.getText2(Res.string.msg_new_update_downloaded),
                         action = resources.getText2(Res.string.install),
                         duration = SnackbarDuration.Long,
-                        icon = Icons.Outlined.Downloading
+                        icon = ImageVector.vectorResource(
+                            theme,
+                            resources,
+                            Res.drawable.ic_downloading
+                        )
                     )
                     // complete update when ever user clicks on action.
                     if (res == SnackbarResult.ActionPerformed) manager.completeUpdate()
@@ -493,7 +502,7 @@ class MainActivity : ComponentActivity(), SystemFacade, NavDestListener {
                 0 -> showSnackbar(
                     Res.string.release_notes,
                     duration = SnackbarDuration.Indefinite,
-                    icon = Icons.Outlined.NewReleases
+                    icon = ImageVector.vectorResource(theme, resources, Res.drawable.ic_downloading)
                 )
             }
         }
@@ -545,16 +554,17 @@ class MainActivity : ComponentActivity(), SystemFacade, NavDestListener {
         // Initialize
         if (isColdStart) {
             // Wait for Splash Anim
-            if (AppConfig.isSplashAnimWaitEnabled){
+            if (AppConfig.isSplashAnimWaitEnabled) {
                 val uptimeMillis = SystemClock.uptimeMillis()
                 val content = findViewById<View>(android.R.id.content)
-                val onPreDrawListener = object : OnPreDrawListener{
+                val onPreDrawListener = object : OnPreDrawListener {
                     override fun onPreDraw(): Boolean {
                         // wait for splash screen animation to finish.
-                        val finished = SystemClock.uptimeMillis() - uptimeMillis >= 1500 // maxDuration.
+                        val finished =
+                            SystemClock.uptimeMillis() - uptimeMillis >= 1500 // maxDuration.
                         Log.d(TAG, "onPreDraw: $finished")
                         if (finished)
-                            content.viewTreeObserver.removeOnPreDrawListener(this )
+                            content.viewTreeObserver.removeOnPreDrawListener(this)
                         return finished
                     }
                 }

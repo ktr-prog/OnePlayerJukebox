@@ -26,8 +26,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.SdStorage
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +47,7 @@ import com.zs.audiofy.common.compose.ContentPadding
 import com.zs.audiofy.common.compose.LocalNavController
 import com.zs.audiofy.common.compose.directory.Directory
 import com.zs.audiofy.common.fileSizeFormatted
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.videos.RouteVideos
 import com.zs.compose.foundation.foreground
 import com.zs.compose.theme.AppTheme
@@ -132,7 +131,7 @@ private fun Folder(
                 val isRemovable = PathUtils.isRemovableStorage(value.path)
                 if (!isRemovable) return@Box
                 Icon(
-                    imageVector = Icons.Outlined.SdStorage,
+                    imageVector = vectorResource(Res.drawable.ic_save),
                     contentDescription = "removable card",
                     modifier = Modifier
                         .scale(0.8f)

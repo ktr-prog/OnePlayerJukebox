@@ -22,8 +22,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.collectAsState
@@ -54,6 +52,7 @@ import com.zs.audiofy.common.ellipsize
 import com.zs.audiofy.common.isDynamicFeature
 import com.zs.audiofy.common.richDesc
 import com.zs.audiofy.common.shapes.NotchedCornerShape
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.theme.AppTheme
 import com.zs.compose.theme.Colors
 import com.zs.compose.theme.IconButton
@@ -120,7 +119,7 @@ private fun Upgrade(
                         // info
                         val facade = LocalSystemFacade.current
                         IconButton(
-                            icon = Icons.Outlined.Info,
+                            icon = vectorResource(Res.drawable.ic_info),
                             contentDescription = null,
                             onClick = {
                                 facade.showSnackbar(

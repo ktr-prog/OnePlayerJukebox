@@ -30,11 +30,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
-import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,6 +51,7 @@ import com.zs.audiofy.common.compose.chronometer
 import com.zs.audiofy.common.compose.lottie
 import com.zs.audiofy.common.compose.lottieAnimationPainter
 import com.zs.audiofy.common.compose.marque
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.console.RouteConsole
 import com.zs.audiofy.console.widget.Widget
 import com.zs.compose.foundation.SignalWhite
@@ -176,7 +172,7 @@ fun Tiramisu(
                 // control centre
                 overline = {
                     IconButton(
-                        icon = Icons.Outlined.Tune,
+                        icon = vectorResource(Res.drawable.ic_tune),
                         contentDescription = null,
                         onClick = { onRequest(Widget.REQUEST_SHOW_CONFIG) },
                         modifier = Modifier.offset(-12.dp, -16.dp)
@@ -193,7 +189,7 @@ fun Tiramisu(
                             // SeekBackward
                             IconButton(
                                 onClick = { onRequest(Widget.REQUEST_SKIP_TO_PREVIOUS) },
-                                icon = Icons.Outlined.KeyboardDoubleArrowLeft,
+                                icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_left),
                                 contentDescription = null,
                                 tint = tint
                             )
@@ -225,7 +221,7 @@ fun Tiramisu(
                             // SeekNext
                             IconButton(
                                 onClick = { onRequest(Widget.REQUEST_SKIP_TO_NEXT) },
-                                icon = Icons.Outlined.KeyboardDoubleArrowRight,
+                                icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_right),
                                 contentDescription = null,
                                 tint = tint
                             )
@@ -233,7 +229,7 @@ fun Tiramisu(
                             // Expand to fill
                             IconButton(
                                 contentDescription = null,
-                                icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                                icon = vectorResource(Res.drawable.ic_open_in_new),
                                 onClick = { onRequest(Widget.REQUEST_OPEN_CONSOLE) },
                             )
                         }

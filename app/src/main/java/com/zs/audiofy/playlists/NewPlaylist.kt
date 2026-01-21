@@ -24,11 +24,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits.MultiLine
 import androidx.compose.foundation.text.input.TextFieldLineLimits.SingleLine
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.Title
-import androidx.compose.material.icons.outlined.Update
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -43,6 +38,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.zs.audiofy.R
 import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.ContentPadding
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AlertDialog
 import com.zs.compose.theme.AppTheme
@@ -95,7 +91,7 @@ fun NewPlaylist(
         },
         navigationIcon = {
             IconButton(
-                icon = Icons.Outlined.Close,
+                icon = vectorResource(Res.drawable.ic_close_filled),
                 contentDescription = null,
                 onClick = onDismissRequest
             )
@@ -106,7 +102,7 @@ fun NewPlaylist(
             when {
                 isError -> {}
                 value != null -> TonalIconButton(
-                    Icons.Outlined.Update,
+                    vectorResource(Res.drawable.ic_history),
                     contentDescription = stringResource(Res.string.update),
                     onClick = {
                         onConfirm(value.copy(title.text.toString(), desc.text.toString()))
@@ -114,7 +110,7 @@ fun NewPlaylist(
                     modifier = scale
                 )
                 else -> TonalIconButton(
-                    Icons.Outlined.Save,
+                    vectorResource(Res.drawable.ic_save),
                     contentDescription = stringResource(Res.string.create),
                     onClick = {
                         onConfirm(Playlist(title.text.toString(), desc.text.toString()))
@@ -133,7 +129,7 @@ fun NewPlaylist(
                 modifier = Modifier then padding.fillMaxWidth(),
                 lineLimits = SingleLine,
                 leadingIcon = {
-                    Icon(Icons.Outlined.Title, contentDescription = null)
+                    Icon(vectorResource(Res.drawable.ic_format_size), contentDescription = null)
                 },
                 placeholder = {
                     Label(stringResource(Res.string.scr_new_playlist_text_field_placeholder))

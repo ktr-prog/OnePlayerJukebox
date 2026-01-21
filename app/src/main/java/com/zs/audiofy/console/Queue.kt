@@ -34,11 +34,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.QueueMusic
-import androidx.compose.material.icons.outlined.ClearAll
-import androidx.compose.material.icons.twotone.RemoveCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -64,6 +59,7 @@ import com.zs.audiofy.common.compose.emit
 import com.zs.audiofy.common.compose.lottie
 import com.zs.audiofy.common.compose.lottieAnimationPainter
 import com.zs.audiofy.common.compose.shine
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.Background
 import com.zs.compose.foundation.ImageBrush
 import com.zs.compose.foundation.foreground
@@ -182,7 +178,7 @@ fun Queue(viewState: QueueViewState, shape: Shape, insets: WindowInsets) {
             TopAppBar(
                 navigationIcon = {
                     Icon(
-                        Icons.Default.QueueMusic,
+                        vectorResource(Res.drawable.ic_queue),
                         contentDescription = null
                     )
                 },
@@ -213,7 +209,7 @@ fun Queue(viewState: QueueViewState, shape: Shape, insets: WindowInsets) {
                     // Clear all
                     val scale = Modifier.scale(0.8f).padding(end = CP.small)
                     TonalIconButton(
-                        icon = Icons.Outlined.ClearAll,
+                        icon = vectorResource(Res.drawable.ic_clear_all),
                         contentDescription = null,
                         onClick = { viewState.clear() },
                         modifier = scale
@@ -221,7 +217,7 @@ fun Queue(viewState: QueueViewState, shape: Shape, insets: WindowInsets) {
 
                     val dispacher = LocalOnBackPressedDispatcherOwner.current
                     TonalIconButton (
-                        icon = Icons.Default.Close,
+                        icon = vectorResource(Res.drawable.ic_close_filled),
                         contentDescription = null,
                         onClick = { dispacher?.onBackPressedDispatcher?.onBackPressed() },
                         modifier = scale
@@ -279,7 +275,7 @@ fun Queue(viewState: QueueViewState, shape: Shape, insets: WindowInsets) {
                                 actions = {
                                     IconButton(
                                         onClick = { viewState.remove(file.mediaUri!!) },
-                                        icon = Icons.TwoTone.RemoveCircle,
+                                        icon = vectorResource(Res.drawable.ic_remove_circle),
                                         contentDescription = null
                                     )
                                 }

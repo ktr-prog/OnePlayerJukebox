@@ -4,9 +4,6 @@ import android.app.Activity
 import android.net.Uri
 import android.os.Build
 import android.text.format.DateUtils
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ClearAll
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
@@ -123,7 +120,7 @@ class ConsoleViewModel(
             val permission = showSnackbar(
                 Res.string.msg_clear_queue_confirmation,
                 Res.string.clear,
-                icon = Icons.Outlined.ClearAll,
+                icon = vectorResource(Res.drawable.ic_clear_all),
                 accent = Color.OrientRed
             )
             if (permission == SnackbarResult.ActionPerformed)
@@ -170,7 +167,7 @@ class ConsoleViewModel(
                     val concent = showSnackbar(
                         Res.string.msg_deletion_confirm,
                         Res.string.delete,
-                        icon = Icons.Outlined.Delete,
+                        icon = vectorResource(Res.drawable.ic_delete),
                         accent = Color.OrientRed
                     )
                     if (concent == SnackbarResult.ActionPerformed)

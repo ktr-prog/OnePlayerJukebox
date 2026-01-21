@@ -22,6 +22,7 @@ import android.content.Context
 import android.net.Uri
 import android.text.format.Formatter
 import android.view.Window
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Album
@@ -30,8 +31,11 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.PlaylistAdd
 import androidx.compose.material.icons.outlined.SkipNext
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavDestination
 import com.zs.audiofy.R
@@ -158,6 +162,9 @@ val TextFieldState.raw get() = text.trim().toString().ifEmpty { null }
  */
 fun Context.fileSizeFormatted(bytes: Long) =
     Formatter.formatFileSize(this, bytes)
+
+@Composable
+inline fun vectorResource(@DrawableRes id: Int) = ImageVector.vectorResource(id)
 
 // Some UI Actions
 private val ACTION_INFO =

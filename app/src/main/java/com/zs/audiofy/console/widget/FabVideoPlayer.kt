@@ -23,12 +23,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.PlayArrow
-import androidx.compose.material.icons.outlined.PlayCircleOutline
-import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,10 +31,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.VideoSurface
 import com.zs.audiofy.common.compose.chronometer
 import com.zs.audiofy.common.compose.resize
 import com.zs.audiofy.common.compose.shine
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.console.RouteConsole
 import com.zs.compose.foundation.SignalWhite
 import com.zs.compose.foundation.foreground
@@ -91,7 +87,7 @@ fun FabVideoPlayer(
 
             // Close
             IconButton(
-                Icons.Outlined.Close,
+                vectorResource(Res.drawable.ic_close_filled),
                 onClick = { onRequest(Widget.REQUEST_CLOSE) },
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.TopEnd),
@@ -100,7 +96,7 @@ fun FabVideoPlayer(
 
             // Expand
             IconButton(
-                icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                icon = vectorResource(Res.drawable.ic_open_in_new),
                 onClick = { onRequest(Widget.REQUEST_OPEN_CONSOLE) },
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.TopStart),
@@ -109,7 +105,7 @@ fun FabVideoPlayer(
 
             if (!state.playing)
                 Icon(
-                    Icons.Rounded.PlayArrow,
+                    vectorResource(Res.drawable.ic_play_arrow_filled),
                     contentDescription = null,
                     modifier = Modifier.align(Alignment.Center).minimumInteractiveComponentSize(),
                     tint = Color.SignalWhite

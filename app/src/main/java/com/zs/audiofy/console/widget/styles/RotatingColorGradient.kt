@@ -35,11 +35,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
-import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,6 +63,7 @@ import com.zs.audiofy.console.RouteConsole
 import com.zs.audiofy.console.widget.Widget
 import com.zs.audiofy.common.AppConfig
 import com.zs.audiofy.common.Res
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.UmbraGrey
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AppTheme
@@ -175,7 +171,7 @@ fun RotatingColorGradient(
         trailing = {
             // Expand to fill
             TonalIconButton (
-                icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                icon = vectorResource(Res.drawable.ic_open_in_new),
                 contentDescription = null,
                 onClick = { onRequest(Widget.REQUEST_OPEN_CONSOLE) },
                 modifier = Widget.SmallIconBtn then Modifier.offset(x = 7.dp),
@@ -192,7 +188,7 @@ fun RotatingColorGradient(
                     // Skip to Prev
                     IconButton(
                         onClick = { onRequest(Widget.REQUEST_SKIP_TO_PREVIOUS) },
-                        icon = Icons.Outlined.KeyboardDoubleArrowLeft,
+                        icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_left),
                         contentDescription = null,
                         tint = contentColor,
                         modifier = Widget.SmallIconBtn
@@ -213,7 +209,7 @@ fun RotatingColorGradient(
                     // Skip to Next
                     IconButton(
                         onClick = { onRequest(Widget.REQUEST_SKIP_TO_NEXT) },
-                        icon = Icons.Outlined.KeyboardDoubleArrowRight,
+                        icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_right),
                         contentDescription = null,
                         tint = contentColor,
                         modifier = Widget.SmallIconBtn
@@ -301,7 +297,7 @@ fun RotatingColorGradient(
                             modifier = Modifier.layoutId(RouteConsole.ID_BTN_LIKED) then Widget.SmallIconBtn
                         )
                         else ->  IconButton(
-                            icon = Icons.Outlined.Tune,
+                            icon = vectorResource(Res.drawable.ic_tune),
                             contentDescription = null,
                             onClick = { onRequest(Widget.REQUEST_SHOW_CONFIG) },
                             modifier = Widget.SmallIconBtn

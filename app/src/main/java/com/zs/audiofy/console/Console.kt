@@ -37,22 +37,6 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.Tune
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.FitScreen
-import androidx.compose.material.icons.outlined.Fullscreen
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Queue
-import androidx.compose.material.icons.outlined.Remove
-import androidx.compose.material.icons.outlined.ScreenLockRotation
-import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material.icons.twotone.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -95,6 +79,7 @@ import com.zs.audiofy.console.components.TimeBar
 import com.zs.audiofy.effects.RouteAudioFx
 import com.zs.audiofy.common.AppConfig
 import com.zs.audiofy.common.Res
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.SignalWhite
 import com.zs.compose.theme.AppTheme
 import com.zs.compose.theme.ContentAlpha
@@ -119,7 +104,6 @@ import com.zs.core.playback.Remote
 import kotlinx.coroutines.delay
 import com.zs.audiofy.common.compose.ContentPadding as CP
 import com.zs.audiofy.common.compose.rememberAnimatedVectorPainter as AnimVectorPainter
-import com.zs.audiofy.common.icons.MoreHort
 import com.zs.compose.foundation.thenIf
 
 object RouteConsole : Route {
@@ -305,7 +289,7 @@ object RouteConsole : Route {
                 )
                 // Resize Mode
                 IconButton(
-                    icon = if (scale == ContentScale.Fit) Icons.Outlined.Fullscreen else Icons.Outlined.FitScreen,
+                    icon = if (scale == ContentScale.Fit) vectorResource(Res.drawable.ic_crop_free) else vectorResource(Res.drawable.ic_fit_screen),
                     contentDescription = null,
                     onClick = {
                         scale =
@@ -316,7 +300,7 @@ object RouteConsole : Route {
                 )
                 // Lock
                 IconButton(
-                    icon = Icons.Outlined.Lock,
+                    icon = vectorResource(Res.drawable.ic_lock_open),
                     contentDescription = null,
                     onClick = { viewState.emit(if (visibility == VISIBLE_LOCKED_LOCK) VISIBLE else VISIBLE_LOCKED_LOCK) },
                     modifier = Modifier.layoutId(ID_BTN_LOCK),
@@ -327,7 +311,7 @@ object RouteConsole : Route {
             // Collapse
             val accent = if (isVideo) onColor else AppTheme.colors.accent
             TonalIconButton(
-                icon = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
+                icon = vectorResource(Res.drawable.ic_keyboard_arrow_down),
                 onClick = onNavigateBack,
                 enabled = enabled,
                 border = AppTheme.colors.shine,
@@ -435,7 +419,7 @@ object RouteConsole : Route {
             // Skip to next
             IconButton(
                 onClick = viewState::skipToNext,
-                icon = Icons.Outlined.KeyboardDoubleArrowRight,
+                icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_right),
                 contentDescription = null,
                 enabled = enabled && state.isNextAvailable, // add- logic
                 modifier = Modifier.key(ID_BTN_SKIP_TO_NEXT)
@@ -444,7 +428,7 @@ object RouteConsole : Route {
             // Skip to Prev
             IconButton(
                 onClick = viewState::skipToPrev,
-                icon = Icons.Outlined.KeyboardDoubleArrowLeft,
+                icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_left),
                 contentDescription = null,
                 enabled = enabled && state.isPrevAvailable,
                 modifier = Modifier.key(ID_BTN_SKIP_PREVIOUS)
@@ -479,7 +463,7 @@ object RouteConsole : Route {
 
             // Rotation
             IconButton(
-                icon = Icons.Outlined.ScreenLockRotation,
+                icon = vectorResource(Res.drawable.ic_screen_lock_rotation),
                 contentDescription = null,
                 onClick = { (facade as Activity).toggleRotationLock() },
                 enabled = enabled,
@@ -488,7 +472,7 @@ object RouteConsole : Route {
 
             // Queue
             IconButton(
-                icon = Icons.Outlined.Queue,
+                icon = vectorResource(Res.drawable.ic_queue),
                 contentDescription = null,
                 onClick = { showQueue = !showQueue },
                 enabled = enabled,
@@ -511,7 +495,7 @@ object RouteConsole : Route {
 
             // Speed
             IconButton(
-                icon = Icons.Outlined.Speed,
+                icon = vectorResource(Res.drawable.ic_speed),
                 contentDescription = null,
                 onClick = { showViewOf = SHOW_SPEED },
                 enabled = enabled,
@@ -529,7 +513,7 @@ object RouteConsole : Route {
                 content = {
                     if (state.sleepAt == Remote.TIME_UNSET)
                         return@IconButton Icon(
-                            imageVector = Icons.Outlined.Timer,
+                            imageVector = vectorResource(Res.drawable.ic_timer_10_alt),
                             contentDescription = null
                         )
                     val remaining by timer(state.sleepAt)
@@ -544,7 +528,7 @@ object RouteConsole : Route {
 
             // Equalizer
             IconButton(
-                icon = Icons.Outlined.Tune,
+                icon = vectorResource(Res.drawable.ic_tune),
                 contentDescription = null,
                 enabled = enabled,
                 modifier = Modifier.layoutId(ID_BTN_EQUALIZER),
@@ -558,7 +542,7 @@ object RouteConsole : Route {
 
             // Info
             IconButton(
-                icon = Icons.TwoTone.Info,
+                icon = vectorResource(Res.drawable.ic_info),
                 contentDescription = null,
                 onClick = {},
                 enabled = enabled,
@@ -571,7 +555,7 @@ object RouteConsole : Route {
                 modifier = Modifier.layoutId(ID_BTN_MORE),
                 content = {
                     //
-                    Icon(imageVector = Icons.Outlined.MoreHort, contentDescription = null)
+                    Icon(imageVector = vectorResource(Res.drawable.ic_more_hort), contentDescription = null)
 
                     // Menu
                     if (showViewOf == SHOW_MEDIA_CONFIG)
@@ -586,7 +570,7 @@ object RouteConsole : Route {
                             // Remove
                             DropDownMenuItem(
                                 stringResource(id = Res.string.remove),
-                                icon = Icons.Outlined.Remove,
+                                icon = vectorResource(Res.drawable.ic_remove_circle),
                                 onClick = {
                                     val key = state.data
                                     if (key != null)
@@ -598,7 +582,7 @@ object RouteConsole : Route {
                             // Delete
                             DropDownMenuItem(
                                 stringResource(id = Res.string.delete),
-                                icon = Icons.Outlined.Delete,
+                                icon =vectorResource(Res.drawable.ic_delete),
                                 onClick = {
                                     val key = state.data
                                     if (key != null)
@@ -612,7 +596,7 @@ object RouteConsole : Route {
 
                             DropDownMenuItem(
                                 title = "Media Config.",
-                                icon = Icons.Default.Tune,
+                                icon = vectorResource(Res.drawable.ic_tune),
                                 onClick = {
                                     showViewOf = SHOW_MEDIA_CONFIG
                                 }

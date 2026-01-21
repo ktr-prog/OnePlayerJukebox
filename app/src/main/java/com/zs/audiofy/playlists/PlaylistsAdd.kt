@@ -27,8 +27,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,6 +43,7 @@ import com.zs.audiofy.R
 import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.emit
 import com.zs.audiofy.common.compose.shine
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AlertDialog
 import com.zs.compose.theme.AppTheme
@@ -74,7 +73,7 @@ fun Playlists(
         gravity = if (width <= WindowSize.Category.Medium) Gravity.BOTTOM else Gravity.CENTER,
         properties = DialogProperties(usePlatformDefaultWidth = false),
         navigationIcon = {
-            IconButton(Icons.Outlined.Close, onClick = onDismissRequest, contentDescription = null)
+            IconButton(vectorResource(Res.drawable.ic_close_filled), onClick = onDismissRequest, contentDescription = null)
         },
         title = {
             Text(

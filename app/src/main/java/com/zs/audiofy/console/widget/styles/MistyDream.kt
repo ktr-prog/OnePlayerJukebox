@@ -34,10 +34,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,6 +61,7 @@ import com.zs.audiofy.common.compose.lottie
 import com.zs.audiofy.common.compose.lottieAnimationPainter
 import com.zs.audiofy.common.compose.marque
 import com.zs.audiofy.common.shapes.SkewedRoundedRectangleShape
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.console.RouteConsole
 import com.zs.audiofy.console.widget.Widget
 import com.zs.compose.foundation.SignalWhite
@@ -159,7 +156,7 @@ fun MistyDream(
         // Expand to fill
         trailing = {
             IconButton(
-                icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                icon = vectorResource(Res.drawable.ic_open_in_new),
                 contentDescription = null,
                 onClick = { onRequest(Widget.REQUEST_OPEN_CONSOLE) },
                 modifier = Modifier
@@ -177,7 +174,7 @@ fun MistyDream(
                     // Skip to Prev
                     IconButton(
                         onClick = { onRequest(Widget.REQUEST_SKIP_TO_PREVIOUS) },
-                        icon = Icons.Outlined.KeyboardDoubleArrowLeft,
+                        icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_left),
                         contentDescription = null,
                         tint = contentColor,
                         modifier = Widget.SmallIconBtn
@@ -199,7 +196,7 @@ fun MistyDream(
                     // Skip to Next
                     IconButton(
                         onClick = { onRequest(Widget.REQUEST_SKIP_TO_NEXT) },
-                        icon = Icons.Outlined.KeyboardDoubleArrowRight,
+                        icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_right),
                         contentDescription = null,
                         tint = contentColor,
                         modifier = Widget.SmallIconBtn

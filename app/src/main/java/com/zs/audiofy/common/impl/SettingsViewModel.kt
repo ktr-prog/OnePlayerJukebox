@@ -18,8 +18,6 @@
 
 package com.zs.audiofy.common.impl
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.PowerSettingsNew
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -100,7 +98,7 @@ class SettingsViewModel : KoinViewModel(), SettingsViewState {
             val result = showSnackbar(
                 Res.string.msg_apply_changes_restart,
                 Res.string.restart,
-                icon = Icons.Outlined.PowerSettingsNew
+                icon = vectorResource(Res.drawable.ic_power_settings_new)
             )
             // [APP_LIFECYCLE] If the user confirms, trigger an application restart via the SystemFacade
             if (result == SnackbarResult.ActionPerformed)

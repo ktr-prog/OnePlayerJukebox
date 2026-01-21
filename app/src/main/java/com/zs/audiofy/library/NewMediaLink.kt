@@ -27,10 +27,6 @@ import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits.SingleLine
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.insert
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Assignment
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Link
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -48,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zs.audiofy.R
 import com.zs.audiofy.common.Res
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AlertDialog
 import com.zs.compose.theme.AppTheme
@@ -102,7 +99,7 @@ fun NewMediaLink(
         onDismissRequest = onDismissRequest,
         navigationIcon = {
             Icon(
-                Icons.Outlined.Link,
+                vectorResource(Res.drawable.ic_add_link_outline),
                 contentDescription = null,
                 modifier = Modifier.minimumInteractiveComponentSize(),
             )
@@ -115,7 +112,7 @@ fun NewMediaLink(
         },
         actions = {
             TonalIconButton(
-                Icons.Outlined.Close,
+                vectorResource(Res.drawable.ic_close_filled),
                 contentDescription = null,
                 onClick = onDismissRequest,
                 color = LocalContentColor.current,
@@ -160,7 +157,7 @@ fun NewMediaLink(
                 trailingIcon = {
                     when {
                         link.text.isNotEmpty() -> IconButton(
-                            Icons.Outlined.Close,
+                            vectorResource(Res.drawable.ic_close_filled),
                             contentDescription = null,
                             onClick = {
                                 link.clearText()
@@ -168,7 +165,7 @@ fun NewMediaLink(
                         )
 
                         clipboard.hasText() -> IconButton(
-                            Icons.Outlined.Assignment,
+                            vectorResource(Res.drawable.ic_assignment_outline),
                             contentDescription = null,
                             onClick = {
                                 link.clearText()

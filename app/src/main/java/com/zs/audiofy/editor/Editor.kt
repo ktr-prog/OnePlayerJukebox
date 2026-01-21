@@ -40,13 +40,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ReplyAll
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.HideImage
-import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.Shop
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -85,6 +78,7 @@ import com.zs.audiofy.common.compose.fadingEdge2
 import com.zs.audiofy.common.compose.purchase
 import com.zs.audiofy.common.compose.rememberAcrylicSurface
 import com.zs.audiofy.common.compose.source
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.MetroGreen
 import com.zs.compose.foundation.composableIf
 import com.zs.compose.foundation.foreground
@@ -180,7 +174,7 @@ private fun ExtraInfo(
             IconButton(onClick = { launcher.launch(PickArtwork) }) {
                 Image(
                     painter = when (val value = viewState.artwork) {
-                        null -> rememberVectorPainter(image = Icons.Outlined.HideImage)
+                        null -> rememberVectorPainter(image = vectorResource(Res.drawable.ic_hide_image))
                         else -> BitmapPainter(value)
                     },
                     contentDescription = null,
@@ -193,7 +187,7 @@ private fun ExtraInfo(
                 )
                 // Representational Icon.
                 Icon(
-                    imageVector = Icons.Outlined.Edit,
+                    imageVector = vectorResource(Res.drawable.ic_edit),
                     contentDescription = null,
                     tint = Color.White
                 )
@@ -293,14 +287,14 @@ fun Editor(viewState: EditorViewState) {
                 navigationIcon = {
                     val navController = LocalNavController.current
                     IconButton(
-                        Icons.AutoMirrored.Outlined.ReplyAll,
+                        vectorResource(Res.drawable.ic_reply_all_outline),
                         onClick = navController::navigateUp,
                         contentDescription = null
                     )
                 },
                 actions = {
                     TonalIconButton(
-                        icon = Icons.Outlined.Restore,
+                        icon = vectorResource(Res.drawable.ic_history),
                         contentDescription = null,
                         onClick = viewState::reset,
                         modifier = Modifier.scale(0.8f)
@@ -312,7 +306,7 @@ fun Editor(viewState: EditorViewState) {
             val facade = LocalSystemFacade.current
             FloatingActionButton(
                 onClick = { viewState.save(facade as Activity); /*facade.showAd()*/ },
-                content = { Icon(imageVector = Icons.Outlined.Save, contentDescription = null) },
+                content = { Icon(imageVector = vectorResource(Res.drawable.ic_save), contentDescription = null) },
                 contentColor = AppTheme.colors.onAccent,
                 modifier = Modifier.windowInsetsPadding(inAppNavBarInsets.only(WIS.Bottom + WIS.End))
             )
@@ -366,7 +360,7 @@ fun Editor(viewState: EditorViewState) {
                                 contentColor = AppTheme.colors.onBackground,
                                 leading = {
                                     Icon(
-                                        imageVector = Icons.Outlined.Shop,
+                                        imageVector = vectorResource(Res.drawable.ic_shop_two),
                                         contentDescription = null,
                                         tint = Color.MetroGreen
                                     )

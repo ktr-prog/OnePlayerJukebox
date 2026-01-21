@@ -32,9 +32,6 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -51,6 +48,7 @@ import com.zs.audiofy.R
 import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.LocalNavController
 import com.zs.audiofy.common.compose.shine
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.Background
 import com.zs.compose.foundation.rotateTransform
 import com.zs.compose.foundation.textResource
@@ -205,7 +203,7 @@ fun AudioFx(viewState: AudioFxViewState) {
                 TopAppBar(
                     navigationIcon = {
                         IconButton(
-                            Icons.Outlined.Close,
+                            vectorResource(Res.drawable.ic_close_filled),
                             contentDescription = null,
                             onClick = navController::navigateUp
                         )
@@ -223,7 +221,7 @@ fun AudioFx(viewState: AudioFxViewState) {
                     modifier = TitleBarHeight,
                     actions = {
                         TonalIconButton(
-                            icon = Icons.Outlined.Save,
+                            icon = vectorResource(Res.drawable.ic_save),
                             contentDescription = null,
                             modifier = Modifier.scale(0.80f).padding(end = CP.small),
                             onClick = {

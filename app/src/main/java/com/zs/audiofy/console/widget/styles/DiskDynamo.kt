@@ -38,10 +38,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -63,6 +59,7 @@ import com.zs.audiofy.common.compose.ContentPadding
 import com.zs.audiofy.common.compose.LottieAnimatedButton
 import com.zs.audiofy.common.compose.marque
 import com.zs.audiofy.common.shapes.CompactDisk
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.console.RouteConsole
 import com.zs.audiofy.console.widget.Widget
 import com.zs.compose.foundation.SignalWhite
@@ -174,7 +171,7 @@ fun DiskDynamo(
                     // SeekBackward
                     IconButton(
                         onClick = { onRequest(Widget.REQUEST_SKIP_TO_PREVIOUS) },
-                        icon = Icons.Outlined.KeyboardDoubleArrowLeft,
+                        icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_left),
                         contentDescription = null,
                         modifier = IconModifier
                     )
@@ -194,7 +191,7 @@ fun DiskDynamo(
                     // SeekForward
                     IconButton(
                         onClick = { onRequest(Widget.REQUEST_SKIP_TO_NEXT) },
-                        icon = Icons.Outlined.KeyboardDoubleArrowRight,
+                        icon = vectorResource(Res.drawable.ic_keyboard_double_arrow_right),
                         contentDescription = null,
                         modifier = IconModifier
                     )
@@ -204,7 +201,7 @@ fun DiskDynamo(
 
                     // launch console
                     IconButton(
-                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                        icon = vectorResource(Res.drawable.ic_open_in_new),
                         contentDescription = null,
                         //   tint = accent
                         onClick = { onRequest(Widget.REQUEST_OPEN_CONSOLE) },

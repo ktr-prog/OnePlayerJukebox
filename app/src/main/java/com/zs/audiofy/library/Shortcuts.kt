@@ -26,13 +26,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Album
-import androidx.compose.material.icons.outlined.FolderSpecial
-import androidx.compose.material.icons.outlined.Grain
-import androidx.compose.material.icons.outlined.LibraryMusic
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.VideoLibrary
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +33,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.zs.audiofy.R
 import com.zs.audiofy.audios.directory.RouteAlbums
 import com.zs.audiofy.audios.directory.RouteArtists
 import com.zs.audiofy.audios.directory.RouteGenres
@@ -48,6 +40,7 @@ import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.ContentPadding
 import com.zs.audiofy.common.compose.LocalNavController
 import com.zs.audiofy.common.shapes.FolderShape
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.folders.RouteFolders
 import com.zs.audiofy.playlists.members.RouteMembers
 import com.zs.compose.foundation.textResource
@@ -126,28 +119,28 @@ fun Shortcuts(
             // Shortcut for Genres navigation
             Shortcut(
                 onAction = { navigator.navigate(RouteAlbums()) },
-                icon = Icons.Outlined.Album,
+                icon = vectorResource(Res.drawable.ic_album_outline),
                 label = textResource(id = Res.string.albums),
             )
 
             // Shortcut for Genres navigation
             Shortcut(
                 onAction = { navigator.navigate(RouteGenres()) },
-                icon = Icons.Outlined.Grain,
+                icon = vectorResource(Res.drawable.ic_grain_filled),
                 label = textResource(id = Res.string.genres),
             )
 
             // Shortcut for Artists navigation
             Shortcut(
                 onAction = { navigator.navigate(RouteArtists()) },
-                icon = Icons.Outlined.Person,
+                icon = vectorResource(Res.drawable.ic_artist),
                 label = textResource(id = Res.string.artists),
             )
 
             // Favourites
             Shortcut(
                 onAction = { navigator.navigate(RouteMembers(Remote.PLAYLIST_FAVOURITE)) },
-                icon = Icons.Outlined.FolderSpecial,
+                icon = vectorResource(Res.drawable.ic_folder_special_outline),
                 label = textResource(id = Res.string.liked),
             )
 
@@ -161,13 +154,13 @@ fun Shortcuts(
             // Audio Folders
             Shortcut(
                 onAction = { navigator.navigate(RouteFolders(true)) },
-                icon = Icons.Outlined.LibraryMusic,
+                icon = vectorResource(Res.drawable.ic_library_music_outline),
                 label = "Audio",
             )
 
             Shortcut(
                 onAction = { navigator.navigate(RouteFolders(false)) },
-                icon = Icons.Outlined.VideoLibrary,
+                icon = vectorResource(Res.drawable.ic_video_library),
                 label = "Video",
             )
         }

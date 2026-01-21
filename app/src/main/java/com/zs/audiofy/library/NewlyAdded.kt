@@ -32,8 +32,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -58,8 +56,10 @@ import coil3.request.ImageRequest
 import coil3.request.allowHardware
 import coil3.request.crossfade
 import coil3.toBitmap
+import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.ContentPadding
 import com.zs.audiofy.common.compose.emit
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.ImageBrush
 import com.zs.compose.foundation.SignalWhite
 import com.zs.compose.foundation.foreground
@@ -156,7 +156,7 @@ private fun NewlyAddedItem(
 
             // Play icon aligned to the right with padding and size
             Icon(
-                imageVector = Icons.Rounded.PlayArrow,
+                imageVector = vectorResource(Res.drawable.ic_play_arrow_filled),
                 contentDescription = null, // Provide content description for accessibility
                 modifier = Modifier
                     .align(Alignment.CenterStart) // Align to the right

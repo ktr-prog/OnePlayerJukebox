@@ -27,9 +27,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlaylistPlay
-import androidx.compose.material.icons.twotone.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,6 +39,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
+import com.zs.audiofy.common.Res
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.SignalWhite
 import com.zs.compose.foundation.foreground
 import com.zs.compose.foundation.thenIf
@@ -100,7 +99,7 @@ fun PlaylistItem(
 
                     // Play Icon: Displays a play icon on top of the artwork.
                     Icon(
-                        Icons.Default.PlaylistPlay,
+                        vectorResource(Res.drawable.ic_playlist_play),
                         contentDescription = null,
                         modifier = Modifier
                             .align(Alignment.TopEnd) // Aligns the icon to the top end.
@@ -130,7 +129,7 @@ fun PlaylistItem(
                     )
 
                     Icon(
-                        Icons.TwoTone.CheckCircle,
+                        vectorResource(Res.drawable.ic_circle),
                         contentDescription = "",
                         Modifier
                             .align(Alignment.Center) // Aligns the icon to the center.

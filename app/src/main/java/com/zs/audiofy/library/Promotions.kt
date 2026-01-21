@@ -30,12 +30,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Chat
-import androidx.compose.material.icons.outlined.HotelClass
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.ShopTwo
-import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.getValue
@@ -53,7 +47,6 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.zs.audiofy.R
 import com.zs.audiofy.common.IAP_BUY_ME_COFFEE
 import com.zs.audiofy.common.IAP_CODEX
 import com.zs.audiofy.common.IAP_NO_ADS
@@ -64,6 +57,7 @@ import com.zs.audiofy.common.compose.LocalSystemFacade
 import com.zs.audiofy.common.compose.preference
 import com.zs.audiofy.common.compose.purchase
 import com.zs.audiofy.common.richDesc
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.settings.Settings
 import com.zs.compose.foundation.Amber
 import com.zs.compose.foundation.AzureBlue
@@ -124,7 +118,7 @@ private fun Promotion(
         contentColor = AppTheme.colors.onBackground,
         leading = composableIf(icon != null) {
             Icon(
-                imageVector = icon ?: Icons.Outlined.Info,
+                imageVector = icon ?: vectorResource(Res.drawable.ic_info_filled),
                 contentDescription = null,
                 tint = accent,
                 modifier = Modifier.padding(vertical = CP.xSmall)
@@ -180,7 +174,7 @@ private fun RateUs(
         expanded,
         onValueChange,
         message = stringResource(id = Res.string.msg_library_rate_us),
-        icon = Icons.Outlined.HotelClass,
+        icon = vectorResource(Res.drawable.ic_hotel_class_outline),
         modifier = modifier,
         accent = Color.MetroGreen,
         action = {
@@ -211,7 +205,7 @@ private fun JoinUs(
         expanded,
         onValueChange,
         message = stringResource(id = Res.string.msg_library_join_us),
-        icon = Icons.Outlined.Chat,
+        icon = vectorResource(Res.drawable.ic_chat_outline),
         modifier = modifier,
         accent = Color.SkyBlue,
         action = {
@@ -245,7 +239,7 @@ private fun GetApp(
         expanded,
         onValueChange,
         message = stringResource(id = Res.string.msg_promotion_gallery_app),
-        icon = Icons.Outlined.HotelClass,
+        icon = vectorResource(Res.drawable.ic_hotel_class_outline),
         modifier = modifier,
         accent = Color.Amber,
         action = {
@@ -276,7 +270,7 @@ private fun HelpTranslate(
         expanded,
         onValueChange,
         message = stringResource(id = Res.string.msg_library_help_translate),
-        icon = Icons.Outlined.Translate,
+        icon = vectorResource(Res.drawable.ic_translate_filled),
         modifier = modifier,
         accent = Color.AzureBlue,
         action = {
@@ -326,7 +320,7 @@ private fun InAppPurchase(
         expanded,
         onValueChange,
         message = details.richDesc,
-        icon = Icons.Outlined.ShopTwo,
+        icon = vectorResource(Res.drawable.ic_shop_two),
         modifier = modifier,
         action = {
             Button(

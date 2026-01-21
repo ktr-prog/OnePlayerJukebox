@@ -35,8 +35,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Save
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -473,7 +471,7 @@ class EditorViewModel(handle: SavedStateHandle) : KoinViewModel(), EditorViewSta
             val action = showSnackbar(
                 "Warning: Existing file will be replaced.",
                 action = "Confirm",
-                icon = Icons.Outlined.Save,
+                icon = vectorResource(Res.drawable.ic_save),
                 duration = SnackbarDuration.Indefinite
             )
             // If the user dismisses the Snackbar, abort the save operation

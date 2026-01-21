@@ -25,8 +25,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -35,7 +33,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.viewModelScope
-import com.zs.audiofy.R
 import com.zs.audiofy.common.Res
 import com.zs.compose.foundation.OrientRed
 import com.zs.compose.foundation.getText2
@@ -64,7 +61,7 @@ abstract class KoinViewModel : ScopeViewModel() {
     val analytics: Analytics by inject()
     val context: Application by inject()
 
-    fun ImageVector(@DrawableRes id: Int): ImageVector =
+    fun vectorResource(@DrawableRes id: Int): ImageVector =
         ImageVector.vectorResource(context.theme, res = resources, id)
 
     fun showPlatformToast(
@@ -114,7 +111,7 @@ abstract class KoinViewModel : ScopeViewModel() {
             }
         },
         action = getText(Res.string.report),
-        icon = Icons.Outlined.ErrorOutline,
+        icon = vectorResource(Res.drawable.ic_error),
         accent = Color.OrientRed,
         duration = SnackbarDuration.Indefinite
     )

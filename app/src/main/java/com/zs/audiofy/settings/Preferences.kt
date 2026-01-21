@@ -21,20 +21,6 @@ package com.zs.audiofy.settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Segment
-import androidx.compose.material.icons.filled.Animation
-import androidx.compose.material.icons.filled.AutoAwesomeMotion
-import androidx.compose.material.icons.filled.BlurOn
-import androidx.compose.material.icons.filled.ColorLens
-import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material.icons.outlined.Camera
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.FormatSize
-import androidx.compose.material.icons.outlined.Recycling
-import androidx.compose.material.icons.outlined.Straighten
-import androidx.compose.material.icons.outlined.TouchApp
-import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +31,7 @@ import com.zs.audiofy.common.AccentColorPolicy
 import com.zs.audiofy.common.NightMode
 import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.preference
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.textArrayResource
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AppTheme
@@ -77,7 +64,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             text = textResource(Res.string.pref_enable_trash_can),
             checked = viewState.trashCanEnabled,
             onCheckedChange = { viewState.trashCanEnabled = it },
-            icon = Icons.Outlined.Recycling,
+            icon = vectorResource(Res.drawable.ic_recycling),
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.TopTileShape),
         )
     }
@@ -87,7 +74,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             text = textResource(Res.string.pref_fetch_artwork_from_media_store),
             checked = viewState.preferCachedThumbnails,
             onCheckedChange = { viewState.preferCachedThumbnails = it },
-            icon = Icons.Outlined.Camera,
+            icon = vectorResource(Res.drawable.ic_art_track),
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape),
         )
     }
@@ -100,7 +87,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             onRequestChange = { viewState.minTrackLengthSecs = it.toInt() },
             valueRange = 0f..100f,
             steps = 9,
-            icon = Icons.Outlined.Straighten,
+            icon = vectorResource(Res.drawable.ic_straighten),
             preview = {
                 Label(
                     text = textResource(Res.string.postfix_s_d, it.roundToInt()),
@@ -118,7 +105,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             text = textResource(Res.string.pref_enable_file_grouping),
             checked = viewState.isFileGroupingEnabled,
             onCheckedChange = { viewState.isFileGroupingEnabled = it },
-            icon = Icons.AutoMirrored.Default.Segment,
+            icon = vectorResource(Res.drawable.ic_sort),
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.BottomTileShape),
         )
     }
@@ -141,7 +128,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
         DropDownPreference(
             text = textResource(Res.string.pref_app_theme_s, entries[strategy.ordinal]),
             value = strategy,
-            icon = Icons.Default.LightMode,
+            icon = vectorResource(Res.drawable.ic_light_mode),
             entries = entries,
             onRequestChange = { viewState.set(Settings.NIGHT_MODE, it) },
             values = NightMode.values(),
@@ -156,7 +143,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             onCheckedChange = { should: Boolean ->
                 viewState.isSplashAnimWaitEnabled = should
             },
-            icon = Icons.Default.Animation,
+            icon = vectorResource(Res.drawable.ic_animation),
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape)
         )
     }
@@ -169,7 +156,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             onCheckedChange = { should: Boolean ->
                 viewState.isWidgetToConsoleTransitionEnabled = should
             },
-            icon = Icons.Default.AutoAwesomeMotion,
+            icon = vectorResource(Res.drawable.ic_auto_awesome_motion),
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape)
         )
     }
@@ -182,7 +169,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             onCheckedChange = { should: Boolean ->
                 viewState.enabledBackgroundBlur = should
             },
-            icon = Icons.Default.BlurOn,
+            icon = vectorResource(Res.drawable.ic_blur_on),
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape)
         )
     }
@@ -210,7 +197,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
                     if (should) AccentColorPolicy.WALLPAPER else AccentColorPolicy.DEFAULT
                 viewState.set(Settings.COLORIZATION_STRATEGY, strategy)
             },
-            icon = Icons.Default.ColorLens,
+            icon = vectorResource(Res.drawable.ic_imagesearch_roller),
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape)
         )
     }
@@ -222,7 +209,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             text = textResource(Res.string.pref_font_scale),
             valueRange = 0.75f..1.5f,
             steps = 14,   // steps=(max−min)stepSize−1/ (2.0 - 0.7) / 0.1 - 1 =  12 steps
-            icon = Icons.Outlined.FormatSize,
+            icon = vectorResource(Res.drawable.ic_format_size),
             preview = {
                 Label(
                     text = if (it <= 0.75f)
@@ -248,7 +235,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             text = textResource(Res.string.pref_grid_item_size_multiplier),
             valueRange = 0.8f..1.6f,
             steps = 15, // (2.0 - 0.7) / 0.1 = 13 steps
-            icon = Icons.Outlined.Dashboard,
+            icon = vectorResource(Res.drawable.ic_grid_view),
             preview = {
                 Label(
                     text = textResource(Res.string.postfix_x_f, it),
@@ -291,7 +278,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             text = textResource(Res.string.pref_use_inbuilt_audio_effects),
             checked = viewState.inAppAudioEffectsEnabled,
             onCheckedChange = { viewState.inAppAudioEffectsEnabled = it},
-            icon = Icons.Outlined.Tune,
+            icon = vectorResource(Res.drawable.ic_tune),
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.TopTileShape)
         )
     }
@@ -301,7 +288,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             text = textResource(Res.string.pref_fab_player_tap_behaviour),
             checked = !viewState.fabLongPressLaunchConsole,
             onCheckedChange = { viewState.fabLongPressLaunchConsole = !it},
-            icon = Icons.Outlined.TouchApp,
+            icon = vectorResource(Res.drawable.ic_touch_app),
             modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape)
         )
     }

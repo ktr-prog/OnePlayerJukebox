@@ -22,8 +22,6 @@ import android.app.Activity
 import android.net.Uri
 import android.provider.MediaStore
 import android.text.format.DateUtils
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LibraryBooks
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -161,7 +159,7 @@ class AudiosViewModel(
 
     override var info: MetaData by mutableStateOf(
         when (source) {
-            SOURCE_ALL -> MetaData(getText(Res.string.scr_audios_title), icon = Icons.Outlined.LibraryBooks)
+            SOURCE_ALL -> MetaData(getText(Res.string.scr_audios_title), icon = vectorResource(Res.drawable.ic_library_music_outline))
 
             SOURCE_FOLDER -> MetaData(PathUtils.name(extra!!).ellipsize(12), extra)
             SOURCE_ARTIST -> MetaData(

@@ -35,12 +35,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FeaturedPlayList
-import androidx.compose.material.icons.filled.Subscriptions
-import androidx.compose.material.icons.filled.Weekend
-import androidx.compose.material.icons.outlined.Headset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -110,6 +104,7 @@ import com.zs.audiofy.common.impl.PropertiesViewModel
 import com.zs.audiofy.common.impl.SettingsViewModel
 import com.zs.audiofy.common.impl.VideosViewModel
 import com.zs.audiofy.common.shapes.EndConcaveShape
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.console.RouteConsole
 import com.zs.audiofy.console.widget.Widget
 import com.zs.audiofy.editor.Editor
@@ -225,7 +220,7 @@ private val NavController.primary: State<String?>
         }
     }
 
-private val NavIconSizeModifier = Modifier.size(20.dp)
+
 private val NavRailShape = EndConcaveShape(12.dp)
 private val NavRailBorder = BorderStroke(
     0.5.dp,
@@ -322,7 +317,7 @@ private fun Permission() {
                 onClick = permission::launchMultiplePermissionRequest,
                 modifier = Modifier.size(width = 200.dp, height = 46.dp),
                 text = stringResource(Res.string.allow),
-                shape = CircleShape
+                shape = Res.shape.circle
             )
         }
     )
@@ -461,9 +456,8 @@ private fun NavigationBar(
             label = { Label(text = textResource(Res.string.home)) },
             icon = {
                 Icon(
-                    imageVector = Icons.Filled.Weekend,
-                    contentDescription = null,
-                    modifier = NavIconSizeModifier
+                    imageVector = vectorResource(Res.drawable.ic_weekend_filled),
+                    contentDescription = null
                 )
             },
             selected = domain == RouteLibrary.domain,
@@ -477,9 +471,8 @@ private fun NavigationBar(
             label = { Label(text = textResource(Res.string.audios)) },
             icon = {
                 Icon(
-                    imageVector = Icons.Outlined.Headset,
-                    contentDescription = null,
-                    modifier = NavIconSizeModifier
+                    imageVector = vectorResource(Res.drawable.ic_headphones_outline),
+                    contentDescription = null
                 )
             },
             selected = domain == RouteAudios.domain,
@@ -493,9 +486,8 @@ private fun NavigationBar(
             label = { Label(text = textResource(Res.string.videos)) },
             icon = {
                 Icon(
-                    imageVector = Icons.Filled.Subscriptions,
+                    imageVector = vectorResource(Res.drawable.ic_subscriptions_filled),
                     contentDescription = null,
-                    modifier = NavIconSizeModifier
                 )
             },
             selected = domain == RouteVideos.domain,
@@ -509,9 +501,8 @@ private fun NavigationBar(
             label = { Label(text = textResource(Res.string.playlists)) },
             icon = {
                 Icon(
-                    imageVector = Icons.Filled.FeaturedPlayList,
+                    imageVector = vectorResource(Res.drawable.ic_featured_playlist_outline),
                     contentDescription = null,
-                    modifier = NavIconSizeModifier
                 )
             },
             selected = domain == RoutePlaylists.domain,
@@ -528,7 +519,7 @@ private fun NavigationBar(
             elevation = 12.dp,
             border = colors.shine,
             windowInsets = AppBarDefaults.bottomAppBarWindowInsets.union(WindowInsets(bottom = 16.dp)),
-            shape = CircleShape,
+            shape = Res.shape.circle,
             modifier = modifier.padding(bottom = ContentPadding.xSmall),
             // Display routes at the contre of available space
             content = { routes() }

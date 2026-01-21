@@ -24,27 +24,22 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.zs.audiofy.BuildConfig
-import com.zs.audiofy.R
 import com.zs.audiofy.common.IAP_BUY_ME_COFFEE
 import com.zs.audiofy.common.IAP_NO_ADS
 import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.LocalSystemFacade
 import com.zs.audiofy.common.compose.purchase
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.shapes.SquircleShape
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AppTheme
@@ -113,7 +108,7 @@ fun Sponsor(modifier: Modifier = Modifier) {
                     // RateUs
                     FilledTonalButton(
                         textResource(Res.string.rate_us),
-                        icon = Icons.Outlined.RateReview,
+                        icon = com.zs.audiofy.common.vectorResource(Res.drawable.ic_rate_review_outline),
                         onClick = facade::launchAppStore,
                         colors = ButtonDefaults.filledTonalButtonColors(
                             backgroundColor = AppTheme.colors.background(
@@ -126,12 +121,12 @@ fun Sponsor(modifier: Modifier = Modifier) {
                         // Coffee
                         adFreePurchase.purchased -> Button(
                             "Say Thanks",
-                            icon = Icons.Outlined.FavoriteBorder,
+                            icon = vectorResource(Res.drawable.ic_hotel_class_outline),
                             onClick = { facade.initiatePurchaseFlow(Paymaster.IAP_BUY_ME_COFFEE) },
                         )
                         else -> Button(
                             "Unlock Ad-free",
-                            icon = ImageVector.vectorResource(Res.drawable.ic_remove_ads),
+                            icon = vectorResource(Res.drawable.ic_remove_ads),
                             onClick = { facade.initiatePurchaseFlow(Paymaster.IAP_NO_ADS) },
                         )
                     }

@@ -5,11 +5,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddShoppingCart
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -20,8 +15,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.zs.audiofy.MainActivity
 import com.zs.audiofy.R
@@ -48,6 +45,7 @@ import com.zs.audiofy.common.compose.preference
 import com.zs.audiofy.common.compose.shine
 import com.zs.audiofy.common.isFreemium
 import com.zs.audiofy.common.richDesc
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.console.widget.styles.DiskDynamo
 import com.zs.audiofy.console.widget.styles.ElongatedBeat
 import com.zs.audiofy.console.widget.styles.GoldenDust
@@ -233,7 +231,7 @@ fun Config(
                             shapes = AppTheme.shapes.small to AppTheme.shapes.large,
                             content = {
                                 Icon(
-                                    Icons.Outlined.AddShoppingCart,
+                                    vectorResource(Res.drawable.ic_shop_two),
                                     contentDescription = null
                                 )
                             },
@@ -259,7 +257,7 @@ fun Config(
                             colors = colors,
                             border = AppTheme.colors.shine,
                             content = {
-                                Icon(Icons.Outlined.KeyboardDoubleArrowLeft, contentDescription = null)
+                                Icon(vectorResource(Res.drawable.ic_keyboard_double_arrow_left), contentDescription = null)
                             },
                             onClick = { index -= 1 },
                         )
@@ -271,7 +269,7 @@ fun Config(
                             colors = colors,
                             border = AppTheme.colors.shine,
                             content = {
-                                Icon(Icons.Outlined.KeyboardDoubleArrowRight, contentDescription = null)
+                                Icon(vectorResource(Res.drawable.ic_keyboard_double_arrow_right), contentDescription = null)
                             },
                             onClick = { index += 1 },
                         )
@@ -280,7 +278,7 @@ fun Config(
                 )
 
                 IconButton(
-                    Icons.Outlined.Info,
+                    vectorResource(Res.drawable.ic_info),
                     contentDescription = null,
                     modifier = Widget.SmallIconBtn,
                     onClick = {
@@ -288,7 +286,7 @@ fun Config(
                         if (info != null)
                             activity.showSnackbar(
                                 info,
-                                icon = Icons.Outlined.Info,
+                                icon = ImageVector.vectorResource(activity.theme, activity.resources, Res.drawable.ic_info, ),
                                 duration = SnackbarDuration.Indefinite
                             )
                     }

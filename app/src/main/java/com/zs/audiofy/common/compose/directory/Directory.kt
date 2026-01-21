@@ -50,15 +50,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ReplyAll
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Circle
-import androidx.compose.material.icons.outlined.PlaylistPlay
-import androidx.compose.material.icons.outlined.RemoveCircle
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Verified
-import androidx.compose.material.icons.rounded.ShuffleOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.NonRestartableComposable
@@ -95,6 +86,7 @@ import com.zs.audiofy.common.compose.shine
 import com.zs.audiofy.common.compose.source
 import com.zs.audiofy.common.AppConfig
 import com.zs.audiofy.common.Res
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.Background
 import com.zs.compose.foundation.background
 import com.zs.compose.foundation.fullLineSpan
@@ -155,7 +147,7 @@ private fun SearchView(
         state = state,
         leadingIcon = {
             Icon(
-                imageVector = Icons.Outlined.Search,
+                imageVector = vectorResource(Res.drawable.ic_search),
                 contentDescription = null
             )
         },
@@ -170,7 +162,7 @@ private fun SearchView(
             .background(background),
         trailingIcon = {
             IconButton(
-                Icons.Default.Close,
+                vectorResource(Res.drawable.ic_close_filled),
                 onClick = onCloseClick,
                 contentDescription = null
             )
@@ -255,14 +247,14 @@ fun <T> Directory(
                         )
                     // Else add navigate-up button
                     IconButton(
-                        icon = Icons.AutoMirrored.Filled.ReplyAll,
+                        icon = vectorResource(Res.drawable.ic_reply_all_outline),
                         contentDescription = null,
                         onClick = onNavigateUp
                     )
                 },
                 actions = {
                     IconButton(
-                        Icons.Outlined.Search,
+                        vectorResource(Res.drawable.ic_search),
                         contentDescription = null,
                         onClick = { isSearchVisible = !isSearchVisible }
                     )
@@ -399,11 +391,11 @@ fun <T> Directory(
     )
 }
 
-private val SelectionTracker.Level.toImageVector
+private val SelectionTracker.Level.toIconRes
     get() = when (this) {
-        SelectionTracker.Level.NONE -> Icons.Outlined.Circle
-        SelectionTracker.Level.PARTIAL -> Icons.Outlined.RemoveCircle
-        SelectionTracker.Level.FULL -> Icons.Outlined.Verified
+        SelectionTracker.Level.NONE -> Res.drawable.ic_circle
+        SelectionTracker.Level.PARTIAL -> Res.drawable.ic_remove_circle
+        SelectionTracker.Level.FULL -> Res.drawable.ic_verified
     }
 
 private val FilesHorizontalPadding = CP.large
@@ -452,7 +444,7 @@ fun <T> Files(
                 background = colors.background(surface),
                 actions = {
                     IconButton(
-                        Icons.Outlined.Search,
+                        vectorResource(Res.drawable.ic_search),
                         contentDescription = null,
                         onClick = { isSearchVisible = !isSearchVisible }
                     )
@@ -524,7 +516,7 @@ fun <T> Files(
                                     // Shuffle
                                     FilledTonalButton (
                                         content = {
-                                            Icon(Icons.Rounded.ShuffleOn, contentDescription = null)
+                                            Icon(vectorResource(Res.drawable.ic_playlist_shuffle), contentDescription = null)
                                             Spacer(Modifier.padding(horizontal = ButtonDefaults.IconSpacing))
                                             Label(text = androidx.compose.ui.res.stringResource(id = Res.string.shuffle))
                                         },
@@ -536,7 +528,7 @@ fun <T> Files(
                                     // play
                                     Button (
                                         content = {
-                                            Icon(Icons.Outlined.PlaylistPlay, contentDescription = null)
+                                            Icon(vectorResource(Res.drawable.ic_playlist_play), contentDescription = null)
                                             Spacer(Modifier.padding(horizontal = ButtonDefaults.IconSpacing))
                                             Label(text = androidx.compose.ui.res.stringResource(Res.string.play))
                                         },
@@ -587,7 +579,7 @@ fun <T> Files(
                                         TonalHeader(header)
                                         // toggle
                                         IconButton(
-                                            icon = level.toImageVector,
+                                            icon = vectorResource(level.toIconRes),
                                             contentDescription = null,
                                             tint = if (level == SelectionTracker.Level.FULL) AppTheme.colors.accent else LocalContentColor.current,
                                             onClick = { viewState.select(header.toString()) }
