@@ -285,7 +285,7 @@ fun <T> Directory(
                                 modifier = FabSharedAnimModifier,
                                 content = {
                                     Icon(
-                                        imageVector = viewState.primaryAction!!.icon!!,
+                                        imageVector = vectorResource(viewState.primaryAction!!.icon),
                                         contentDescription = null
                                     )
                                 }

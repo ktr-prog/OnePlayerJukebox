@@ -40,8 +40,15 @@
     <string name="changelog_156_beta" translatable="false">
     <b>What’s New <font color='purple'>(v1.5.6-beta)\n</font></b>
     <font color='grey'>
-        \n✓
+        \n✓ <b>Icon System Refactor:</b> Replaced the `material-icons-extended` library with local XML vector drawables, improving performance by avoiding reflection and streamlining icon management.
+        \n✓ <b>Build &amp; Dependency Cleanup:</b>
+        \n    • Removed the unused `telemetry` feature module.
+        \n    • Refactored and organized the version catalog (`libs.versions.toml`) for better clarity and maintenance.
+        \n✓ <b>Code Modernization:</b>
+        \n    • Implemented a type-safe `Res` object for resource access (e.g., `Res.string.delete`), enhancing code readability and safety.
+        \n    • Centralized and renamed theme-related enums (`NightMode`, `AccentColorPolicy`) for better organization.
     </font></string>
+
 
     <!--1.5.5-beta-->
     <string name="changelog_155_beta" translatable="false">

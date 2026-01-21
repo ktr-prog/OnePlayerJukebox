@@ -24,13 +24,6 @@ import android.text.format.Formatter
 import android.view.Window
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Album
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Mic
-import androidx.compose.material.icons.outlined.PlaylistAdd
-import androidx.compose.material.icons.outlined.SkipNext
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -38,7 +31,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavDestination
-import com.zs.audiofy.R
 
 /**
  * Represents a sorting order and associated grouping or ordering action.
@@ -168,17 +160,17 @@ inline fun vectorResource(@DrawableRes id: Int) = ImageVector.vectorResource(id)
 
 // Some UI Actions
 private val ACTION_INFO =
-    Action(Res.string.properties, id = "action_info", icon = Icons.Outlined.Info)
+    Action(Res.string.properties, id = "action_info", icon = Res.drawable.ic_info)
 private val ACTION_GO_TO_ALBUM =
-    Action(Res.string.go_to_album, id = "action_go_to_album", icon = Icons.Outlined.Album)
+    Action(Res.string.go_to_album, id = "action_go_to_album", icon = Res.drawable.ic_album_outline)
 private val ACTION_GO_TO_ARTIST =
-    Action(Res.string.go_to_artist, id = "action_go_to_artist", icon = Icons.Outlined.Mic)
-private val ACTION_EDIT = Action(Res.string.edit, id = "action_edit", icon = Icons.Outlined.Edit)
-private val ACTION_PLAY_NEXT = Action(Res.string.play_next, Icons.Outlined.SkipNext)
+    Action(Res.string.go_to_artist, id = "action_go_to_artist", icon = Res.drawable.ic_artist)
+private val ACTION_EDIT = Action(Res.string.edit, id = "action_edit", icon = Res.drawable.ic_edit)
+private val ACTION_PLAY_NEXT = Action(Res.string.play_next, Res.drawable.ic_skip_next)
 val Action.Companion.INFO get() = ACTION_INFO
 val Action.Companion.GO_TO_ALBUM get() = ACTION_GO_TO_ALBUM
 val Action.Companion.GO_TO_ARTIST get() = ACTION_GO_TO_ARTIST
 val Action.Companion.EDIT get() = ACTION_EDIT
 val Action.Companion.PLAY_NEXT get() = ACTION_PLAY_NEXT
-val ACTION_ADD_TO_PLAYLIST = Action(Res.string.add_to_playlist, Icons.Outlined.PlaylistAdd)
+val ACTION_ADD_TO_PLAYLIST = Action(Res.string.add_to_playlist, Res.drawable.ic_playlist_add)
 val Action.Companion.PLAYLIST_ADD get() = ACTION_ADD_TO_PLAYLIST

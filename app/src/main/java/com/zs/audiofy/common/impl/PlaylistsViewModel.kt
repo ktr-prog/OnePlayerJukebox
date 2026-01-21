@@ -20,11 +20,6 @@ package com.zs.audiofy.common.impl
 
 import android.text.format.DateUtils
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.EditNote
-import androidx.compose.material.icons.outlined.FeaturedPlayList
-import androidx.compose.material.icons.outlined.FolderDelete
-import androidx.compose.material.icons.outlined.PlaylistAdd
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -73,9 +68,9 @@ private val ORDER_NONE = FilterDefaults.ORDER_NONE
 private val ORDER_NAME = FilterDefaults.ORDER_BY_TITLE
 private val ORDER_BY_MODIFIED = FilterDefaults.ORDER_BY_DATE_MODIFIED
 
-private val ACTION_DELETE = Action(Res.string.delete, Icons.Outlined.FolderDelete)
-private val ACTION_EDIT = Action(Res.string.edit, Icons.Outlined.EditNote)
-private val ACTION_CREATE = Action(Res.string.create, Icons.Outlined.PlaylistAdd)
+private val ACTION_DELETE = Action(Res.string.delete, Res.drawable.ic_folder_delete)
+private val ACTION_EDIT = Action(Res.string.edit, Res.drawable.ic_edit_note)
+private val ACTION_CREATE = Action(Res.string.create, Res.drawable.ic_playlist_add)
 
 // FIXME: Might cause crash.
 private val Playlist.firstTitleChar
@@ -88,7 +83,7 @@ class PlaylistsViewModel(val playlists: Playlists) : KoinViewModel(), PlaylistsV
     override val orders: List<Action> = listOf(ORDER_NONE, ORDER_NAME, ORDER_BY_MODIFIED)
     override val title: CharSequence = getText(Res.string.playlists)
     override val query: TextFieldState = TextFieldState()
-    override val favicon: ImageVector? = Icons.Outlined.FeaturedPlayList
+    override val favicon: ImageVector get() =  vectorResource(Res.drawable.ic_featured_playlist_outline)
     override var showEditDialog: Boolean by mutableStateOf(false)
 
     override val primaryAction: Action? = ACTION_CREATE
@@ -190,7 +185,7 @@ class PlaylistsViewModel(val playlists: Playlists) : KoinViewModel(), PlaylistsV
             val result = showSnackbar(
                 message = "Are you sure you want to delete the playlist '$name'?",
                 action = "Delete",
-                icon = Icons.Outlined.FolderDelete,
+                icon = vectorResource(Res.drawable.ic_folder_delete),
                 accent = Color.RedViolet,
                 duration = SnackbarDuration.Long
             )

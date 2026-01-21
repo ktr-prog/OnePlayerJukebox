@@ -144,8 +144,6 @@ dependencies {
     implementation(libs.androidx.constraint.layout)   // ConstraintLayout support
     implementation(libs.bundles.play.services)  // Google Play Services bundle
     implementation(libs.mp3agic)  // Temporary MP3 library (to be moved later)
-    implementation(libs.material.icons.core)  // Material icon bundles
-    implementation(libs.material.icons.extended)
     implementation(libs.androidx.graphics.shapes) // Graphics utilities
 
     // Project modules

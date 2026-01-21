@@ -18,8 +18,9 @@
 
 package com.zs.audiofy.common
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.core.content.res.ResourcesCompat
 
 /**
  * Represents a single item within a menu. The [label] represents the id of this item as well.
@@ -32,7 +33,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 interface Action {
     @get:StringRes val label: Int
     val id: String
-    val icon: ImageVector?
+    @get:DrawableRes
+    val icon: Int
     val enabled: Boolean
 
     /**
@@ -54,7 +56,7 @@ interface Action {
          */
         operator fun invoke(
             @StringRes label: Int,
-            icon: ImageVector? = null,
+            @DrawableRes icon: Int = ResourcesCompat.ID_NULL,
             enabled: Boolean = true,
             id: String = label.toString()
         ): Action = ActionImpl(label, id, icon, enabled)
@@ -67,7 +69,7 @@ interface Action {
 private class ActionImpl(
     override val label: Int ,
     override val id: String,
-    override val icon: ImageVector?,
+    override val icon: Int,
     override val enabled: Boolean
 ) : Action {
     override fun equals(other: Any?): Boolean {

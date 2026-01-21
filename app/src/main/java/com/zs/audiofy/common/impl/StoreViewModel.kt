@@ -22,13 +22,8 @@ import android.app.Activity
 import android.net.Uri
 import android.os.Build
 import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DeleteOutline
-import androidx.compose.material.icons.outlined.NearbyError
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.Color
-import com.zs.audiofy.R
 import com.zs.audiofy.common.Action
 import com.zs.audiofy.common.INFO
 import com.zs.audiofy.common.ShareFilesIntent
@@ -62,8 +57,8 @@ abstract class StoreViewModel<T>(
     val ORDER_BY_LENGTH get() = Action(Res.string.length, id = "filter_by_length")
 
     // common actions
-    val ACTION_DELETE = Action(Res.string.delete, Icons.Default.DeleteOutline)
-    val ACTION_SHARE = Action(Res.string.share, Icons.Outlined.Share)
+    val ACTION_DELETE = Action(Res.string.delete, Res.drawable.ic_delete)
+    val ACTION_SHARE = Action(Res.string.share, Res.drawable.ic_share)
     val ACTION_INFO = Action.INFO
 
     abstract suspend fun refresh(query: String?, ascending: Boolean, order: Action)
@@ -98,7 +93,7 @@ abstract class StoreViewModel<T>(
             val action = showSnackbar(
                 message = Res.string.msg_deletion_confirm,
                 action = Res.string.delete,
-                icon = Icons.Outlined.NearbyError,
+                icon = vectorResource(Res.drawable.ic_error),
                 accent = Color.Rose,
                 duration = SnackbarDuration.Indefinite
             )

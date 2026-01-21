@@ -1,4 +1,4 @@
-✓ Updated to latest nextlib-media3ext for improved stability and performance.
-✓ Modernized UI with Edge-to-Edge support for a cleaner, immersive experience.
-✓ Internal version bump and dependency refresh for smoother updates.
-✓ Minor improvements and cleanup for better reliability.
+✓ Performance Boost: Replaced the icon system with faster, local vector assets for a snappier experience.
+✓ Code Modernization: Refactored core components, build scripts, and theme handling to improve stability.
+✓ Internal Cleanup: Removed unused modules and streamlined dependencies for a leaner app.
+✓ Build System Refactor: Reorganized and commented build scripts for better long-term maintenance.

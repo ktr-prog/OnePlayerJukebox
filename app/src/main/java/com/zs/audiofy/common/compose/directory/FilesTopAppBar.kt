@@ -37,10 +37,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ReplyAll
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.FormatListNumbered
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -56,8 +52,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.LocalNavController
 import com.zs.audiofy.common.compose.shine
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.Background
 import com.zs.compose.foundation.background
 import com.zs.compose.theme.AppTheme
@@ -143,7 +141,7 @@ fun FilesTopAppBar(
                     else -> {
                         val navController = LocalNavController.current
                         IconButton(
-                            icon = Icons.AutoMirrored.Outlined.ReplyAll,
+                            icon = vectorResource(Res.drawable.ic_reply_all_outline),
                             contentDescription = null,
                             onClick = navController::navigateUp,
                             modifier = Modifier.layoutId(AppBarDefaults.ID_NAVICON)
@@ -229,9 +227,8 @@ fun FilesTopAppBar(
                             verticalArrangement = CP.SmallArrangement,
                             content = {
                                 Icon(
-                                    Icons.Outlined.FormatListNumbered,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
+                                    vectorResource(Res.drawable.ic_format_list_numbered),
+                                    contentDescription = null
                                 )
                                 Label(
                                     "${info.cardinality} Files",
@@ -251,9 +248,8 @@ fun FilesTopAppBar(
                             verticalArrangement = CP.SmallArrangement,
                             content = {
                                 Icon(
-                                    Icons.Outlined.CalendarMonth,
+                                    vectorResource(Res.drawable.ic_calendar_month),
                                     contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
                                 )
                                 Label(
                                     "${

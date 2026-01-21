@@ -21,8 +21,6 @@
 package com.zs.audiofy.common.impl
 
 import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.PlaylistRemove
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,10 +29,11 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.zs.audiofy.R
 import com.zs.audiofy.common.Action
+import com.zs.audiofy.common.AppConfig
 import com.zs.audiofy.common.Filter
 import com.zs.audiofy.common.Mapped
+import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.FilterDefaults
 import com.zs.audiofy.common.compose.FilterDefaults.ORDER_BY_TITLE
 import com.zs.audiofy.common.compose.FilterDefaults.ORDER_NONE
@@ -43,8 +42,6 @@ import com.zs.audiofy.common.raw
 import com.zs.audiofy.playlists.members.MembersViewState
 import com.zs.audiofy.playlists.members.RouteMembers
 import com.zs.audiofy.playlists.members.get
-import com.zs.audiofy.common.AppConfig
-import com.zs.audiofy.common.Res
 import com.zs.compose.foundation.castTo
 import com.zs.core.common.debounceAfterFirst
 import com.zs.core.db.playlists.Playlist
@@ -70,7 +67,7 @@ private val Track.firstTitleChar
     inline get() = title.uppercase(Locale.ROOT)[0].toString()
 
 private val ACTION_REMOVE =
-    Action(Res.string.remove, id = "remove", icon = Icons.Outlined.PlaylistRemove)
+    Action(Res.string.remove, id = "remove", icon = Res.drawable.ic_playlist_remove)
 
 class MembersViewModel(
     handle: SavedStateHandle, playlists: Playlists, remote: Remote

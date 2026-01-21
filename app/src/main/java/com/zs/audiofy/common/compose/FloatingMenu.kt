@@ -33,9 +33,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.BrokenImage
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.NonRestartableComposable
@@ -50,7 +47,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.res.ResourcesCompat
 import com.zs.audiofy.common.Action
+import com.zs.audiofy.common.Res
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.Background
 import com.zs.compose.foundation.background
 import com.zs.compose.foundation.thenIf
@@ -186,7 +186,7 @@ inline fun RowScope.OverflowMenu(
     repeat(minOf(size, collapsed)) { index ->
         val item = items[index]
         IconButton(
-            icon = item.icon ?: Icons.Outlined.BrokenImage, // Fallback for missing icons
+            icon = if (item.icon != ResourcesCompat.ID_NULL) vectorResource(item.icon) else vectorResource(Res.drawable.ic_broken_image), // Fallback for missing icons
             onClick = { onItemClicked(item) },
             contentDescription = stringResource(item.label),
             enabled = item.enabled
@@ -201,7 +201,7 @@ inline fun RowScope.OverflowMenu(
 
     // "More" button to toggle dropdown visibility
     IconToggleButton(checked = show, onCheckedChange = { onDismissRequest(it) }) {
-        Icon(Icons.Outlined.MoreVert, contentDescription = "More actions")
+        Icon(vectorResource(Res.drawable.ic_more_vert), contentDescription = "More actions")
 
         // DropdownMenu: shows remaining items beyond the collapsed count
         DropDownMenu(
@@ -222,7 +222,7 @@ inline fun RowScope.OverflowMenu(
                                 onItemClicked(item)
                                 onDismissRequest(false)
                             },
-                            icon = item.icon
+                            icon = if (item.icon != ResourcesCompat.ID_NULL) vectorResource(item.icon) else null
                         )
                     }
                 }
@@ -241,7 +241,7 @@ inline fun RowScope.OverflowMenu(
                                 onItemClicked(item)
                                 onDismissRequest(false)
                             },
-                            icon = item.icon
+                            icon = if (item.icon != ResourcesCompat.ID_NULL) vectorResource(item.icon) else null
                         )
                     }
 
@@ -255,7 +255,7 @@ inline fun RowScope.OverflowMenu(
                         repeat(overflowCount) { index ->
                             val item = items[collapsed + dropdownCount + index]
                             IconButton(
-                                icon = requireNotNull(item.icon) { "Collapsed Icon must not be null" },
+                                icon = vectorResource(item.icon),
                                 onClick = { onItemClicked(item); onDismissRequest(false) },
                                 contentDescription = stringResource(item.label),
                                 enabled = item.enabled
@@ -275,7 +275,7 @@ inline fun RowScope.OverflowMenu(
                             repeat(overflowCount) { index ->
                                 val item = items[collapsed + dropdownCount + index]
                                 IconButton(
-                                    icon = requireNotNull(item.icon) { "Collapsed Icon must not be null" },
+                                    icon = vectorResource(item.icon),
                                     onClick = { onItemClicked(item); onDismissRequest(false) },
                                     contentDescription = stringResource(item.label),
                                     enabled = item.enabled
@@ -294,7 +294,7 @@ inline fun RowScope.OverflowMenu(
                                 onItemClicked(item)
                                 onDismissRequest(false)
                             },
-                            icon = item.icon
+                            icon = vectorResource(item.icon)
                         )
                     }
                 }

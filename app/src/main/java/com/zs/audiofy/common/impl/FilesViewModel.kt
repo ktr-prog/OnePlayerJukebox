@@ -19,16 +19,11 @@
 package com.zs.audiofy.common.impl
 
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.QueueMusic
-import androidx.compose.material.icons.outlined.PlaylistAdd
-import androidx.compose.material.icons.outlined.SelectAll
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.zs.audiofy.R
 import com.zs.audiofy.common.Action
 import com.zs.audiofy.common.Filter
 import com.zs.audiofy.common.Mapped
@@ -38,7 +33,6 @@ import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.SelectionTracker.Level
 import com.zs.audiofy.common.compose.directory.FilesViewState
 import com.zs.core.db.playlists.Playlist
-import com.zs.core.db.playlists.Playlist.Track
 import com.zs.core.db.playlists.Playlists
 import com.zs.core.playback.MediaFile
 import com.zs.core.playback.Remote
@@ -52,8 +46,8 @@ abstract class FilesViewModel<T>(val remote: Remote, val playlistz: Playlists): 
     //common actions
     val ACTION_ADD_TO_PLAYLIST = Action.PLAYLIST_ADD
     val ACTION_PLAY_NEXT = Action.PLAY_NEXT
-    val ACTION_ADD_TO_QUEUE = Action(Res.string.add_to_queue, Icons.AutoMirrored.Outlined.QueueMusic)
-    val ACTION_SELECT_ALL = Action(Res.string.select_all, Icons.Outlined.SelectAll)
+    val ACTION_ADD_TO_QUEUE = Action(Res.string.add_to_queue, Res.drawable.ic_queue_music)
+    val ACTION_SELECT_ALL = Action(Res.string.select_all, Res.drawable.ic_select_all)
 
     // Represents the
     override fun clear() = selected.clear()

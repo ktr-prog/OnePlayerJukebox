@@ -26,19 +26,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.zs.audiofy.R
+import androidx.core.content.res.ResourcesCompat
 import com.zs.audiofy.common.Action
 import com.zs.audiofy.common.Filter
 import com.zs.audiofy.common.Res
+import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.composableIf
 import com.zs.compose.foundation.fadingEdge
 import com.zs.compose.theme.AppTheme
@@ -131,7 +129,7 @@ fun Filters(
                 onClick = { onRequest(null) },
                 content = {
                     Icon(
-                        Icons.AutoMirrored.Outlined.Sort,
+                        vectorResource(Res.drawable.ic_sort),
                         contentDescription = "ascending",
                         modifier = Modifier.rotate(if (ascending) 0f else 180f)
                     )
@@ -166,15 +164,15 @@ fun Filters(
                     content = {
                         Label(label, modifier = Modifier.padding(padding))
                     },
-                    leadingIcon = composableIf(value.icon != null) {
-                        Icon(value.icon!!, contentDescription = label.toString())
+                    leadingIcon = composableIf(value.icon != ResourcesCompat.ID_NULL) {
+                        Icon(vectorResource(value.icon), contentDescription = label)
                     },
                     colors = colors,
                     border = if (!selected) null else BorderStroke(
                         0.5.dp,
                         AppTheme.colors.accent.copy(0.12f)
                     ),
-                    shape = CircleShape
+                    shape = Res.shape.circle
                 )
             }
         }
