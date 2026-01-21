@@ -33,6 +33,29 @@ import com.zs.preferences.stringPreferenceKey
 private const val TAG = "Settings"
 
 
+/**
+ * A generic [Saver] implementation for any [Enum] type.
+ *
+ * This saver persists enum values by storing their [Enum.name] as a String,
+ * and restores them by looking up the corresponding enum constant.
+ *
+ * Usage:
+ * ```
+ * val saver = enumSaver<MyEnum>()
+ * val state = rememberSaveable(stateSaver = saver) { mutableStateOf(MyEnum.FIRST) }
+ * ```
+ *
+ * This avoids writing custom savers for each enum class.
+ */
+@Suppress("FunctionName")
+private inline fun <reified T : Enum<T>> OrdinalEnumSaver(): IntSaver<T> = object : IntSaver<T> {
+    // Save enum as its name string
+    override fun save(value: T): Int = value.ordinal
+
+    // Restore enum constant by ordinal lookup
+    override fun restore(value: Int): T =
+        enumValues<T>()[value]
+}
 
 private val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
@@ -150,13 +173,10 @@ object Settings {
     // Keys
     private const val PREFIX = "Audiofy"
     val NIGHT_MODE =
-        stringPreferenceKey(
-            "${PREFIX}_night_mode",
+        intPreferenceKey(
+            "${PREFIX}_night_mode_policy",
             NightMode.ENABLED,
-            object : StringSaver<NightMode> {
-                override fun save(value: NightMode): String = value.name
-                override fun restore(value: String): NightMode = NightMode.valueOf(value)
-            }
+            OrdinalEnumSaver()
         )
 
     // For Android versions below 10 (API level 29), this is true by default, meaning
@@ -178,15 +198,7 @@ object Settings {
     val COLORIZATION_STRATEGY = intPreferenceKey(
         "${PREFIX}_colorization_strategy",
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) AccentColorPolicy.WALLPAPER else AccentColorPolicy.DEFAULT,
-        object : IntSaver<AccentColorPolicy> {
-            override fun restore(value: Int): AccentColorPolicy {
-                return AccentColorPolicy.entries[value]
-            }
-
-            override fun save(value: AccentColorPolicy): Int {
-                return value.ordinal
-            }
-        }
+        OrdinalEnumSaver()
     )
 
     val COLOR_ACCENT_LIGHT =
