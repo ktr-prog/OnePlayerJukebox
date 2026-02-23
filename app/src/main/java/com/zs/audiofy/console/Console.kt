@@ -32,7 +32,9 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
@@ -633,19 +635,27 @@ object RouteConsole : Route {
             containerColor = COLOR_BACKGROUND,
             spacing = CP.normal,
             secondary = {
-                Box(modifier = Modifier.animateContentSize()) {
-                    if (!showQueue) return@Box
-                    val insets = when {
-                        strategy is VerticalTwoPaneStrategy -> insets.only(WindowInsetsSides.Bottom)
-                        else -> insets.only(WindowInsetsSides.End + WindowInsetsSides.Top)
+                Box(
+                    modifier = Modifier.let{
+                        when(strategy){
+                            is VerticalTwoPaneStrategy -> it.fillMaxWidth()
+                            is HorizontalTwoPaneStrategy -> it.fillMaxHeight()
+                            else -> it
+                        }}.animateContentSize(),
+                    content = {
+                        if (!showQueue) return@Box
+                        val insets = when {
+                            strategy is VerticalTwoPaneStrategy -> insets.only(WindowInsetsSides.Bottom)
+                            else -> insets.only(WindowInsetsSides.End + WindowInsetsSides.Top)
+                        }
+                        val shape = when (strategy) {
+                            SinglePaneStrategy -> RectangleShape
+                            is HorizontalTwoPaneStrategy -> SecondaryHorizontal
+                            else -> SecondaryVertical
+                        }
+                        Queue(viewState, shape, insets)
                     }
-                    val shape = when (strategy) {
-                        SinglePaneStrategy -> RectangleShape
-                        is HorizontalTwoPaneStrategy -> SecondaryHorizontal
-                        else -> SecondaryVertical
-                    }
-                    Queue(viewState, shape, insets)
-                }
+                )
             },
             primary = {
                 BoxWithConstraints {
