@@ -641,7 +641,7 @@ object RouteConsole : Route {
                             is VerticalTwoPaneStrategy -> it.fillMaxWidth()
                             is HorizontalTwoPaneStrategy -> it.fillMaxHeight()
                             else -> it
-                        }}.animateContentSize(),
+                        }}/*.animateContentSize()*/,
                     content = {
                         if (!showQueue) return@Box
                         val insets = when {
@@ -716,6 +716,7 @@ object RouteConsole : Route {
                             animateChangesSpec = DefaultAnimSpecs,
                             content = content,
                             modifier = Modifier
+                                .animateContentSize()
                                 .fillMaxSize()
                                 .then(
                                     when (strategy) {

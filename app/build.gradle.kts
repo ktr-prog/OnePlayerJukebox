@@ -86,8 +86,8 @@ android {
         applicationId = "com.googol.android.apps.oneplayer" // Unique app ID
         minSdk = 28                                         // Minimum supported Android version
         targetSdk = 36                                      // Target SDK
-        versionCode = 24                                    // Internal version code
-        versionName = "1.5.8-beta"                          // User-facing version name
+        versionCode = 25                                    // Internal version code
+        versionName = "1.5.9-beta"                          // User-facing version name
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
 
