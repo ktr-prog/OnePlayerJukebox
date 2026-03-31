@@ -1,7 +1,7 @@
 [versions]
 agp = "9.1.0"                # Android Gradle Plugin
 kotlin = "2.3.20"             # Kotlin language + Compose plugin
-media3 = "1.9.3"             # Media3 playback libraries
+media3 = "1.10.0"             # Media3 playback libraries
 toolkit = "3.7.14-dev"       # Prime Toolkit modules
 material_icons = "1.7.8"     # Material Icons for Compose
 coil = "3.4.0"               # Coil image loader

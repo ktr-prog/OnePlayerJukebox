@@ -1,5 +1,4 @@
-✓ Labs Mode: Unlock experimental features, starting with Long-Press to Seek on the Now Playing screen.
-✓ Playback Flow: Videos now jump straight into Now Playing for a smoother experience.
-✓ Performance Boost: Replaced the icon system with faster, local vector assets for snappier performance.
-✓ Internal Cleanup: Removed unused modules and reorganized dependencies for a leaner app.
-✓ Build System Updates: Upgraded Gradle and refreshed key libraries for long-term maintainability.
+* Enhanced subtitle rendering with native Media3 support for richer, more accurate captions
+* Upgraded playback engine (Media3 v1.10.0) for improved stability and performance
+* Cleaner UI integration with new SubtitleView in Compose
+* Dependency updates and minor fixes for smoother playback experience

@@ -32,7 +32,7 @@ value class SubtitleView(val raw: View){
     constructor(context: Context): this(SubtitleView(context))
 
     @SuppressLint("UnsafeOptInUsageError")
-    fun setCues(cues: List<Any>){
-        (raw as SubtitleView).setCues(cues as List<Cue>)
+    fun setCues(cues: List<Any>?){
+        (raw as SubtitleView).setCues(cues as? List<Cue>)
     }
 }

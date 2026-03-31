@@ -87,7 +87,7 @@ android {
         minSdk = 28                                         // Minimum supported Android version
         targetSdk = 36                                      // Target SDK
         versionCode = 26                                    // Internal version code
-        versionName = "1.6.0-beta"                          // User-facing version name
+        versionName = "1.5.10-beta"                          // User-facing version name
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
 

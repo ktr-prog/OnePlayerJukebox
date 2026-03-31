@@ -390,31 +390,31 @@ fun MediaConfigDialog(
 
                     // subtitle allows selection none.
                     if (checked == Remote.TRACK_TYPE_TEXT)
-                    item(
-                        content = {
-                            val selected  = checkedTrack ==  null
-                            SelectableChip(
-                                selected,
-                                colors = colors,
-                                border = if (selected) ChipDefaults.outlinedBorder else ButtonDefaults.outlinedBorder,
-                                leadingIcon = {
-                                    Icon(
-                                        vectorResource(Res.drawable.ic_audio_file),
-                                        contentDescription = null
-                                    )
-                                },
-                                content = { Label(stringResource(Res.string.none)) },
-                                onClick = {
-                                    viewState.setCheckedTrack(
-                                        Remote.TRACK_TYPE_TEXT,
-                                        null
-                                    )
-                                    onDismissRequest()
-                                },
-                                modifier = Modifier.animateItem()
-                            )
-                        }
-                    )
+                        item(
+                            content = {
+                                val selected  = checkedTrack ==  null
+                                SelectableChip(
+                                    selected,
+                                    colors = colors,
+                                    border = if (selected) ChipDefaults.outlinedBorder else ButtonDefaults.outlinedBorder,
+                                    leadingIcon = {
+                                        Icon(
+                                            vectorResource(Res.drawable.ic_audio_file),
+                                            contentDescription = null
+                                        )
+                                    },
+                                    content = { Label(stringResource(Res.string.none)) },
+                                    onClick = {
+                                        viewState.setCheckedTrack(
+                                            Remote.TRACK_TYPE_TEXT,
+                                            null
+                                        )
+                                        onDismissRequest()
+                                    },
+                                    modifier = Modifier.animateItem()
+                                )
+                            }
+                        )
 
                     items(
                         items = data,

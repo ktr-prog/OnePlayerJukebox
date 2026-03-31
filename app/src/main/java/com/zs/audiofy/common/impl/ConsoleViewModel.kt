@@ -37,6 +37,7 @@ class ConsoleViewModel(
     override var visibility: Int by mutableIntStateOf(RouteConsole.VISIBLE_ALWAYS)
     override val queue: Flow<List<MediaFile>?> = remote.queue
     override val cues: Flow<String?> = remote.cues
+    override val cues2: Flow<List<Any>?> = remote.cues2
 
     override fun getVideoProvider(): VideoProvider {
         return runBlocking { remote.getViewProvider() }

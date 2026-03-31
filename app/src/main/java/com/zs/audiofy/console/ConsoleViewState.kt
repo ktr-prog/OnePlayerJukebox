@@ -82,6 +82,7 @@ interface QueueViewState {
 interface ConsoleViewState: QueueViewState {
 
     val cues: Flow<String?>
+    val cues2: Flow<List<Any>?>
 
     @get:FloatRange(from = 0.25, to = 3.0)
     @set:FloatRange(from = 0.25, to = 3.0)

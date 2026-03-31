@@ -12,6 +12,7 @@
 <resources>
     <!--Changelog-->
     <string-array name="changelog" translatable="false">
+        <item>@string/changelog_158_beta</item>
         <item>@string/changelog_156_beta</item>
         <item>@string/changelog_155_beta</item>
         <item>@string/changelog_154_beta</item>
@@ -35,7 +36,19 @@
     </string-array>
 
     <!--Points to the changelog of current version.-->
-    <string name="release_notes" translatable="false">@string/changelog_158_beta</string>
+    <string name="release_notes" translatable="false">@string/changelog_1_5_10_beta</string>
+
+    <!--1.5.10-beta-->
+    <string name="changelog_1_5_10_beta" translatable="false">
+    <b>What’s New <font color='purple'>(v1.5.10-beta)\n</font></b>
+    <font color='grey'>
+        \n✓ Enhanced subtitle rendering with native Media3 support for richer, more accurate captions
+        \n✓ Upgraded playback engine (Media3 v1.10.0) for improved stability and performance
+        \n✓ Cleaner UI integration with new SubtitleView in Compose
+        \n✓ Dependency updates and minor fixes for smoother playback experience
+    </font>
+    </string>
+
 
     <!--1.5.8-beta-->
     <string name="changelog_158_beta" translatable="false">

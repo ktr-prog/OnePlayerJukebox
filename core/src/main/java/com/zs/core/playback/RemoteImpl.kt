@@ -418,17 +418,15 @@ internal class RemoteImpl(private val context: Context) : Remote {
             // If `events` is null (initial emission from callbackFlow) or if it doesn't contain
             // `Player.EVENT_CUES`, it means the subtitle cue hasn't changed,
             // so we don't need to re-fetch and emit it.
-            events?.contains(Player.EVENT_CUES) == true
+            events?.contains(Player.EVENT_CUES) ?: true
         }.transform { _ ->
             // Suspend until the MediaBrowser instance is connected and ready.
             // This ensures we always work with a valid provider before accessing cues.
             val provider = fBrowser.await()
 
-            // Collect all current subtitle cues into a single string.
-            // Each cue's text is converted to a string (or empty if null),
-            // and joined together with newline separators.
+            // Collect all current subtitle cues
             val cues = provider.currentCues.cues
-
+            // emit the result
             emit(cues)
         }
 

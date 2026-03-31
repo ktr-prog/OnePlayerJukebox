@@ -273,14 +273,13 @@ object RouteConsole : Route {
                 )
 
                 // Cues
-                val cues by viewState.cues.collectAsState(null)
+                val cues by viewState.cues2.collectAsState(null)
                 /*val cManager = remember {
                     facade.getDeviceService<CaptioningManager>(Context.CAPTIONING_SERVICE)
                 }*/
-                Cue(
-                    provider = { cues ?: "" },
+                Cues(
+                    provider = { cues  },
                     modifier = Modifier.layoutId(ID_CUES),
-                    color = Color.White,
                 )
 
                 // Scrim
