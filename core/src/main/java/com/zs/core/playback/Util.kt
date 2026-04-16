@@ -31,6 +31,7 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.OptIn
 import androidx.core.net.toUri
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.VideoSize
@@ -329,3 +330,17 @@ internal fun MediaBrowser(ctx: Context, listener: MediaBrowser.Listener?= null) 
         .apply { if (listener != null) setListener(listener) }
         .buildAsync()
 
+internal val Player.isCurrentMediaItemVideo: Boolean
+    get() {
+        // Note: This is internal in playback, so keep an eye on this implementation
+        // Retrieve the MIME type from the current media item's metadata extras
+        val mimeType = currentMediaItem?.mimeType
+
+        // If the MIME type is not null, check if it starts with "video"
+        if (mimeType != null)
+            return mimeType.startsWith("video")
+
+        // If MIME type is null, fall back to checking current track groups for video type
+        // This approach is less efficient but ensures a video track type is properly identified
+        return currentTracks.groups.find { it.type == C.TRACK_TYPE_VIDEO } != null
+    }

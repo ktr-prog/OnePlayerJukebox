@@ -172,6 +172,7 @@ class Playback : MediaLibraryService(), Callback, Player.Listener {
     private var equalizer: Equalizer? = null
     
     private var bgPlaybackPolicy = Remote.BG_PLAYBACK_AUDIO_ONLY
+    private var isAppVisibleToUser: Boolean = false
 
     // init
     override fun onCreate() {
@@ -314,7 +315,8 @@ class Playback : MediaLibraryService(), Callback, Player.Listener {
         // Notify connected controllers that the children of the root queue have changed.
         // This ensures UIs are updated to reflect the new current item.
         session.notifyChildrenChanged(Remote.ROOT_QUEUE, 0, null)
-
+        // enforce playback policy for new rules.
+        enforceBgPlaybackRules()
         // If the mediaItem is null (e.g., end of playlist) or it's a third-party URI,
         // do not proceed with adding it to the "Recent" playlist.
         if (mediaItem == null || mediaItem.mediaUri?.isThirdPartyUri == true) return
@@ -411,12 +413,10 @@ class Playback : MediaLibraryService(), Callback, Player.Listener {
             && player.playbackState != Player.STATE_IDLE
             && runBlocking { preferences[PREF_KEY_INDEX, C.INDEX_UNSET] } == player.currentMediaItemIndex)
             scope.launch { preferences[PREF_CONTENT_DURATION] = player.contentDuration }
-
         // Check if the received events contain any of the predefined state update events.
         // If not, there's no need to proceed with emitting a state update.
         if (!events.containsAny(*Remote.STATE_UPDATE_EVENTS))
             return
-
         // Cancel any existing state update job. This is important to handle
         // cases where multiple events might trigger this method in quick succession.
         stateJob?.cancel()
@@ -449,6 +449,8 @@ class Playback : MediaLibraryService(), Callback, Player.Listener {
 
     override fun onPlayWhenReadyChanged(isPlaying: Boolean, reason: Int) {
         super.onPlayWhenReadyChanged(isPlaying, reason)
+        if (isPlaying)  // enforce bg playback policy rules
+          enforceBgPlaybackRules()
         //  Just cancel the job in case is playing false
         if (!isPlaying) {
             playbackMonitorJob?.cancel()
@@ -655,20 +657,22 @@ class Playback : MediaLibraryService(), Callback, Player.Listener {
                 showPlatformToast(if (isLiked) "Liked ❤️✨" else "Unliked 💔")
                 SessionResult(SessionResult.RESULT_SUCCESS)
             }
-            // app visbility
+            // app visibility
             Remote.APP_VISIBILITY -> {
                 val visible = args.getBoolean(Remote.EXTRA_KEY_APP_VISIBILITY)
-                onAppVisibilityUpdated(visible)
+                isAppVisibleToUser = visible
                 Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
             }
             // Bg Playback Policy 
             Remote.BG_PLAYBACK_POLICY -> {
-                val newPolicy = args.getInt(Remote.EXTRA_KEY_BG_PLAYBACK_POLICY, Remote.BG_PLAYBACK_AUDIO_ONLY)
-                bgPlaybackPolicy = newPolicy
-                // don't save session policy in pref
-                if (newPolicy != Remote.BG_PLAYBACK_ALL_SESSION)
-                   scope.launch { preferences[PREF_BG_PLAYBACK_POLICY] = newPolicy }
-                Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+                val value = args.getInt(Remote.EXTRA_KEY_BG_PLAYBACK_POLICY, -1)
+                if (value != -1 && value != Remote.BG_PLAYBACK_ALL_SESSION)
+                    bgPlaybackPolicy = value
+                // always return saved value
+                Futures.immediateFuture(
+                    SessionResult(SessionResult.RESULT_SUCCESS) {
+                        putInt(Remote.EXTRA_KEY_BG_PLAYBACK_POLICY, bgPlaybackPolicy)
+                    })
             }
             // Handle unrecognized or unsupported commands.
             else -> Futures.immediateFuture(SessionResult(SessionError.ERROR_UNKNOWN))
@@ -704,7 +708,28 @@ class Playback : MediaLibraryService(), Callback, Player.Listener {
         }
     }
 
-    fun onAppVisibilityUpdated(visible: Boolean) {
-        Log.d(TAG, "onAppVisibilityUpdated: $visible")
+    /**
+     * Enforces background playback rules based on app visibility and playback policy.
+     * This ensures that playback is paused when the app is not visible to the user
+     * and the current background playback policy does not allow continuation.
+     */
+    fun enforceBgPlaybackRules() {
+        // If the app is visible to the user, OR
+        // the player is not currently playing, OR
+        // the background playback policy allows all media to continue (BG_PLAYBACK_ALL or higher),
+        // then no enforcement is needed → exit early.
+        if (isAppVisibleToUser || !player.isPlaying || bgPlaybackPolicy >= Remote.BG_PLAYBACK_ALL)
+            return
+
+        // If the policy allows audio-only playback in background,
+        // and the current media item is audio (not video),
+        // then playback is permitted → exit early.
+        if (bgPlaybackPolicy == Remote.BG_PLAYBACK_AUDIO_ONLY && !player.isCurrentMediaItemVideo)
+            return
+
+        // Otherwise, background playback is not allowed under current conditions.
+        // Pause the player and ensure it does not auto-resume.
+        player.pause()
+        player.playWhenReady = false
     }
 }

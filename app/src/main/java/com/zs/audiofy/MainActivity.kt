@@ -528,15 +528,11 @@ class MainActivity : ComponentActivity(), SystemFacade, NavDestListener {
     override fun onResume() {
         super.onResume()
         paymaster.sync()  // trigger sync in paymaster
-        lifecycleScope.launch {
-            remote.setAppVisibility(true)
-        }
+        lifecycleScope.launch { remote.setAppVisibility(true) }
     }
 
     override fun onPause() {
-        lifecycleScope.launch {
-            remote.setAppVisibility(false)
-        }
+        lifecycleScope.launch { remote.setAppVisibility(false) }
         super.onPause()
     }
 

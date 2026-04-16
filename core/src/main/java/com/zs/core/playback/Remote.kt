@@ -115,7 +115,9 @@ interface Remote {
             EQUALIZER_CONFIG,
             SCRUBBING_MODE,
             TOGGLE_LIKE,
-            CONTENT_DURATION
+            CONTENT_DURATION,
+            APP_VISIBILITY,
+            BG_PLAYBACK_POLICY
         )
 
         // The roots for accessing global playlists
@@ -353,4 +355,5 @@ interface Remote {
      * @see [Remote.BG_PLAYBACK_ALL_SESSION]
      */
     suspend fun setBgPlaybackPolicy(newPolicy: Int)
+    suspend fun getBgPlaybackPolicy(): Int
 }

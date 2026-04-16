@@ -726,4 +726,10 @@ internal class RemoteImpl(private val context: Context) : Remote {
             Remote.EXTRA_KEY_BG_PLAYBACK_POLICY to newPolicy
         )
     }
+
+    override suspend fun getBgPlaybackPolicy(): Int {
+        val browser = fBrowser.await()
+        val result = browser[Remote.BG_PLAYBACK_POLICY]
+        return result.extras.getInt(Remote.EXTRA_KEY_BG_PLAYBACK_POLICY, Remote.BG_PLAYBACK_AUDIO_ONLY)
+    }
 }
