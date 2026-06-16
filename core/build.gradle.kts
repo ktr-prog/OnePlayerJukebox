@@ -37,7 +37,7 @@ android {
     // Unique namespace for this core library module
     namespace = "com.zs.core"
     // Compile against Android SDK level 36 → latest APIs available
-    compileSdk = 36
+    compileSdk = 37
 
     // -----------------------------
     // Java Compatibility Options

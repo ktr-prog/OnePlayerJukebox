@@ -56,7 +56,7 @@ android {
     buildFeatures { compose = true; buildConfig = true } // Enable Compose and BuildConfig generation
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }  // Exclude redundant license files from packaging
     namespace = "com.zs.audiofy" // Unique namespace for the app
-    compileSdk = 36 // Compile against Android SDK level 36 → latest APIs available
+    compileSdk = 37 // Compile against Android SDK level 36 → latest APIs available
 
     // -----------------------------
     // Compose Compiler Configuration
@@ -85,9 +85,9 @@ android {
     defaultConfig {
         applicationId = "com.googol.android.apps.oneplayer" // Unique app ID
         minSdk = 28                                         // Minimum supported Android version
-        targetSdk = 36                                      // Target SDK
-        versionCode = 27                                    // Internal version code
-        versionName = "1.6.0-beta"                          // User-facing version name
+        targetSdk = 37                                      // Target SDK
+        versionCode = 28                                    // Internal version code
+        versionName = "1.6.1-beta"                          // User-facing version name
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
 

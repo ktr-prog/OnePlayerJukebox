@@ -26,7 +26,7 @@ kotlin {
 android {
     // Unique namespace for generated R class and manifest
     namespace = "com.zs.feature.widget"
-    compileSdk = 36 // Compile against the latest Android SDK version
+    compileSdk = 37 // Compile against the latest Android SDK version
     buildFeatures { compose = true } // Enable Jetpack Compose support
 
     // Java compatibility settings (ensures consistent bytecode level)

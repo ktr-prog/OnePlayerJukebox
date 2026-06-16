@@ -23,7 +23,7 @@ kotlin {
 // -----------------------------
 android {
     namespace = "com.zs.feature.codex"
-    compileSdk = 36  // Compile against Android SDK level 36 → latest APIs available
+    compileSdk = 37  // Compile against Android SDK level 36 → latest APIs available
 
     defaultConfig {
         minSdk = 28  // Minimum supported Android version (28 → Android 9 Pie)
