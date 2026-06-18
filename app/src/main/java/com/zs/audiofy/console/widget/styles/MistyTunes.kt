@@ -45,7 +45,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.zs.audiofy.R
+import com.zs.audiofy.common.AppConfig
+import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.compose.ContentPadding
 import com.zs.audiofy.common.compose.LottieAnimatedButton
 import com.zs.audiofy.common.compose.background
@@ -54,12 +55,11 @@ import com.zs.audiofy.common.compose.lottie
 import com.zs.audiofy.common.compose.lottieAnimationPainter
 import com.zs.audiofy.common.compose.marque
 import com.zs.audiofy.common.compose.shine
+import com.zs.audiofy.common.vectorResource
 import com.zs.audiofy.console.RouteConsole
 import com.zs.audiofy.console.widget.Widget
-import com.zs.audiofy.common.AppConfig
-import com.zs.audiofy.common.Res
-import com.zs.audiofy.common.vectorResource
 import com.zs.compose.foundation.background
+import com.zs.compose.foundation.effects.pulsate
 import com.zs.compose.foundation.textResource
 import com.zs.compose.theme.AppTheme
 import com.zs.compose.theme.BaseListItem
@@ -225,7 +225,7 @@ fun MistyTunes(
                             icon = vectorResource(Res.drawable.ic_tune),
                             contentDescription = null,
                             onClick = { onRequest(Widget.REQUEST_SHOW_CONFIG) },
-                            modifier = size
+                            modifier = size.pulsate(color = AppTheme.colors.accent)
                         )
                     }
 
