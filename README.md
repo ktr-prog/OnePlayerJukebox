@@ -3,17 +3,27 @@
 <h1><img src="https://play-lh.googleusercontent.com/QAraPyy9rPirWHPDFH6LvxHBSFFmouWA4byFQ0OM6C9RTDsRheSmhmXAVGTQ28dIUMmQfoy70MpSsjEjlQQSWYY=w240-h480-rw" height = 34 alt="logo"/> One Player</h1>
 <!-- TAG line -->
 <h6>One (Media) Player is an offline first all-in-one & all-format android native Universal music and video Player app</h6>
-<!--Badges-->
 
+<!--Badges-->
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/iZakirSheikh/OnePlayer.svg?logo=github&label=GitHub&cacheSeconds=3600)](https://github.com/iZakirSheikh/OnePlayer/releases/latest)
-[![Google Play](https://img.shields.io/endpoint?color=green&logo=google-play&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.googol.android.apps.oneplayer%26l%3DGoogle%2520Play%26m%3Dv%24version)](https://play.google.com/store/apps/details?id=com.prime.player)
+[![Google Play](https://img.shields.io/endpoint?color=green&logo=google-play&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.googol.android.apps.oneplayer%26l%3DGoogle%2520Play%26m%3Dv%24version)](https://play.google.com/store/apps/details?id=com.googol.android.apps.oneplayer)
 [![GitHub all releases](https://img.shields.io/github/downloads/iZakirSheikh/OnePlayer/total?logo=github&cacheSeconds=3600)](https://github.com/iZakirSheikh/OnePlayer/releases/latest)
-[![Google Play](https://img.shields.io/endpoint?color=green&logo=google-play&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.googol.android.apps.oneplayer%26l%3Ddownloads%26m%3D%24totalinstalls)](https://play.google.com/store/apps/details?id=com.prime.player)
+[![Google Play](https://img.shields.io/endpoint?color=green&logo=google-play&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.googol.android.apps.oneplayer%26l%3Ddownloads%26m%3D%24totalinstalls)](https://play.google.com/store/apps/details?id=com.googol.android.apps.oneplayer)
 [![Google Play](https://img.shields.io/endpoint?color=green&logo=google-play&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.googol.android.apps.oneplayer%26l%3Drating%26m%3D%25E2%2598%2585%2520%24rating)](https://play.google.com/store/apps/details?id=com.googol.android.apps.oneplayer)
 [![Media3](https://img.shields.io/github/v/release/androidx/media?label=Media3&color=007ec6)](https://github.com/androidx/media/releases/latest)
 [![Crowdin](https://badges.crowdin.net/oneplayer/localized.svg)](https://crowdin.com/project/oneplayer)
 [![Telegram Group](https://img.shields.io/badge/Telegram-Discussion-252850?color=orangered&logo=telegram)](https://telegram.dog/audiofy_support)
 ![Email Badge](https://badgen.net/badge/email/helpline.prime.zs%40gmail.com/blue?icon=mail)
+
+<!--Download-->
+[<img
+alt='Get it on Google Play'
+src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'
+height="80" />](https://play.google.com/store/apps/details?id=com.googol.android.apps.oneplayer)
+[<img
+alt='Get it on Github'
+src='https://github.com/user-attachments/assets/28de125a-29d3-42a6-9a2b-66f06c72325f'
+height="80" />](https://github.com/iZakirSheikh/OnePlayer/releases/latest)
 
 👉We’re still in active development and your feedback matters!
 1. Email: helpline.prime.zs@gmail.com
@@ -35,7 +45,7 @@ One (Media) Player is an offline‑first, all‑in‑one, all‑format native An
       </a>
 <!-- SHOT -2-->
   <a href="https://play-lh.googleusercontent.com/YQO_z0gKmj-gxK3M5_tFi33sxYDauVMpO49Z_zTwbYe3GMmwT5iuPFo1iXGCvQ48_GPcMqHSZcmR8S_AhHJL8A=w526-h296-rw">
-        <img src="https://play-lh.googleusercontent.com/YQO_z0gKmj-gxK3M5_tFi33sxYDauVMpO49Z_zTwbYe3GMmwT5iuPFo1iXGCvQ48_GPcMqHSZcmR8S_AhHJL8A=w526-h296-rw">
+        <img src="https://play-lh.googleusercontent.com/YQO_z0gKmj-gxK3M5_tFi33sxYDauVMpO49Z_zTwbYe3GMmwT5iuPFo1iXGCvQ48_GPcMqHSZcmR8S_AhHJL8A=w526-h296-rw" width="45%"> 
   </a>
 </div>
 
@@ -64,10 +74,6 @@ One (Media) Player is an offline‑first, all‑in‑one, all‑format native An
        <!-- Shot6 -->
       <a href="https://play-lh.googleusercontent.com/o_NnkV624RSHWj-8BKjQr0LyQWojSD6HZ689ILFe_uuh9NO9yt2Ncs1XqbWLDVn5lmEQhdFSTvbJqJhZRP7hMQ=w2560-h1440-rw">
             <img src="https://play-lh.googleusercontent.com/o_NnkV624RSHWj-8BKjQr0LyQWojSD6HZ689ILFe_uuh9NO9yt2Ncs1XqbWLDVn5lmEQhdFSTvbJqJhZRP7hMQ=w2560-h1440-rw" width="20%" >
-      </a>
-      <!-- Shot7 -->
-      <a href="https://play-lh.googleusercontent.com/nxfEFB66rXPDiH-CyqTnP0ce-ulqdiidK1KUUzLwygtwZC7uurfPtvOKSCPM_Y7yWYNFJO2j5JiPnCBy3fjM=w2560-h1440-rw">
-            <img src="https://play-lh.googleusercontent.com/nxfEFB66rXPDiH-CyqTnP0ce-ulqdiidK1KUUzLwygtwZC7uurfPtvOKSCPM_Y7yWYNFJO2j5JiPnCBy3fjM=w2560-h1440-rw" width="20%" >
       </a>
 </div>
 
@@ -111,13 +117,13 @@ Comming soon...
 
 ### Open Source Projects
 
+- [Audiofy](https://github.com/iZakirSheikh/Audiofy)
 - [Findroid](https://github.com/jarnedemeulemeester/findroid)
 - [Just (Video) Player](https://github.com/moneytoo/Player)
 - [LibreTube](https://github.com/libre-tube/LibreTube)
 - [ReadYou](https://github.com/Ashinch/ReadYou)
 - [Seal](https://github.com/JunkFood02/Seal)
 - [Next Player](https://github.com/anilbeesetti/nextplayer)
-- [Audiofy](https://github.com/iZakirSheikh/Audiofy)
 
 ## 🔖 License
 
@@ -139,6 +145,6 @@ Comming soon...
     See the License for the specific language governing permissions and
     limitations under the License.
 
-```+
+```
 
 
