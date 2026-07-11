@@ -1,5 +1,7 @@
-• Enhanced Promotions: Smarter rotation for tips and messages.
-• IAP Integration: New dynamic prompts for high-priority products.
-• Improved Discovery: Increased frequency of helpful prompts.
-• Modernized Foundation: Updated to Android 37, Kotlin 2.4.0, and Play Billing 9.0.0.
-• UX Refinements: Smoother "What's New" triggers and standardized snackbar UI.
+• <b>New Flavors:</b> Added Standard, Community, Plus, and Gold editions.
+• <b>Video Scaling:</b> Fixed settings reset when switching media types.
+• <b>UI Refinements:</b> Improved Labs Mode layout and storage dialog readability.
+• <b>Under the Hood:</b>
+• • Migrated to `AppConfig` for better metadata handling.
+• • Expanded Firebase support for Full/Pro variants.
+• • Upgraded to <b>Android 37</b>.

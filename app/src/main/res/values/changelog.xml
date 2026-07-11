@@ -45,7 +45,13 @@
     <string name="changelog_1_6_2_beta" translatable="false">
     <b>What’s New <font color='purple'>(v1.6.2-beta)\n</font></b>
     <font color='grey'>
-        \n✓
+        \n✓ <b>Multi-Flavor Support:</b> Introduced specialized editions: Standard, Community, Plus, and Gold.
+        \n✓ <b>Video Scaling Persistence:</b> Fixed an issue where video scale settings were lost when switching between video and audio content.
+        \n✓ <b>UI Refinements:</b> Improved Labs Mode visual alignment and refined storage permission dialogs with justified text for better readability.
+        \n✓ <b>Under the Hood:</b>
+        \n    • Migrated to a centralized `AppConfig` system for better metadata handling.
+        \n    • Expanded Firebase support for Full and Pro variants.
+        \n    • Upgraded to <b>Android 37</b> (compileSdk).
     </font>
     </string>
 
