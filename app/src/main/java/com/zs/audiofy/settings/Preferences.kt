@@ -108,7 +108,7 @@ fun LazyListScope.preferences(viewState: SettingsViewState) {
             checked = viewState.isLabsModeOn,
             onCheckedChange = { viewState.isLabsModeOn = it },
             icon = vectorResource(Res.drawable.ic_science),
-            modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.BottomTileShape),
+            modifier = Modifier.background(AppTheme.colors.background(1.dp), RS.CentreTileShape),
         )
     }
 
