@@ -229,12 +229,7 @@
     </string>
     <string name="allow">Allow</string>
     <string name="scr_permission_title">Storage Permission</string>
-    <string name="scr_permission_desc">For the best experience with <b><i>OnePlayer</i></b>, we need to access your device\'s files. This allows us to:
-        \n       • Seamlessly play your media
-        \n       • Optimize playback quality
-        \n       • Personalize app features
-        \nYour data <b>security</b> and <b>privacy</b> are our top priorities. Thank you for your support!
-    </string>
+    <string name="scr_permission_desc">To play your media smoothly, <b><i>OnePlayer</i></b> needs access to your media files. Granting permission ensures all media is available right inside the player.</string>
     <string name="home">Home</string>
     <string name="audios">Audios</string>
     <string name="videos">Videos</string>
