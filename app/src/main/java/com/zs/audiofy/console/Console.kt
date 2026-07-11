@@ -60,6 +60,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -255,7 +256,7 @@ object RouteConsole : Route {
             val enabled = visibility >= VISIBLE
             val onColor = LocalContentColor.current
             if (isVideo) {
-                var scale by remember { mutableStateOf(ContentScale.Fit) }
+                val scale = viewState.scale
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
@@ -293,7 +294,7 @@ object RouteConsole : Route {
                     icon = if (scale == ContentScale.Fit) vectorResource(Res.drawable.ic_crop_free) else vectorResource(Res.drawable.ic_fit_screen),
                     contentDescription = null,
                     onClick = {
-                        scale =
+                        viewState.scale =
                             if (scale == ContentScale.Fit) ContentScale.Crop else ContentScale.Fit
                     },
                     modifier = Modifier.layoutId(ID_BTN_RESIZE_MODE),

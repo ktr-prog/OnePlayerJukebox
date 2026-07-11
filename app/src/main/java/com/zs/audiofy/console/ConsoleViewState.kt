@@ -22,6 +22,7 @@ import android.app.Activity
 import android.net.Uri
 import androidx.annotation.FloatRange
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.layout.ContentScale
 import com.zs.core.playback.MediaFile
 import com.zs.core.playback.NowPlaying
 import com.zs.core.playback.Remote.TrackInfo
@@ -47,6 +48,7 @@ interface QueueViewState {
 
     val state: StateFlow<NowPlaying?>
     val queue: Flow<List<MediaFile>?>
+    var scale: ContentScale
 
     /**
      * Play the track of the queue identified by the [uri]
