@@ -1,6 +1,6 @@
 [versions]
-agp = "9.2.1"                # Android Gradle Plugin
-kotlin = "2.4.0"             # Kotlin language + Compose plugin
+agp = "9.3.0"                # Android Gradle Plugin
+kotlin = "2.4.10"             # Kotlin language + Compose plugin
 media3 = "1.10.1"             # Media3 playback libraries
 toolkit = "3.7.14-dev"       # Prime Toolkit modules
 material_icons = "1.7.8"     # Material Icons for Compose
@@ -21,7 +21,7 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 
 # ─── Codegen & Services ───
 ksp = { id = "com.google.devtools.ksp", version = "2.3.4" }                  # Kotlin Symbol Processing
-google-services = { id = "com.google.gms.google-services", version = "4.4.4" } # Firebase/Play services
+google-services = { id = "com.google.gms.google-services", version = "4.5.0" } # Firebase/Play services
 crashanlytics = { id = "com.google.firebase.crashlytics", version = "3.0.6" } # Crashlytics Gradle plugin
 
 [libraries]
@@ -56,8 +56,8 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", ve
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx", version = "19.4.4" } # Crash reporting
 
 # ─── Ads & Monetization ───
-unity_ads_mediation = { module = "com.unity3d.ads-mediation:mediation-sdk", version = "9.3.0" } # Ad mediation
-unity_ads_adquality = { module = "com.unity3d.ads-mediation:adquality-sdk", version = "9.3.1" } # Ad quality SDK
+unity_ads_mediation = { module = "com.unity3d.ads-mediation:mediation-sdk", version = "9.5.0" } # Ad mediation
+unity_ads_adquality = { module = "com.unity3d.ads-mediation:adquality-sdk", version = "9.8.0" } # Ad quality SDK
 
 # ─── Jetpack Compose ───
 compose-bom = { module = "androidx.compose:compose-bom", version = "2026.06.01" } # BOM for Compose
