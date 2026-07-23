@@ -36,7 +36,7 @@ jobs:
           ./gradlew assembleStandardRelease --no-daemon
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
-          name: standard-release-apk
           path: app/build/outputs/apk/standard/release/*.apk
+          archive: false
