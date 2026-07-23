@@ -12,6 +12,8 @@
 <resources>
     <!--Changelog-->
     <string-array name="changelog" translatable="false">
+        <item>@string/changelog_1_6_2_beta</item>
+        <item>@string/changelog_1_6_1_beta</item>
         <item>@string/changelog_1_6_0_beta</item>
         <item>@string/changelog_1_5_10_beta</item>
         <item>@string/changelog_158_beta</item>
@@ -38,9 +40,40 @@
     </string-array>
 
     <!--Points to the changelog of current version.-->
-    <string name="release_notes" translatable="false">@string/changelog_1_6_1_beta</string>
+    <string name="release_notes" translatable="false">@string/changelog_1_6_3_beta</string>
 
-    <!--1.6.0-beta-->
+    <!--1.6.3-beta-->
+    <string name="changelog_1_6_3_beta" translatable="false">
+    <b>What’s New <font color='purple'>(v1.6.3)\n</font></b>
+    <font color='grey'>
+        \n✓ <b>Community Edition:</b> Introduced a new build flavor tailored for open-source environments, replacing Play Store links with GitHub "Stars" and removing proprietary billing components.
+        \n✓ <b>Abstracted Market Interactions:</b> Implemented a new App Market Manager to handle updates and reviews across different platforms (Play Store vs. GitHub).
+        \n✓ <b>Multi-Flavor Billing Support:</b> Refactored the billing system into "Actual" (Google Play) and "Stub" (Premium/Gold) implementations to support restricted regions and special editions.
+        \n✓ <b>Analytics Abstraction:</b> Telemetry is now flavor-aware; standard builds use Firebase/Crashlytics, while Community and Gold versions use a privacy-focused no-op implementation.
+        \n✓ <b>Security &amp; Stability:</b>
+        \n    • Added RSA signature verification for in-app purchases.
+        \n    • Improved update flow error handling to prevent crashes in non-Google Play environments.
+        \n✓ <b>Under the Hood:</b>
+        \n    • Upgraded build infrastructure: <b>Gradle 9.5.0</b>, <b>AGP 9.3.0</b>, and <b>Kotlin 2.4.10</b>.
+        \n    • Updated project metadata and branding from "Audiofy" to "OnePlayer".
+    </font>
+    </string>
+
+    <!--1.6.2-beta-->
+    <string name="changelog_1_6_2_beta" translatable="false">
+    <b>What’s New <font color='purple'>(v1.6.2-beta)\n</font></b>
+    <font color='grey'>
+        \n✓ <b>Multi-Flavor Support:</b> Introduced specialized editions: Standard, Community, Plus, and Gold.
+        \n✓ <b>Video Scaling Persistence:</b> Fixed an issue where video scale settings were lost when switching between video and audio content.
+        \n✓ <b>UI Refinements:</b> Improved Labs Mode visual alignment and refined storage permission dialogs with justified text for better readability.
+        \n✓ <b>Under the Hood:</b>
+        \n    • Migrated to a centralized `AppConfig` system for better metadata handling.
+        \n    • Expanded Firebase support for Full and Pro variants.
+        \n    • Upgraded to <b>Android 37</b> (compileSdk).
+    </font>
+    </string>
+
+    <!--1.6.1-beta-->
     <string name="changelog_1_6_1_beta" translatable="false">
     <b>What’s New <font color='purple'>(v1.6.1-beta)\n</font></b>
     <font color='grey'>

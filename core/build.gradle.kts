@@ -1,5 +1,18 @@
 // Import Kotlin Gradle DSL helpers for JVM target and Kotlin version configuration
+import com.android.build.api.dsl.VariantDimension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+// -----------------------------------------------------------------------------
+// SECRETS
+// -----------------------------------------------------------------------------
+// 🔐 Keys or IDs injected into BuildConfig at runtime.
+private val secrets = arrayOf("ADS_APP_ID", "PLAY_CONSOLE_APP_RSA_KEY")
+
+/**
+ * Helper function to add a string BuildConfig field.
+ */
+private fun VariantDimension.buildConfigField(name: String, value: String) =
+    buildConfigField("String", name, "\"" + value + "\"")
 
 // -----------------------------
 // Plugins Section
@@ -38,6 +51,7 @@ android {
     namespace = "com.zs.core"
     // Compile against Android SDK level 36 → latest APIs available
     compileSdk = 37
+    buildFeatures { buildConfig = true; resValues = true }
 
     // -----------------------------
     // Java Compatibility Options
@@ -52,6 +66,19 @@ android {
         minSdk = 28 // Minimum supported Android version (28 → Android 9 Pie)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro") // Consumer ProGuard rules → applied when this library is consumed by other apps/modules
+        // --------------------------------------------------------------------
+        // BUILD CONFIG: SECRETS
+        // --------------------------------------------------------------------
+        // Inject secrets from environment variables.
+        // Missing values default to empty strings to avoid build failures.
+        for (secret in secrets)
+            buildConfigField(secret, System.getenv(secret) ?: "")
+
+        // 📌 Edition constants (used for comparison in code)
+        buildConfigField("FLAVOR_COMMUNITY", "community")
+        buildConfigField("FLAVOR_STANDARD", "standard")
+        buildConfigField("FLAVOR_PLUS", "plus")
+        buildConfigField("FLAVOR_GOLD", "gold")
     }
 
     // -----------------------------
@@ -64,6 +91,60 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // PRODUCT FLAVORS
+    // -------------------------------------------------------------------------
+    flavorDimensions += "edition"
+    productFlavors {
+        // STANDARD → Default monetized edition.
+        // PLUS + Ad SDK
+        create("standard") { dimension = "edition" }
+
+        // COMMUNITY → FOSS/open‑source build.
+        // Minimal free edition with no ads, no telemetry, and no purchases.
+        create("community") { dimension = "edition" }
+
+        // PLUS → Privacy-friendly edition:
+        // No Ad SDK, but telemetry and in‑app purchases.
+        create("plus") { dimension = "edition" }
+
+        // PREMIUM → Full unlock build.
+        // Based on Community, but with all features enabled.
+        create("gold") { dimension = "edition" }
+    }
+    // -------------------------------------------------------------------------
+    // SOURCE SETS CONFIGURATION
+    // -------------------------------------------------------------------------
+    sourceSets {
+        // Community flavor → uses stubbed (no-op) implementations for all shared libs
+        getByName("community") {
+            kotlin.directories += "src/shared/analytics/stub/java"
+            kotlin.directories += "src/shared/market/stub/java"
+            kotlin.directories += "src/shared/billing/stub/java"
+        }
+
+        // Premium flavor → also wired to stub implementations (restricted feature set)
+        getByName("plus") {
+            kotlin.directories += "src/shared/analytics/actual/java"
+            kotlin.directories += "src/shared/market/actual/java"
+            kotlin.directories += "src/shared/billing/actual/java"
+        }
+
+        // Standard flavor → full/actual implementations of analytics, billing, and ads
+        getByName("standard") {
+            kotlin.directories += "src/shared/analytics/actual/java"
+            kotlin.directories += "src/shared/market/actual/java"
+            kotlin.directories += "src/shared/billing/actual/java"
+        }
+
+        // Plus flavor → only requires actual billing implementation (no analytics/ads)
+        getByName("gold") {
+            kotlin.directories += "src/shared/analytics/stub/java"
+            kotlin.directories += "src/shared/market/actual/java"
+            kotlin.directories += "src/shared/billing/stub/java"
         }
     }
 }
@@ -82,8 +163,16 @@ dependencies {
     implementation(libs.media3.session)             // Media session management
     implementation(libs.media3.exoplayer)           // ExoPlayer for playback
     implementation(libs.media3.ui) // for using SubtitleView
-    implementation(libs.play.billing.client) // Play Billing → in-app purchases
     implementation(libs.coil.core)  // Coil → lightweight image loading library
     implementation(libs.androidx.palette) // AndroidX Palette → extract prominent colors from images
-    implementation(libs.bundles.analytics)  // Analytics bundle → tracking and reporting
+    // standard
+    "standardImplementation"(libs.bundles.analytics)
+    "standardImplementation"(libs.bundles.play.services)
+    "standardImplementation"(libs.play.billing.client) // Play Billing → in-app purchases
+    // plus
+    "plusImplementation"(libs.bundles.analytics)
+    "plusImplementation"(libs.bundles.play.services)
+    "plusImplementation"(libs.play.billing.client) // Play Billing → in-app purchases
+    // gold
+    "goldImplementation"(libs.bundles.play.services)
 }

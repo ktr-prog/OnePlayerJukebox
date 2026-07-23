@@ -55,7 +55,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.zs.audiofy.BuildConfig
+import com.zs.audiofy.common.AppConfig
 import com.zs.audiofy.common.IAP_BUY_ME_COFFEE
 import com.zs.audiofy.common.Res
 import com.zs.audiofy.common.Route
@@ -91,6 +91,7 @@ import com.zs.compose.theme.appbar.AppBarDefaults
 import com.zs.compose.theme.text.Header
 import com.zs.compose.theme.text.Label
 import com.zs.compose.theme.text.Text
+import com.zs.core.BuildConfig
 import com.zs.core.billing.Paymaster
 import androidx.compose.foundation.layout.PaddingValues as Padding
 import androidx.compose.foundation.layout.WindowInsetsSides as WIS
@@ -205,7 +206,7 @@ private fun Sponsor(modifier: Modifier = Modifier) {
         // Build version info.
         heading = {
             Text(
-                text = textResource(Res.string.version_info_s, BuildConfig.VERSION_NAME),
+                text = textResource(Res.string.version_info_s, AppConfig.VERSION_NAME),
                 style = AppTheme.typography.label3,
                 fontWeight = FontWeight.Normal
             )
@@ -236,16 +237,22 @@ private fun Sponsor(modifier: Modifier = Modifier) {
 
                     // RateUs
                     FilledTonalButton(
-                        textResource(Res.string.rate_us),
+                        textResource(Res.string.star_and_review),
                         icon = vectorResource(Res.drawable.ic_rate_review_outline),
-                        onClick = facade::launchAppStore,
+                        onClick = {
+                            when (BuildConfig.FLAVOR){
+                                BuildConfig.FLAVOR_COMMUNITY -> facade.launch(Settings.GithubIntent)
+                                else -> facade.launchAppStore()
+                            }
+                        },
                         colors = ButtonDefaults.filledTonalButtonColors(
                             backgroundColor = AppTheme.colors.background(
                                 4.dp
                             )
                         )
                     )
-
+                    if (BuildConfig.FLAVOR == BuildConfig.FLAVOR_COMMUNITY)
+                        return@Row
                     // Coffee
                     Button(
                         "Buy me a coffee",

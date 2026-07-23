@@ -6,8 +6,10 @@ import android.os.Build
 import android.text.format.DateUtils
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.lifecycle.viewModelScope
 import com.zs.audiofy.R
 import com.zs.audiofy.console.ConsoleViewState
@@ -38,6 +40,7 @@ class ConsoleViewModel(
     override val queue: Flow<List<MediaFile>?> = remote.queue
     override val cues: Flow<String?> = remote.cues
     override val cues2: Flow<List<Any>?> = remote.cues2
+    override var scale: ContentScale by mutableStateOf(ContentScale.Fit)
 
     override fun getVideoProvider(): VideoProvider {
         return runBlocking { remote.getViewProvider() }

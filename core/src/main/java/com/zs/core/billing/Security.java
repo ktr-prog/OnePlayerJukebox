@@ -27,7 +27,7 @@ import java.security.spec.X509EncodedKeySpec;
  * Security-related methods. For a secure implementation, all of this code should be implemented on
  * a server that communicates with the application on the device.
  */
-class Security {
+public class Security {
     static final private String TAG = "IABUtil/Security";
     static final private String KEY_FACTORY_ALGORITHM = "RSA";
     static final private String SIGNATURE_ALGORITHM = "SHA1withRSA";
@@ -39,7 +39,7 @@ class Security {
      * your local.properties, it will be echoed into BuildConfig.
      */
 
-    protected static String BASE_64_ENCODED_PUBLIC_KEY = "";
+    public static String BASE_64_ENCODED_PUBLIC_KEY = "";
 
     /**
      * Verifies that the data was signed with the given signature

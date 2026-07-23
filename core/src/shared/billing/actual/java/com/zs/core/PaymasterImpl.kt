@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.zs.core.billing
+package com.zs.core
 
 import android.app.Activity
 import android.content.Context
@@ -25,11 +25,16 @@ import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.PendingPurchasesParams
+import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase.PurchaseState
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
+import com.zs.core.billing.Paymaster
+import com.zs.core.billing.Product
+import com.zs.core.billing.Purchase
+import com.zs.core.billing.Security
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -159,7 +164,19 @@ internal class PaymasterImpl(
                 Log.e(TAG, "acknowledgePurchase: $result")
         }
         // Return the list of processed purchases.
-        return purchases.map(::Purchase)
+        return purchases.map() { value ->
+            Purchase(
+                quantity = value.quantity,
+                id = value.products.first(),
+                time = value.purchaseTime,
+                state = when (value.purchaseState) {
+                    PurchaseState.PURCHASED if value.isAcknowledged -> Paymaster.STATE_ACKNOWLEDGED
+                    PurchaseState.PURCHASED -> Paymaster.STATE_PURCHASED
+                    PurchaseState.PENDING -> Paymaster.STATE_PENDING
+                    else -> Paymaster.STATE_UNSPECIFIED
+                },
+            )
+        }
     }
 
     override fun onBillingSetupFinished(p0: BillingResult) {
@@ -197,7 +214,15 @@ internal class PaymasterImpl(
                 return@launch
             }
             // Update the product details state flow with the retrieved product information.
-            details.value = list.map(::Product)
+            details.value = list.map(){value ->
+                Product(
+                    value = value,
+                    id = value.productId,
+                    title = value.title.trim(),
+                    formattedPrice = value.oneTimePurchaseOfferDetails?.formattedPrice?.trim(),
+                    description = value.description.trim()
+                )
+            }
         }
     }
 
@@ -227,12 +252,13 @@ internal class PaymasterImpl(
         }
     }
 
-    override fun initiatePurchaseFlow(activity: Activity, productId: String): Boolean {
+    override fun beginTransition(activity: Activity, productId: String): Boolean {
         // Find the product details for the given product ID.
         val details = details.value.firstOrNull { it.id == productId } ?: return false
         // Build the billing flow parameters.
+        val ofProdcut = details.value as? ProductDetails ?: return false
         val ofProducts = listOf(
-            ProductDetailsParams().setProductDetails(details.value)
+            ProductDetailsParams().setProductDetails(ofProdcut)
                 .build()
         )
         val params = BillingFlowParams().setProductDetailsParamsList(ofProducts).build()
