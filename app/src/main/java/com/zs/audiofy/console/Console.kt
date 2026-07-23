@@ -725,7 +725,7 @@ object RouteConsole : Route {
                                             PrimaryHorizontal
                                         )
 
-                                        else -> Modifier.clip(PrimaryVertical)
+                                        else -> Modifier
                                     }
                                 ),
                         )

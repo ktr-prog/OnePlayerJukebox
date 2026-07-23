@@ -40,7 +40,7 @@ class ConsoleViewModel(
     override val queue: Flow<List<MediaFile>?> = remote.queue
     override val cues: Flow<String?> = remote.cues
     override val cues2: Flow<List<Any>?> = remote.cues2
-    override var scale: ContentScale by mutableStateOf(ContentScale.Fit)
+    override var scale: ContentScale by mutableStateOf(ContentScale.Crop)
 
     override fun getVideoProvider(): VideoProvider {
         return runBlocking { remote.getViewProvider() }
