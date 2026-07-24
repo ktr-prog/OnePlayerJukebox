@@ -35,9 +35,17 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleStandardRelease --no-daemon
 
+      - name: Detect Build Tools Version
+        run: |
+          BUILD_TOOL_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
+          echo "BUILD_TOOL_VERSION=$BUILD_TOOL_VERSION" >> $GITHUB_ENV
+          echo "Using Build Tools Version: $BUILD_TOOL_VERSION"
+
       - name: Sign APK Release
         id: sign_app
         uses: r0adkll/sign-android-release@v1
+        env:
+          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
         with:
           releaseDirectory: app/build/outputs/apk/standard/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
