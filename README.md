@@ -1,3 +1,3 @@
 - Change bottom bar from white to black (Can't remove it for now.)
 - Default video view-mode: Scale to Fit
-- Remove rounded corner cutout from button
+- Remove rounded corner cutout from vottom
