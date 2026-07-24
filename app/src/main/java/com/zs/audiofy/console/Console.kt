@@ -127,7 +127,6 @@ object RouteConsole : Route {
     const val ID_BACKGROUND = "_background"
     const val ID_SCRIM = "_scrim"
     const val ID_BTN_RESIZE_MODE = "_resize_mode"
-    const val ID_BTN_ROTATION_LOCK = "_rotation_lock"
     const val ID_BTN_QUEUE = "_queue"
     const val ID_BTN_SLEEP_TIMER = "_sleep_timer"
     const val ID_BTN_PLAYBACK_SPEED = "_playback_speed"
@@ -224,11 +223,6 @@ object RouteConsole : Route {
                 return@onBack
             }
 
-            // Check if the activity has orientation lock enabled - unlock it.
-            if ((facade as Activity).isOrientationLocked) {
-                facade.toggleRotationLock()
-                return@onBack
-            }
             // restore system bars
             // When the composable is disposed (e.g., navigating away),
             // revert the system bar appearance and visibility to their default automatic states.
@@ -461,15 +455,6 @@ object RouteConsole : Route {
                 style = if (isVideo) PLAY_BTN_STYLE_SIMPLE else PLAY_BTN_STYLE_OUTLINED,
                 enabled = enabled,
                 modifier = Modifier.key(ID_BTN_PLAY_PAUSE)
-            )
-
-            // Rotation
-            IconButton(
-                icon = vectorResource(Res.drawable.ic_screen_lock_rotation),
-                contentDescription = null,
-                onClick = { (facade as Activity).toggleRotationLock() },
-                enabled = enabled,
-                modifier = Modifier.layoutId(ID_BTN_ROTATION_LOCK)
             )
 
             // Queue
