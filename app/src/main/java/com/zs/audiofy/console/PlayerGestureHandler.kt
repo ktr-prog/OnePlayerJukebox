@@ -198,16 +198,6 @@ private class PlayerGestureHandlerNode(
             }
     }
 
-    var seekMediaJob: Job? = null
-    fun seekBy(mills: Long) {
-        seekMediaJob?.cancel()
-        seekMediaJob = coroutineScope.launch {
-            emit("${mills / 1000}s", true)
-            delay(200)
-            viewState.seekBy(mills)
-        }
-    }
-
     // Toggles controller visibility.
     fun toggleVisibility() {
         // show hide controller
@@ -293,17 +283,9 @@ private class PlayerGestureHandlerNode(
     }
 
 
-    fun onTap(count: Int = Int.MAX_VALUE) {
-        Log.d(TAG, "onTap: $count")
-        if (count == Int.MAX_VALUE) {
-            toggleVisibility()
-            return
-        }
-        // Hide the player controls if they are visible
-        if (viewState.visibility != C.VISIBLE_NONE)
-            viewState.emit(C.VISIBLE_NONE)
-        val mills = count * 10 * 1_000L
-        seekBy(mills)
+    fun onTap() {
+        Log.d(TAG, "onTap")
+        toggleVisibility()
     }
 
     // Backing field to store the original playback speed before a long press.
@@ -332,14 +314,9 @@ private class PlayerGestureHandlerNode(
     }
 
     suspend fun PointerInputScope.detectTapGesture() {
-        var delayJob: Job? =
-            null              // Job used to delay execution for multi-tap detection.
-        var lastTapMills =
-            0L                  // Timestamp of the last tap (used to detect double/triple taps).
-        var tapCount = 0                       // Counter for consecutive taps.
         awaitEachGesture {
             // Wait for the first pointer down event (finger touches screen) and consume it
-            // so it isn’t propagated further down the gesture chain.
+            // so it isn't propagated further down the gesture chain.
             val down = awaitFirstDown().also { it.consume() }
             // don't proceed if not in safe zone
             if (!isGestureInSafeZone(down.position))
@@ -359,7 +336,7 @@ private class PlayerGestureHandlerNode(
             }
 
             // Wait for the pointer to be lifted (finger up) or gesture cancellation.
-            // Consume the "up" event so it doesn’t propagate further.
+            // Consume the "up" event so it doesn't propagate further.
             val up = waitForUpOrCancellation()?.also { it.consume() }
             longPressJob.cancel()  // Cancel the long press job since the finger has been lifted or gesture ended.
 
@@ -373,34 +350,12 @@ private class PlayerGestureHandlerNode(
                     onLongPress(true); Log.d(TAG, "onLongClick: ")
                 }
 
-                // Multi-tap: If this tap occurred within the double-tap timeout of the previous tap.
-                up.uptimeMillis - lastTapMills <= viewConfiguration.doubleTapTimeoutMillis -> {
-                    // This is a subsequent tap in a multi-tap sequence.
-                    // Cancel any pending single tap action.
-                    delayJob?.cancel()
-                    ++tapCount
-                    // Determine direction of seek based on tap location (left/right side of screen).
-                    val times = if (down.position.x > size.width / 2) tapCount else -tapCount
-                    onTap(times)
-                }
-
-                // Single tap: This is the first tap or a tap that occurred after the double-tap timeout.
+                // Single tap: toggle visibility.
                 else -> {
-                    // Reset tap count for a new sequence.
-                    tapCount = 0
-                    // Cancel any previously scheduled single tap job.
-                    delayJob?.cancel()
-                    // Schedule a single tap action to run after the double-tap timeout.
-                    // This gives the user a chance to perform another tap for a multi-tap gesture.
-                    delayJob = coroutineScope.launch {
-                        delay(viewConfiguration.doubleTapTimeoutMillis)
-                        Log.d(TAG, "onTap: ")
-                        onTap()
-                    }
+                    Log.d(TAG, "onTap: ")
+                    onTap()
                 }
             }
-            // Record the time of this tap for future multi-tap detection.
-            lastTapMills = up.uptimeMillis
         }
     }
 }
