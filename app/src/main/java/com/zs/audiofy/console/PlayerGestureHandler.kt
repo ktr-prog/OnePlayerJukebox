@@ -283,6 +283,7 @@ private class PlayerGestureHandlerNode(
     }
 
 
+    // Handles a single tap: toggles player control visibility.
     fun onTap() {
         Log.d(TAG, "onTap")
         toggleVisibility()
