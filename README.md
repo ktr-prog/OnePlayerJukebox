@@ -1,3 +1,5 @@
 - Change bottom bar from white to black (Can't remove it for now.)
 - Default video view-mode: Scale to Fit
 - Remove rounded corner cutout from bottom
+- Remove screen rotation lock button
+- Remove touchscreen gestures (brightness, volume, time skipping=
