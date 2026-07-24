@@ -18,8 +18,6 @@
 
 package com.zs.audiofy.console
 
-import android.app.Activity
-import android.content.pm.ActivityInfo
 import android.media.audiofx.AudioEffect
 import android.net.Uri
 import androidx.compose.animation.Crossfade
@@ -91,46 +89,6 @@ val WindowInsets.toDpRect: DpRect
             }
         }
     }
-
-/**
- * Toggles the screen rotation lock for the current activity.
- *
- * If the current screen orientation is unspecified ([ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED]),
- * this function sets the requested screen orientation to [ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE],
- * effectively locking the screen to landscape mode. Otherwise, it resets the screen orientation to
- * [ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED], allowing the system to determine the orientation based
- * on the device sensor.
- *
- * @return `true` if the screen orientation is locked to landscape after the toggle,
- *         `false` otherwise.
- *
- * @see ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
- * @see ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
- */
-context(_: RC)
-fun Activity.toggleRotationLock(): Boolean {
-    // Determine the new screen orientation based on the current state.
-    val rotation =
-        if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-            ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-        else
-            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-
-    // Set the requested screen orientation to the calculated value.
-    requestedOrientation = rotation
-
-    // Return the weather orientation is locked or not.
-    return rotation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-}
-
-/**
- * Returns `true` if the screen orientation is locked, `false` otherwise.
- *
- * @see ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
- */
-context(_: RC)
-inline val Activity.isOrientationLocked
-    get() = requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 
 /**
  * Composes a artwork representation for PLayer Console view

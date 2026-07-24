@@ -58,7 +58,6 @@ abstract class Constraints(val titleTextSize: Int) {
     protected val BACKGROUND = ConstrainedLayoutReference(RouteConsole.ID_BACKGROUND)
     protected val SCRIM = ConstrainedLayoutReference(RouteConsole.ID_SCRIM)
     protected val RESIZE_MODE = ConstrainedLayoutReference(RouteConsole.ID_BTN_RESIZE_MODE)
-    protected val ROTATION_LOCK = ConstrainedLayoutReference(RouteConsole.ID_BTN_ROTATION_LOCK)
     protected val QUEUE = ConstrainedLayoutReference(RouteConsole.ID_BTN_QUEUE)
     protected val SLEEP_TIMER = ConstrainedLayoutReference(RouteConsole.ID_BTN_SLEEP_TIMER)
     protected val SPEED = ConstrainedLayoutReference(RouteConsole.ID_BTN_PLAYBACK_SPEED)
@@ -95,7 +94,6 @@ abstract class Constraints(val titleTextSize: Int) {
         if (hideAll || !except.contains(RouteConsole.ID_SEEK_BAR)) hide(SEEK_BAR)
         if (hideAll || !except.contains(RouteConsole.ID_SCRIM)) hide(SCRIM)
         if (hideAll || !except.contains(RouteConsole.ID_BTN_RESIZE_MODE)) hide(RESIZE_MODE)
-        if (hideAll || !except.contains(RouteConsole.ID_BTN_ROTATION_LOCK)) hide(ROTATION_LOCK)
         if (hideAll || !except.contains(RouteConsole.ID_BTN_QUEUE)) hide(QUEUE)
         if (hideAll || !except.contains(RouteConsole.ID_BTN_SLEEP_TIMER)) hide(SLEEP_TIMER)
         if (hideAll || !except.contains(RouteConsole.ID_BTN_PLAYBACK_SPEED)) hide(SPEED)
@@ -186,7 +184,7 @@ private fun CompactAudio(insets: DpRect) = object : Constraints(34) {
         }
 
         // Make these invisible
-        hide(INFO, ROTATION_LOCK, REPEAT_MODE, SHUFFLE)
+        hide(INFO, REPEAT_MODE, SHUFFLE)
     }
 }
 
@@ -248,7 +246,7 @@ private fun SmallAudio(insets: DpRect) = object : Constraints(44) {
 
         // TimeBar
         val timeBar = horizontal(
-            INDICATOR, SEEK_BAR, ROTATION_LOCK, EQUALIZER,
+            INDICATOR, SEEK_BAR, EQUALIZER,
             alignBy = SEEK_BAR,
             constrainBlock = {
                 linkTo(ARTWORK.start, COLLAPSE.end)
@@ -330,7 +328,7 @@ private fun PortraitAudio(insets: DpRect) = object : Constraints(44) {
 
         // TimeBar
         val timeBar = horizontal(
-            INDICATOR, SEEK_BAR, ROTATION_LOCK, EQUALIZER,
+            INDICATOR, SEEK_BAR, EQUALIZER,
             alignBy = SEEK_BAR,
             constrainBlock = {
                 linkTo(TITLE.start, COLLAPSE.end)
@@ -430,7 +428,7 @@ private fun LandscapeAudio(insets: DpRect) = object : Constraints(44) {
         // SeekBar
         val chainStyle = ChainStyle.Packed(0f)
         val timeBar = horizontal(
-            INDICATOR, SEEK_BAR, ROTATION_LOCK, EQUALIZER,
+            INDICATOR, SEEK_BAR, EQUALIZER,
             alignBy = SEEK_BAR,
             chainStyle = chainStyle,
             constrainBlock = {
@@ -519,7 +517,7 @@ private fun LargeAudio(insets: DpRect) = object : Constraints(44) {
         // SeekBar
         val chainStyle = ChainStyle.Packed(0f)
         val timeBar = horizontal(
-            INDICATOR, SEEK_BAR, ROTATION_LOCK, EQUALIZER, INFO,
+            INDICATOR, SEEK_BAR, EQUALIZER, INFO,
             alignBy = SEEK_BAR,
             chainStyle = chainStyle,
             constrainBlock = {
@@ -643,7 +641,7 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
         }
         // more
         val more = horizontal(
-            SHUFFLE, REPEAT_MODE, RESIZE_MODE, ROTATION_LOCK,
+            SHUFFLE, REPEAT_MODE, RESIZE_MODE,
             chainStyle = ChainStyle.Packed(1f),
             constrainBlock =  {
                 linkTo(timeBar.start, COLLAPSE.end)
@@ -733,7 +731,7 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
             else -> {
                 // TimeBar
                 horizontal(
-                    LOCK,  SEEK_BAR,  SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, RESIZE_MODE, ROTATION_LOCK, QUEUE,
+                    LOCK,  SEEK_BAR,  SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, RESIZE_MODE, QUEUE,
                     alignBy = SEEK_BAR,
                     constrainBlock = {
                         linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
