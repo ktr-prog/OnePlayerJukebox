@@ -212,7 +212,7 @@ class LibraryViewModel(
         }
     }
 
-    /**(uri: String) {
+    override fun onRequestRemoveRecentItem(uri: String) {
         runCatching {
             // Retrieve the "Recently Played" playlist entry
             val playlist = playlists[Remote.PLAYLIST_RECENT]

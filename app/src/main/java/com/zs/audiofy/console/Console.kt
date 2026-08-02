@@ -242,7 +242,6 @@ object RouteConsole : Route {
             fontSize = fontSize,
             fontWeight = fontWeight,
             maxLines = 1,
-            softWrap = false,
             modifier = modifier
                 .graphicsLayer { translationX = anim.value }
                 .onGloballyPositioned { coords ->
