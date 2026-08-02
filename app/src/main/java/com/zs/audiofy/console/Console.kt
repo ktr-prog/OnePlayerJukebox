@@ -80,10 +80,8 @@ import com.zs.audiofy.common.compose.LottieAnimatedIcon
 import com.zs.audiofy.common.compose.VideoSurface
 import com.zs.audiofy.common.compose.chronometer
 import com.zs.audiofy.common.compose.collectAsState
-import com.zs.audiofy.common.compose.marque
 import com.zs.audiofy.common.compose.resize
 import com.zs.audiofy.common.compose.shine
-import com.zs.audiofy.common.compose.timer
 import com.zs.audiofy.console.components.TimeBar
 import com.zs.audiofy.effects.RouteAudioFx
 import com.zs.audiofy.common.AppConfig
