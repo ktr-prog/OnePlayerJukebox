@@ -31,7 +31,6 @@ import android.media.audiofx.Equalizer.Settings
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.media3.common.C
 import androidx.media3.common.C.AUDIO_CONTENT_TYPE_MUSIC
 import androidx.media3.common.MediaItem
@@ -439,10 +438,6 @@ class Playback : MediaLibraryService(), Callback, Player.Listener {
 
     //
     override fun onPlayerError(error: PlaybackException) {
-        // TODO - Show toast only when in foreground.
-        //      Maybe add preference for moving to next.
-        // Display a simple toast message indicating an unplayable file
-        Toast.makeText(this, "Unplayable file", Toast.LENGTH_SHORT).show()
         // You may choose to handle the error here or take other actions like seeking to the next media item
         player.seekToNextMediaItem()
     }

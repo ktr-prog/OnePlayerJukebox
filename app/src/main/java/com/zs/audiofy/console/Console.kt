@@ -61,8 +61,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -205,7 +207,9 @@ object RouteConsole : Route {
     const val PLAY_BTN_STYLE_OUTLINED = 1
 
     /**
-     * A title label that always scrolls, regardless of whether the text overflows its container.
+     * A title label that always scrolls in an infinite seamless loop.
+     * Two copies of the text are rendered side-by-side so the loop is gapless.
+     * The parent container must have clipToBounds() to confine the visible area.
      */
     @Composable
     private fun ScrollingTitle(
@@ -214,40 +218,60 @@ object RouteConsole : Route {
         fontWeight: FontWeight,
         modifier: Modifier = Modifier,
     ) {
-        val anim = remember { androidx.compose.animation.core.Animatable(0f) }
+        val anim = remember { Animatable(0f) }
         var textWidthPx by remember { mutableIntStateOf(0) }
-        var containerWidthPx by remember { mutableIntStateOf(0) }
-        val density = androidx.compose.ui.platform.LocalDensity.current
+        val density = LocalDensity.current
         val gapDp = 64.dp
 
-        androidx.compose.runtime.LaunchedEffect(text, textWidthPx, containerWidthPx) {
+        LaunchedEffect(text, textWidthPx) {
             if (textWidthPx <= 0) return@LaunchedEffect
             val gapPx = with(density) { gapDp.toPx() }
             val totalScroll = textWidthPx + gapPx
             while (true) {
                 anim.snapTo(0f)
-                kotlinx.coroutines.delay(800L)
+                delay(800L)
                 anim.animateTo(
                     targetValue = -totalScroll,
-                    animationSpec = androidx.compose.animation.core.tween(
+                    animationSpec = tween(
                         durationMillis = (totalScroll * 7).toInt().coerceAtLeast(3000),
-                        easing = androidx.compose.animation.core.LinearEasing
+                        easing = LinearEasing
                     )
                 )
             }
         }
 
-        Label(
-            text = text,
-            fontSize = fontSize,
-            fontWeight = fontWeight,
-            maxLines = 1,
-            modifier = modifier
-                .graphicsLayer { translationX = anim.value }
-                .onGloballyPositioned { coords ->
-                    textWidthPx = coords.size.width
-                }
-        )
+        // Two copies are placed side-by-side (text | gap | text).
+        // Translating by -totalScroll moves the second copy to position 0, then
+        // snapTo(0f) seamlessly restores the first copy — creating a gapless loop.
+        Layout(
+            modifier = modifier.graphicsLayer { translationX = anim.value },
+            content = {
+                Label(
+                    text = text,
+                    fontSize = fontSize,
+                    fontWeight = fontWeight,
+                    maxLines = 1,
+                    modifier = Modifier.onGloballyPositioned { coords ->
+                        textWidthPx = coords.size.width
+                    }
+                )
+                Label(
+                    text = text,
+                    fontSize = fontSize,
+                    fontWeight = fontWeight,
+                    maxLines = 1,
+                )
+            }
+        ) { measurables, constraints ->
+            val gapPx = with(density) { gapDp.roundToPx() }
+            val unbounded = constraints.copy(maxWidth = Constraints.Infinity)
+            val first = measurables[0].measure(unbounded)
+            val second = measurables[1].measure(unbounded)
+            layout(constraints.maxWidth, first.height) {
+                first.place(0, 0)
+                second.place(first.width + gapPx, 0)
+            }
+        }
     }
 
     @Composable
@@ -408,7 +432,7 @@ object RouteConsole : Route {
                                 duration / 1000
                             )
                         append(
-                            "$fPos / $fDuration (${state.speed}x)"
+                            "$fPos / $fDuration"
                         )
                     }
                 }

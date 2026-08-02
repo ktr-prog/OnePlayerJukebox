@@ -187,22 +187,8 @@ class MainActivity : ComponentActivity(), SystemFacade, NavDestListener {
                 if (details == null || !details.isDynamicFeature) continue
                 // Skip if the dynamic feature is already installed
                 if (isFeatureInstalled(details.dynamicModuleName)) continue
-                // Prompt the user to install the dynamic feature
-                val response = snackbarHostState.showSnackbar(
-                    resources.getText2(
-                        id = Res.string.msg_install_dynamic_module_ss,
-                        details.title
-                    ),
-                    duration = SnackbarDuration.Indefinite,
-                    action = resources.getText2(Res.string.install),
-                    icon = ImageVector.vectorResource(
-                        theme,
-                        resources,
-                        Res.drawable.ic_apk_install
-                    ),
-                )
-                if (response == SnackbarResult.ActionPerformed)
-                    initiateFeatureInstall(details.dynamicModuleName)
+                // Install the dynamic feature silently without prompting the user.
+                initiateFeatureInstall(details.dynamicModuleName)
             }
         }
 
