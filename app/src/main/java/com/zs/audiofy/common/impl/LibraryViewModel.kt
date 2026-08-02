@@ -23,14 +23,14 @@ package com.zs.audiofy.common.impl
 import android.net.Uri
 import android.util.Log
 import androidx.compose.ui.graphics.Color
-import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
-import com.zs.audiofy.R
 import com.zs.audiofy.library.LibraryViewState
 import com.zs.audiofy.common.AppConfig
 import com.zs.audiofy.common.Res
 import com.zs.compose.foundation.Rose
 import com.zs.core.common.debounceAfterFirst
+import com.zs.core.common.toTrack
+import com.zs.core.db.playlists.Playlist
 import com.zs.core.db.playlists.Playlist.Track
 import com.zs.core.db.playlists.Playlists
 import com.zs.core.playback.Remote
@@ -41,13 +41,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlin.collections.filter
+import kotlinx.coroutines.launch
 
 class LibraryViewModel(
     val provider: MediaProvider,
@@ -182,31 +181,38 @@ class LibraryViewModel(
         }
     }
 
-    override fun onNewLink(link: String) {
-        runCatching {
-            // Clear any previously queued or playing media.
-            // This is crucial because if setMediaItem fails (e.g. due to an invalid URL or unsupported format),
-            // the old media item may still be active and start playing unexpectedly.
-            remote.clear()
+    override fun onAddAllToFavorites() {
+        viewModelScope.launch {
+            runCatching {
+                // Get or create the favourites playlist
+                val playlistId = playlists[Remote.PLAYLIST_FAVOURITE]?.id
+                    ?: playlists.insert(Playlist(Remote.PLAYLIST_FAVOURITE, ""))
 
-            // Attempt to set the new media item using the provided link.
-            // We convert the string to a Uri and pass it to the player.
-            // This may throw if the link is malformed or the media framework rejects it.
-            remote.setMediaItem(link.toUri())
+                var lastOrder = playlists.lastPlayOrder(Remote.PLAYLIST_FAVOURITE)
 
-            // Start playback immediately after setting the media item.
-            // The 'true' flag likely indicates autoplay or resume behavior.
-            remote.play(true)
+                // Fetch all audio and video files from device
+                val audios = provider.fetchAudioFiles()
+                val videos = provider.fetchVideoFiles()
 
-            // Show a toast to inform the user that playback has started.
-            // This is a platform-specific feedback mechanism.
-            showPlatformToast(Res.string.playing)
+                // Build tracks, skipping items already in the playlist
+                val tracks = buildList {
+                    for (audio in audios) {
+                        if (!playlists.contains(Remote.PLAYLIST_FAVOURITE, audio.uri.toString()))
+                            add(audio.toTrack(playlistId, ++lastOrder))
+                    }
+                    for (video in videos) {
+                        if (!playlists.contains(Remote.PLAYLIST_FAVOURITE, video.contentUri.toString()))
+                            add(video.toTrack(playlistId, ++lastOrder))
+                    }
+                }
+
+                val inserted = playlists.insert(tracks)
+                showPlatformToast("${inserted.size} files added to favourites.")
+            }
         }
-        // Errors from setMediaItem or play are not handled inside the block.
-        // Instead, they bubble up and are caught by runCatching, allowing centralized error handling elsewhere.
     }
 
-    override fun onRequestRemoveRecentItem(uri: String) {
+    /**(uri: String) {
         runCatching {
             // Retrieve the "Recently Played" playlist entry
             val playlist = playlists[Remote.PLAYLIST_RECENT]

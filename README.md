@@ -3,3 +3,9 @@
 - Remove rounded corner cutout from bottom
 - Remove screen rotation lock button
 - Remove touchscreen gestures (brightness, volume, time skipping)
+- Remove promotional/system messages ("new feature available", rate-us, join-us cards) from library screen
+- Player title (both video and music) always scrolls regardless of text length
+- Video player: removed Info, Lock screen, Speed, and Timer buttons
+- Music player: removed Speed, Timer, and Info buttons
+- Tapping the music mini-player FAB always opens the full-screen player (no floating expand)
+- Start page: replaced "Network Link" button with "Add All to Favourites" button (adds all audio and video files to the favourites playlist)

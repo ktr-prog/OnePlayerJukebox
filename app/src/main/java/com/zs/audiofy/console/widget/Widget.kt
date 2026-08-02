@@ -77,7 +77,6 @@ import com.zs.audiofy.console.widget.styles.SkewedDynamic
 import com.zs.audiofy.console.widget.styles.SnowCone
 import com.zs.audiofy.console.widget.styles.Tiramisu
 import com.zs.audiofy.console.widget.styles.WavyGradientDots
-import com.zs.audiofy.common.AppConfig
 import com.zs.audiofy.settings.Settings
 import com.zs.compose.theme.LocalNavAnimatedVisibilityScope
 import com.zs.core.BuildConfig
@@ -179,46 +178,24 @@ object Widget {
             indication = scale(),
             // Toggle expanded state on click.
             onClick = {
-                val isFab = !expanded
-                // if user in process of expanding the widget and playback is not prepared;
-                // call prepare.
-//                if (state.state == Remote.PLAYER_STATE_IDLE)
-//                    scope.launch { remote.prepare() }
-                // Determine if the player is currently in FAB (mini) mode.
-                // If not expanded, it's considered a FAB player.
                 when {
                     state.isVideo ->
                         onRequest(REQUEST_PLAY_TOGGLE)
-                    // If currently viewing a video, toggle playback (play/pause).
+                    // For video, toggle playback on click.
 
-                    isFab && AppConfig.fabLongPressLaunchConsole ->
-                        expanded = true
-                    // If in FAB mode and the "long-press FAB opens console" setting is enabled,
-                    // expand the player to show the console.
-
-                    isFab && !AppConfig.fabLongPressLaunchConsole ->
+                    else ->
                         navController.navigate(RouteConsole())
-                    // If in FAB mode but the "long-press FAB opens console" setting is disabled,
-                    // navigate directly to the console screen without expanding.
-                    else -> expanded = false
+                    // For music, always open the full-screen player.
                 }
             },
             // Navigate to console on long click if not expanded, otherwise collapse.
             onLongClick = {
                 val isFab = !expanded
-                // Determine if the player is currently in FAB (mini) mode.
-                // If not expanded, it's considered a FAB player.
-
                 when {
-                    isFab && AppConfig.fabLongPressLaunchConsole ->
-                        // If in FAB mode AND the user preference "long-press FAB opens console" is enabled,
-                        // navigate to the console screen.
-                        navController.navigate(RouteConsole())
-
-                    isFab && !AppConfig.fabLongPressLaunchConsole ->
-                        // If in FAB mode but the preference is disabled,
-                        // expand the player to show the full-screen view instead.
+                    isFab ->
                         expanded = true
+                    // Long-press on FAB expands the mini widget.
+
                     // show config screen always in playstore version.
                     else -> showConfigScreen = BuildConfig.FLAVOR != BuildConfig.FLAVOR_COMMUNITY
                 }
