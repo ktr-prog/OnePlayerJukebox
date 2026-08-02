@@ -25,9 +25,6 @@ import android.text.format.DateUtils
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -43,7 +40,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -59,13 +55,8 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.unit.Constraints
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
@@ -80,6 +71,7 @@ import com.zs.audiofy.common.compose.LocalSystemFacade
 import com.zs.audiofy.common.compose.LottieAnimatedButton
 import com.zs.audiofy.common.compose.LottieAnimatedIcon
 import com.zs.audiofy.common.compose.VideoSurface
+import com.zs.audiofy.common.compose.marque
 import com.zs.audiofy.common.compose.chronometer
 import com.zs.audiofy.common.compose.collectAsState
 import com.zs.audiofy.common.compose.resize
@@ -207,9 +199,8 @@ object RouteConsole : Route {
     const val PLAY_BTN_STYLE_OUTLINED = 1
 
     /**
-     * A title label that always scrolls in an infinite seamless loop.
-     * Two copies of the text are rendered side-by-side so the loop is gapless.
-     * The parent container must have clipToBounds() to confine the visible area.
+     * A title label that always scrolls.
+     * The text is repeated to force marquee even for short titles.
      */
     @Composable
     private fun ScrollingTitle(
@@ -218,60 +209,17 @@ object RouteConsole : Route {
         fontWeight: FontWeight,
         modifier: Modifier = Modifier,
     ) {
-        val anim = remember { Animatable(0f) }
-        var textWidthPx by remember { mutableIntStateOf(0) }
-        val density = LocalDensity.current
-        val gapDp = 64.dp
-
-        LaunchedEffect(text, textWidthPx) {
-            if (textWidthPx <= 0) return@LaunchedEffect
-            val gapPx = with(density) { gapDp.toPx() }
-            val totalScroll = textWidthPx + gapPx
-            while (true) {
-                anim.snapTo(0f)
-                delay(800L)
-                anim.animateTo(
-                    targetValue = -totalScroll,
-                    animationSpec = tween(
-                        durationMillis = (totalScroll * 7).toInt().coerceAtLeast(3000),
-                        easing = LinearEasing
-                    )
-                )
-            }
+        val scrollText = remember(text) {
+            val value = text.trim()
+            if (value.isEmpty()) value else List(8) { value }.joinToString("     •     ")
         }
-
-        // Two copies are placed side-by-side (text | gap | text).
-        // Translating by -totalScroll moves the second copy to position 0, then
-        // snapTo(0f) seamlessly restores the first copy — creating a gapless loop.
-        Layout(
-            modifier = modifier.graphicsLayer { translationX = anim.value },
-            content = {
-                Label(
-                    text = text,
-                    fontSize = fontSize,
-                    fontWeight = fontWeight,
-                    maxLines = 1,
-                    modifier = Modifier.onGloballyPositioned { coords ->
-                        textWidthPx = coords.size.width
-                    }
-                )
-                Label(
-                    text = text,
-                    fontSize = fontSize,
-                    fontWeight = fontWeight,
-                    maxLines = 1,
-                )
-            }
-        ) { measurables, constraints ->
-            val gapPx = with(density) { gapDp.roundToPx() }
-            val unbounded = constraints.copy(maxWidth = Constraints.Infinity)
-            val first = measurables[0].measure(unbounded)
-            val second = measurables[1].measure(unbounded)
-            layout(constraints.maxWidth, first.height) {
-                first.place(0, 0)
-                second.place(first.width + gapPx, 0)
-            }
-        }
+        Label(
+            text = scrollText,
+            fontSize = fontSize,
+            fontWeight = fontWeight,
+            maxLines = 1,
+            modifier = modifier.marque(Int.MAX_VALUE)
+        )
     }
 
     @Composable
@@ -693,7 +641,6 @@ object RouteConsole : Route {
                             isVideo && !state.playing && visibility != VISIBLE_ALWAYS -> viewState.emit(VISIBLE_ALWAYS, true)
                             visibility == VISIBLE_LOCKED_LOCK -> viewState.emit(VISIBLE_NONE_LOCKED, true)
                             visibility == VISIBLE_LOCKED_SEEK && state.state != Remote.PLAYER_STATE_BUFFERING -> viewState.emit(VISIBLE_LOCKED_LOCK, true)
-                            visibility == VISIBLE -> viewState.emit(VISIBLE_NONE, true)
                         }
 
                         // Determine which controls to hide
