@@ -8,4 +8,4 @@
 - Video player: removed Info, Lock screen, Speed, and Timer buttons
 - Music player: removed Speed, Timer, and Info buttons
 - Tapping the music mini-player FAB always opens the full-screen player (no floating expand)
-- Start page: replaced "Network Link" button with "Add All to Favourites" button (adds all audio and video files to the favourites playlist)
+- Start page: replaced "Network Link"
