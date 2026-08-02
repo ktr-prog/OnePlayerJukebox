@@ -25,6 +25,8 @@ import android.text.format.DateUtils
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -41,6 +43,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -56,8 +59,11 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
@@ -200,6 +206,53 @@ object RouteConsole : Route {
     const val PLAY_BTN_STYLE_SIMPLE = 0
     const val PLAY_BTN_STYLE_OUTLINED = 1
 
+    /**
+     * A title label that always scrolls, regardless of whether the text overflows its container.
+     */
+    @Composable
+    private fun ScrollingTitle(
+        text: String,
+        fontSize: androidx.compose.ui.unit.TextUnit,
+        fontWeight: FontWeight,
+        modifier: Modifier = Modifier,
+    ) {
+        val anim = remember { androidx.compose.animation.core.Animatable(0f) }
+        var textWidthPx by remember { mutableIntStateOf(0) }
+        var containerWidthPx by remember { mutableIntStateOf(0) }
+        val density = androidx.compose.ui.platform.LocalDensity.current
+        val gapDp = 64.dp
+
+        androidx.compose.runtime.LaunchedEffect(text, textWidthPx, containerWidthPx) {
+            if (textWidthPx <= 0) return@LaunchedEffect
+            val gapPx = with(density) { gapDp.toPx() }
+            val totalScroll = textWidthPx + gapPx
+            while (true) {
+                anim.snapTo(0f)
+                kotlinx.coroutines.delay(800L)
+                anim.animateTo(
+                    targetValue = -totalScroll,
+                    animationSpec = androidx.compose.animation.core.tween(
+                        durationMillis = (totalScroll * 7).toInt().coerceAtLeast(3000),
+                        easing = androidx.compose.animation.core.LinearEasing
+                    )
+                )
+            }
+        }
+
+        Label(
+            text = text,
+            fontSize = fontSize,
+            fontWeight = fontWeight,
+            maxLines = 1,
+            softWrap = false,
+            modifier = modifier
+                .graphicsLayer { translationX = anim.value }
+                .onGloballyPositioned { coords ->
+                    textWidthPx = coords.size.width
+                }
+        )
+    }
+
     @Composable
     operator fun invoke(viewState: ConsoleViewState) {
         // Describe content of primary pane.
@@ -294,14 +347,6 @@ object RouteConsole : Route {
                     modifier = Modifier.layoutId(ID_BTN_RESIZE_MODE),
                     enabled = enabled
                 )
-                // Lock
-                IconButton(
-                    icon = vectorResource(Res.drawable.ic_lock_open),
-                    contentDescription = null,
-                    onClick = { viewState.emit(if (visibility == VISIBLE_LOCKED_LOCK) VISIBLE else VISIBLE_LOCKED_LOCK) },
-                    modifier = Modifier.layoutId(ID_BTN_LOCK),
-                    enabled = visibility >= VISIBLE_LOCKED_LOCK
-                )
             }
 
             // Collapse
@@ -332,11 +377,10 @@ object RouteConsole : Route {
                     .key(ID_TITLE)
                     .clipToBounds(),
                 content = {
-                    Label(
+                    ScrollingTitle(
                         text = state.title ?: stringResource(id = Res.string.unknown),
-                        fontSize = titleTextSize.sp,// Maybe Animate
+                        fontSize = titleTextSize.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.marque(Int.MAX_VALUE)
                     )
                 }
             )
@@ -480,39 +524,6 @@ object RouteConsole : Route {
                 modifier = Modifier.layoutId(ID_BTN_LIKED)
             )
 
-            // Speed
-            IconButton(
-                icon = vectorResource(Res.drawable.ic_speed),
-                contentDescription = null,
-                onClick = { showViewOf = SHOW_SPEED },
-                enabled = enabled,
-                modifier = Modifier.layoutId(ID_BTN_PLAYBACK_SPEED)
-            )
-
-            // Timer
-            IconButton(
-                onClick = {
-                    if (state.sleepAt != Remote.TIME_UNSET)
-                        viewState.sleepAt(Remote.TIME_UNSET)
-                    else showViewOf = SHOW_TIMER
-                },
-                modifier = Modifier.layoutId(ID_BTN_SLEEP_TIMER),
-                content = {
-                    if (state.sleepAt == Remote.TIME_UNSET)
-                        return@IconButton Icon(
-                            imageVector = vectorResource(Res.drawable.ic_timer_10_alt),
-                            contentDescription = null
-                        )
-                    val remaining by timer(state.sleepAt)
-                    Label(
-                        text = DateUtils.formatElapsedTime(remaining / 1000L),
-                        style = AppTheme.typography.label3,
-                        fontWeight = FontWeight.Bold,
-                        color = AppTheme.colors.accent
-                    )
-                }
-            )
-
             // Equalizer
             IconButton(
                 icon = vectorResource(Res.drawable.ic_tune),
@@ -525,15 +536,6 @@ object RouteConsole : Route {
                     else
                         navController.navigate(RouteAudioFx())
                 },
-            )
-
-            // Info
-            IconButton(
-                icon = vectorResource(Res.drawable.ic_info),
-                contentDescription = null,
-                onClick = {},
-                enabled = enabled,
-                modifier = Modifier.layoutId(ID_BTN_MEDIA_INFO)
             )
 
             // More

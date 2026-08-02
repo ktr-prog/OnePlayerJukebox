@@ -42,9 +42,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -191,35 +188,21 @@ private fun LibraryTopAppBar(
                         .thenIf(!immersive) { clip(AppBarDefaults.FloatingTopBarShape) }
                         .background(background)
                 )
-            // Open link button
-            var expanded by remember { mutableStateOf(false) }
-            NewMediaLink(expanded) { link ->
-                if (link != null) viewState.onNewLink(link)
-                expanded = false
-            }
             if (fraction < 0.5f)
                 return@AdaptiveLargeTopAppBar
             Box(
                 contentAlignment = Alignment.BottomEnd,
                 content = {
                     ExtendedFloatingActionButton(
-                        icon = { Icon(vectorResource(Res.drawable.ic_add_link_outline), contentDescription = null) },
-                        text = { Label("Link") },
-                        onClick = { expanded = !expanded },
+                        icon = { Icon(vectorResource(Res.drawable.ic_hotel_class_outline), contentDescription = null) },
+                        text = { Label("Favourites") },
+                        onClick = viewState::onAddAllToFavorites,
                         modifier = Modifier.graphicsLayer {
-                            // Calculate the scaled value based on the fraction.
-                            // The fraction ranges from 0.0 to 1.0. We want to scale the animation
-                            // to start when fraction is 0.5 and end when fraction is 1.0.
-                            // So, subtract 0.5 to make the range -0.5 to 0.5, then divide by 0.5
-                            // to normalize it to -1.0 to 1.0. We are interested in 0.0 to 1.0 part.
                             val scaled = ((fraction - 0.5f) / 0.5f)
-                            // Animate alpha from 0 (transparent) to 1 (opaque) as scaled goes from 0 to 1.
                             this.alpha = lerp(0f, 1f, scaled)
-                            // Animate scale from 0.8 to 1.0 as scaled goes from 0 to 1.
                             val scale = lerp(0.7f, 0.9f, scaled)
                             scaleX = scale
                             scaleY = scale
-                            // Translate the button slightly to create a subtle movement effect.
                             translationX = -CP.normal.toPx()
                             translationY = CP.xLarge.toPx()
                         }
@@ -373,13 +356,6 @@ fun Library(viewState: LibraryViewState) {
                         )
                     }
 
-                    item {
-                        Promotions(
-                            modifier = Modifier
-                                .padding(horizontal = CP.small, vertical = CP.small)
-                                .fillMaxWidth(),
-                        )
-                    }
                     // Newly Added
                     item {
                         LibraryHeader(

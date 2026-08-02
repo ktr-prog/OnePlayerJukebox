@@ -65,9 +65,9 @@ interface LibraryViewState {
     fun onClickRecentAddedFile(id: Long)
 
     /**
-     * Callback method for handling new link input.
+     * Callback method that adds ALL audio and video files from the device to the favourites playlist.
      */
-    fun onNewLink(link: String)
+    fun onAddAllToFavorites()
 
     /**
      * Callback method invoked when the user requests the removal of a recent item.

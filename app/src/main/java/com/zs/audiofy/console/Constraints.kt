@@ -72,8 +72,12 @@ abstract class Constraints(val titleTextSize: Int) {
 
     private fun ConstraintSetScope.hide(ref: ConstrainedLayoutReference) {
         constrain(ref) {
-            visibility = Visibility.Invisible
+            visibility = Visibility.Gone
         }
+    }
+
+    private fun ConstraintSetScope.hide(vararg refs: ConstrainedLayoutReference) {
+        refs.forEach { hide(it) }
     }
 
     /**
@@ -124,7 +128,7 @@ private fun CompactAudio(insets: DpRect) = object : Constraints(34) {
 
         // Options
         val options = horizontal(
-            REPEAT_MODE, INFO, SHUFFLE, QUEUE, SPEED, SLEEP_TIMER, LIKED, MORE,
+            REPEAT_MODE, SHUFFLE, QUEUE, LIKED, MORE,
             chainStyle = ChainStyle.Packed(1f),
             constrainBlock = {
                 linkTo(parent.start, COLLAPSE.start, left + CP.normal, CP.small)
@@ -184,7 +188,7 @@ private fun CompactAudio(insets: DpRect) = object : Constraints(34) {
         }
 
         // Make these invisible
-        hide(INFO, REPEAT_MODE, SHUFFLE)
+        hide(INFO, REPEAT_MODE, SHUFFLE, SPEED, SLEEP_TIMER)
     }
 }
 
@@ -206,7 +210,7 @@ private fun SmallAudio(insets: DpRect) = object : Constraints(44) {
 
         // Options
         val options = horizontal(
-            QUEUE, SPEED, SLEEP_TIMER, LIKED, MORE,
+            QUEUE, LIKED, MORE,
             chainStyle = ChainStyle.Packed(1f),
             constrainBlock = {
                 end.linkTo(COLLAPSE.start, CP.normal)
@@ -225,14 +229,9 @@ private fun SmallAudio(insets: DpRect) = object : Constraints(44) {
             height = Dimension.ratio("1:1")
         }
 
-        constrain(INFO) {
-            end.linkTo(COLLAPSE.end)
-            top.linkTo(TITLE.top)
-        }
-
         // Title
         constrain(TITLE) {
-            linkTo(ARTWORK.end, INFO.start, CP.normal, CP.normal)
+            linkTo(ARTWORK.end, COLLAPSE.start, CP.normal, CP.normal)
             top.linkTo(ARTWORK.top)
             width = Dimension.fillToConstraints
         }
@@ -275,6 +274,8 @@ private fun SmallAudio(insets: DpRect) = object : Constraints(44) {
             linkTo(timeBar.bottom, parent.bottom, CP.small, down + CP.small)
             verticalBias = 0f
         }
+
+        hide(INFO, SPEED, SLEEP_TIMER)
     }
 }
 
@@ -304,7 +305,7 @@ private fun PortraitAudio(insets: DpRect) = object : Constraints(44) {
 
         // Options
         val options = horizontal(
-            QUEUE, SPEED, SLEEP_TIMER, LIKED, MORE,
+            QUEUE, LIKED, MORE,
             spacing = CP.medium,
             constrainBlock = {
                 linkTo(TITLE.start, COLLAPSE.end)
@@ -345,15 +346,9 @@ private fun PortraitAudio(insets: DpRect) = object : Constraints(44) {
             bottom.linkTo(SEEK_BAR.top, -CP.small)
         }
 
-        // Info
-        constrain(INFO){
-            end.linkTo(COLLAPSE.end)
-            linkTo(SUBTITLE.top, TITLE.bottom)
-        }
-
         // Title
         constrain(TITLE) {
-            linkTo(parent.start, INFO.start, left + CP.xLarge, CP.normal)
+            linkTo(parent.start, COLLAPSE.start, left + CP.xLarge, CP.normal)
             bottom.linkTo(EXTRA_INFO.top, CP.normal)
             width = Dimension.fillToConstraints
         }
@@ -365,6 +360,8 @@ private fun PortraitAudio(insets: DpRect) = object : Constraints(44) {
             width = Dimension.fillToConstraints
             horizontalBias = 0f
         }
+
+        hide(INFO, SPEED, SLEEP_TIMER)
     }
 }
 
@@ -394,7 +391,7 @@ private fun LandscapeAudio(insets: DpRect) = object : Constraints(44) {
 
         // Options
         val options = horizontal(
-            QUEUE, SPEED, SLEEP_TIMER, LIKED, MORE,
+            QUEUE, LIKED, MORE,
             chainStyle = ChainStyle.Packed(1f),
             constrainBlock = {
                 linkTo(split, COLLAPSE.start, endMargin = CP.normal)
@@ -414,15 +411,9 @@ private fun LandscapeAudio(insets: DpRect) = object : Constraints(44) {
 
         // Title
         constrain(TITLE) {
-            linkTo(split, INFO.start, endMargin = CP.normal)
+            linkTo(split, COLLAPSE.start, endMargin = CP.normal)
             top.linkTo(SUBTITLE.bottom)
             width = Dimension.fillToConstraints
-        }
-
-        // Info
-        constrain(INFO){
-            end.linkTo(COLLAPSE.end)
-            linkTo(SUBTITLE.top, TITLE.bottom)
         }
 
         // SeekBar
@@ -458,6 +449,8 @@ private fun LandscapeAudio(insets: DpRect) = object : Constraints(44) {
         constrain(controls) {
             top.linkTo(timeBar.bottom, CP.normal)
         }
+
+        hide(INFO, SPEED, SLEEP_TIMER)
     }
 }
 //
@@ -476,7 +469,7 @@ private fun LargeAudio(insets: DpRect) = object : Constraints(44) {
         }
         // Options
         val options = horizontal(
-            QUEUE, SPEED, SLEEP_TIMER, LIKED, MORE,
+            QUEUE, LIKED, MORE,
             chainStyle = ChainStyle.Packed(1f),
             constrainBlock = {
                 linkTo(parent.start, COLLAPSE.start, endMargin = CP.large)
@@ -517,7 +510,7 @@ private fun LargeAudio(insets: DpRect) = object : Constraints(44) {
         // SeekBar
         val chainStyle = ChainStyle.Packed(0f)
         val timeBar = horizontal(
-            INDICATOR, SEEK_BAR, EQUALIZER, INFO,
+            INDICATOR, SEEK_BAR, EQUALIZER,
             alignBy = SEEK_BAR,
             chainStyle = chainStyle,
             constrainBlock = {
@@ -542,6 +535,8 @@ private fun LargeAudio(insets: DpRect) = object : Constraints(44) {
             width = Dimension.fillToConstraints.atMost(260.dp)
             height = Dimension.ratio("1:1")
         }
+
+        hide(INFO, SPEED, SLEEP_TIMER)
     }
 }
 //
@@ -574,7 +569,7 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
         // Options
         COLLAPSE.withChainParams(startMargin = CP.normal)
         val options = horizontal(
-            EQUALIZER, QUEUE, SPEED, SLEEP_TIMER, LIKED, MORE, COLLAPSE,
+            EQUALIZER, QUEUE, LIKED, MORE, COLLAPSE,
             constrainBlock = {
                 linkTo(parent.start, parent.end, endMargin = CP.normal)
             }
@@ -587,7 +582,7 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
         // Title
         TITLE.withChainParams(startMargin = CP.small, endMargin = CP.small)
         val title = horizontal(
-            INDICATOR, TITLE, INFO,LOCK,
+            INDICATOR, TITLE,
             alignBy = TITLE,
             constrainBlock = {
                 linkTo(parent.start, COLLAPSE.end, CP.normal + left)
@@ -596,7 +591,6 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
         constrain(title) {
             bottom.linkTo(parent.bottom, CP.normal + down)
             width = Dimension.fillToConstraints
-            //horizontalChainWeight = 1f
         }
 
         // Subtitle
@@ -660,8 +654,10 @@ private fun PortraitVideo(insets: DpRect,   only: Array<String>?,) = object : Co
             horizontalBias = 0.5f
         }
 
-        if (only == null)
+        if (only == null) {
+            hide(INFO, LOCK, SPEED, SLEEP_TIMER)
             return@ConstraintSet
+        }
         hideController(only)
     }
 }
@@ -698,7 +694,7 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
         TITLE.withChainParams(startMargin = CP.small, endMargin = CP.xLarge)
         COLLAPSE.withChainParams(startMargin = CP.normal)
         val options = horizontal(
-            INDICATOR, TITLE, INFO, SHUFFLE, REPEAT_MODE, EQUALIZER, SPEED, SLEEP_TIMER, LIKED, MORE, COLLAPSE,
+            INDICATOR, TITLE, SHUFFLE, REPEAT_MODE, EQUALIZER, LIKED, MORE, COLLAPSE,
             alignBy = TITLE,
             constrainBlock = {
                 linkTo(parent.start, parent.end, CP.normal + left, CP.normal + right)
@@ -731,7 +727,7 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
             else -> {
                 // TimeBar
                 horizontal(
-                    LOCK,  SEEK_BAR,  SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, RESIZE_MODE, QUEUE,
+                    SEEK_BAR,  SKIP_PREVIOUS, PLAY_PAUSE, SKIP_TO_NEXT, RESIZE_MODE, QUEUE,
                     alignBy = SEEK_BAR,
                     constrainBlock = {
                         linkTo(parent.start, parent.end, left + CP.normal, right + CP.normal)
@@ -759,8 +755,10 @@ private fun LargeVideo(insets: DpRect,   only: Array<String>?,) = object : Const
             horizontalBias = 0.5f
         }
 
-        if (only == null)
+        if (only == null) {
+            hide(INFO, LOCK, SPEED, SLEEP_TIMER)
             return@ConstraintSet
+        }
         hideController(only)
     }
 }
